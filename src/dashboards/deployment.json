@@ -83,13 +83,13 @@
   "templating": {
     "list": [
       {
-        "hide": 2,
-        "label": "",
+        "hide": 0,
+        "label": "Prometheus",
         "name": "PromDs",
         "options": [],
         "query": "prometheus",
         "refresh": 1,
-        "regex": "/^$prom_ds$/",
+        "regex": "",
         "type": "datasource",
         "current": {}
       },
@@ -1103,5 +1103,5 @@
     }
   ],
   "uid": "B_WA19v7z",
-  "revision": 2
+  "revision": 3
 }

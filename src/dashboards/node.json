@@ -77,13 +77,13 @@
   "templating": {
     "list": [
       {
-        "hide": 2,
-        "label": "",
+        "hide": 0,
+        "label": "Prometheus",
         "name": "PromDs",
         "options": [],
         "query": "prometheus",
         "refresh": 1,
-        "regex": "/^$prom_ds$/",
+        "regex": "",
         "type": "datasource",
         "current": {}
       },
@@ -13628,5 +13628,5 @@
     }
   ],
   "uid": "kubegraf-node",
-  "revision": 2
+  "revision": 3
 }
