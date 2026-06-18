@@ -102,6 +102,22 @@
         "options": [],
         "regex": "",
         "hide": 0
+      },
+      {
+        "name": "nodeName",
+        "label": "nodeName",
+        "type": "query",
+        "datasource": "$PromDs",
+        "query": "label_values(node_uname_info{instance=~\"$node\"}, nodename)",
+        "definition": "label_values(node_uname_info{instance=~\"$node\"}, nodename)",
+        "refresh": 1,
+        "sort": 1,
+        "includeAll": false,
+        "multi": false,
+        "hide": 2,
+        "current": {},
+        "options": [],
+        "regex": ""
       }
     ]
   },
@@ -1159,7 +1175,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "(sum(rate(container_cpu_usage_seconds_total{instance=~'$node', id='/'}[2m])) / sum(kube_node_status_allocatable{resource='cpu',unit='core',node=~'$node'})) * 100",
+          "expr": "(sum(rate(node_cpu_seconds_total{mode!=\"idle\",instance=~\"$node\"}[2m])) / sum(kube_node_status_allocatable{resource=\"cpu\",node=~\"$nodeName\"})) * 100",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
@@ -1243,7 +1259,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(node_memory_MemTotal_bytes{instance=~\"$node\"} - node_memory_MemFree_bytes{instance=~\"$node\"} - node_memory_Buffers_bytes{instance=~\"$node\"} - node_memory_Cached_bytes{instance=~\"$node\"}) / sum(kube_node_status_allocatable{resource=\"memory\",unit=\"byte\",node=~\"$node\"}) * 100",
+          "expr": "sum(node_memory_MemTotal_bytes{instance=~\"$node\"} - node_memory_MemFree_bytes{instance=~\"$node\"} - node_memory_Buffers_bytes{instance=~\"$node\"} - node_memory_Cached_bytes{instance=~\"$node\"}) / sum(kube_node_status_allocatable{resource=\"memory\",node=~\"$nodeName\"}) * 100",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
@@ -1327,7 +1343,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "(sum(kubelet_running_pod_count{instance=~\"$node\"}) / sum(kube_node_status_allocatable{resource=\"pods\",node=~\"$node\"})) * 100",
+          "expr": "(count(kube_pod_info{node=~\"$nodeName\"}) / sum(kube_node_status_allocatable{resource=\"pods\",node=~\"$nodeName\"})) * 100",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
@@ -1411,7 +1427,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(kube_pod_container_resource_requests{resource=\"cpu\",unit=\"core\",node=~\"$node\"}) / sum(kube_node_status_allocatable{resource=\"cpu\",unit=\"core\",node=~\"$node\"}) * 100",
+          "expr": "sum(kube_pod_container_resource_requests{resource=\"cpu\",node=~\"$nodeName\"}) / sum(kube_node_status_allocatable{resource=\"cpu\",node=~\"$nodeName\"}) * 100",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
@@ -1421,7 +1437,7 @@
       "thresholds": "50,80",
       "timeFrom": null,
       "timeShift": null,
-      "title": "Node \"$node\" CPU Requested",
+      "title": "Node \"$nodeName\" CPU Requested",
       "type": "singlestat",
       "valueFontSize": "50%",
       "valueMaps": [
@@ -1495,7 +1511,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(kube_pod_container_resource_requests{resource=\"memory\", unit=\"byte\", node=~\"$node\"}) / sum(kube_node_status_allocatable{resource=\"memory\",unit=\"byte\",node=~\"$node\"}) * 100",
+          "expr": "sum(kube_pod_container_resource_requests{resource=\"memory\",node=~\"$nodeName\"}) / sum(kube_node_status_allocatable{resource=\"memory\",node=~\"$nodeName\"}) * 100",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
@@ -1505,7 +1521,7 @@
       "thresholds": "50,80",
       "timeFrom": null,
       "timeShift": null,
-      "title": "Node \"$node\" Memory Requested",
+      "title": "Node \"$nodeName\" Memory Requested",
       "type": "singlestat",
       "valueFontSize": "50%",
       "valueMaps": [
@@ -13627,5 +13643,5 @@
     }
   ],
   "uid": "kubegraf-node",
-  "revision": 4
+  "revision": 5
 }
