@@ -1,59 +1,81 @@
-# Deploying KubeGraf to an in-cluster Grafana
+# Deploying KubeGraf to the in-cluster Grafana
 
-Target: the kube-prometheus-stack Grafana (`kps`) on `do-fra1-starcrown-internal`,
-namespace `monitoring`, Grafana 13.x.
+Target: the kube-prometheus-stack release `kps` Grafana on
+`do-fra1-starcrown-internal`, namespace `monitoring`, Grafana 13.x
+(https://mon.starcrown.team). The plugin is **unsigned**.
 
-The plugin is **unsigned**, so Grafana must be told to permit it. The bundled
-datasource inherits the app's unsigned permission — only the app id needs allowing.
+This is the procedure that was actually used to deploy (verified end-to-end:
+the datasource proxies to the live API and returns nodes/namespaces).
 
-## 1. Build & package the plugin zip
-
-```bash
-npm ci
-npm run build
-mv dist starcrown-kubegraf-app
-zip -r starcrown-kubegraf-app.zip starcrown-kubegraf-app
-```
-
-Publish `starcrown-kubegraf-app.zip` where the Grafana pod can reach it:
-
-- a GitHub release asset on `blackcheshire13/kubegraf` (private repo → use a public
-  release or a pre-signed URL), or
-- a DO Spaces object (e.g. `cdn-frontend`) with a public URL.
-
-Put that URL into `kps-grafana-values.yaml` (`grafana.plugins`).
-
-## 2. Create the read-only ServiceAccount + token
+## 1. Build & publish the plugin zip
 
 ```bash
-kubectl --context do-fra1-starcrown-internal apply -f rbac.yaml
+npm ci && npm run build
+bash scripts/package.sh          # -> starcrown-kubegraf-app.zip
+aws s3 cp starcrown-kubegraf-app.zip \
+  s3://sc-platform-static/kubegraf/starcrown-kubegraf-app.zip \
+  --endpoint-url https://fra1.digitaloceanspaces.com --acl public-read
 ```
 
-This creates `kubegraf-readonly` (SA + ClusterRole + binding) and a long-lived
-token Secret `kubegraf-readonly-token` in `monitoring`.
+URL referenced by the overlay:
+`https://sc-platform-static.fra1.digitaloceanspaces.com/kubegraf/starcrown-kubegraf-app.zip`
 
-## 3. Wire the Helm values
+## 2. Read-only ServiceAccount + token
 
-Merge `kps-grafana-values.yaml` into the kube-prometheus-stack values in the GitOps
-repo and let Argo CD sync (per infra-iac-first / GitOps). It:
+```bash
+kubectl --context do-fra1-starcrown-internal apply -f deploy/rbac.yaml
+```
 
-- installs the plugin from the zip URL and allows it as unsigned,
-- mounts the SA token into the Grafana pod,
-- provisions a `KubeGraf — internal` datasource at `https://kubernetes.default.svc`
-  using `$__file{}` to read the token (no secret in values).
+## 3. Install the plugin into Grafana (Helm)
 
-`plugin.json`/datasource changes require a Grafana restart — rolling the
-deployment (or an Argo CD sync that rolls the pod) is enough.
+```bash
+helm upgrade kps prometheus-community/kube-prometheus-stack \
+  --version 86.2.3 -n monitoring --kube-context do-fra1-starcrown-internal \
+  --reuse-values -f deploy/kps-grafana-overlay.yaml
+```
 
-## 4. Verify
+The overlay (see `kps-grafana-overlay.yaml`) only touches `grafana.*`:
 
-- Apps → **KubeGraf** appears; **Clusters** lists the provisioned `KubeGraf — internal`.
-- Open a cluster → Applications / Nodes overview renders live namespaces/pods.
-- The 5 bundled dashboards (Node / Pod resources / Deployment / StatefulSet /
-  DaemonSet) import against your Prometheus.
+- **`GF_INSTALL_PLUGINS`** (url;folder) — Grafana's classic installer reliably
+  installs the unsigned zip. The chart's `plugins:` list did **not** (it routes
+  through Grafana preinstall, which didn't fetch the URL).
+- **`deploymentStrategy: Recreate`** — the Grafana PVC is ReadWriteOnce; a
+  RollingUpdate deadlocks on Multi-Attach. Recreate rolls cleanly (brief
+  downtime of the monitoring Grafana).
+- **`allow_loading_unsigned_plugins: starcrown-kubegraf-app,starcrown-kubegraf-datasource`**
+  — both ids are required; in Grafana 13 the bundled datasource does **not**
+  inherit the app's unsigned permission.
 
-## Multi-cluster
+## 4. Provision the datasource (sidecar)
 
-Add one provisioned datasource per cluster (each becomes a "cluster" on the
-Clusters page). For remote clusters, set `cluster_url` to the API server and supply
-a read-only token from that cluster.
+The Grafana datasources sidecar watches Secrets labelled `grafana_datasource=1`.
+Inject the SA token (not committed) and apply:
+
+```bash
+TOKEN=$(kubectl --context do-fra1-starcrown-internal -n monitoring \
+          get secret kubegraf-readonly-token -o jsonpath='{.data.token}' | base64 -d)
+sed "s|__SA_TOKEN__|$TOKEN|" deploy/grafana-datasource.yaml | \
+  kubectl --context do-fra1-starcrown-internal apply -f -
+```
+
+## 5. Enable the app
+
+```bash
+# admin password: kubectl -n monitoring get secret kps-grafana -o jsonpath='{.data.admin-password}' | base64 -d
+curl -s -u admin:PASS -X POST -H 'Content-Type: application/json' \
+  -d '{"enabled":true,"pinned":true}' \
+  https://mon.starcrown.team/api/plugins/starcrown-kubegraf-app/settings
+```
+
+The enabled state persists in the Grafana DB (on the PVC), surviving restarts.
+
+## Verify
+
+```bash
+# via the datasource proxy (admin):
+curl -s -u admin:PASS \
+  https://mon.starcrown.team/api/datasources/proxy/uid/<DS_UID>/__proxy/api/v1/nodes
+```
+
+In the UI: Apps → **KubeGraf** → Clusters → `KubeGraf — internal` → Applications /
+Nodes overview.

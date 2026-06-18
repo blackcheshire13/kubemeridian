@@ -14,8 +14,9 @@ npm run build
 rm -rf "build-pkg" "$OUT"
 mkdir -p "build-pkg/${PLUGIN_ID}"
 cp -r dist/* "build-pkg/${PLUGIN_ID}/"
-( cd build-pkg && zip -qr "../${OUT}" "${PLUGIN_ID}" )
+# zip(1) is not always present; use Python's zipfile for portability.
+python3 -c "import shutil; shutil.make_archive('${PLUGIN_ID}', 'zip', 'build-pkg', '${PLUGIN_ID}')"
 rm -rf build-pkg
 
 echo "Packaged: ${OUT}"
-unzip -l "$OUT" | tail -n +2 | head -20
+python3 -c "import zipfile; [print(n) for n in zipfile.ZipFile('${OUT}').namelist()[:20]]"

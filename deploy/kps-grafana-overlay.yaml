@@ -1,0 +1,28 @@
+# Minimal additive overlay for the existing kube-prometheus-stack release `kps`
+# on do-fra1-starcrown-internal (namespace monitoring), applied with:
+#
+#   helm upgrade kps prometheus-community/kube-prometheus-stack \
+#     --version 86.2.3 -n monitoring --reuse-values -f deploy/kps-grafana-overlay.yaml
+#
+# Only grafana.* keys are touched (no alertmanager/prometheus values), so existing
+# datasources/OAuth/alerting are preserved.
+#
+# - GF_INSTALL_PLUGINS uses Grafana's classic installer (url;folder) which reliably
+#   installs an unsigned plugin from a zip URL — the chart's `plugins:` list did not.
+# - deploymentStrategy Recreate avoids the RWO PVC Multi-Attach deadlock that blocks
+#   a RollingUpdate of the persistence-backed Grafana.
+# - allow_loading_unsigned_plugins permits the app; the bundled datasource inherits it.
+# The KubeGraf datasource is provisioned out-of-band via the sidecar
+# (deploy/grafana-datasource.yaml), so it is not listed here.
+
+grafana:
+  deploymentStrategy:
+    type: Recreate
+  plugins: []
+  env:
+    GF_INSTALL_PLUGINS: "https://sc-platform-static.fra1.digitaloceanspaces.com/kubegraf/starcrown-kubegraf-app.zip;starcrown-kubegraf-app"
+  grafana.ini:
+    plugins:
+      # Both ids must be listed: in Grafana 13 the bundled datasource does NOT
+      # inherit the parent app's unsigned permission.
+      allow_loading_unsigned_plugins: starcrown-kubegraf-app,starcrown-kubegraf-datasource
