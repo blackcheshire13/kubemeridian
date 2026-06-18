@@ -96,13 +96,12 @@
         "definition": "label_values(node_uname_info, instance)",
         "refresh": 1,
         "sort": 1,
-        "includeAll": true,
-        "multi": true,
+        "includeAll": false,
+        "multi": false,
         "current": {},
         "options": [],
         "regex": "",
-        "hide": 0,
-        "allValue": ".+"
+        "hide": 0
       }
     ]
   },
@@ -13628,5 +13627,5 @@
     }
   ],
   "uid": "kubegraf-node",
-  "revision": 3
+  "revision": 4
 }
