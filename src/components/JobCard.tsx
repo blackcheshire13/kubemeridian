@@ -35,7 +35,6 @@ export class JobCard extends PureComponent<Props>{
 
     showMorePods = () => {
         this.setState({
-            ...this.state,
             limited: false
         })
     }
@@ -57,7 +56,7 @@ export class JobCard extends PureComponent<Props>{
                 </h4>
                 {this.getPodsArray().map((pod: Pod) => {
                     return(
-                        <PodCard pod={pod} clusterName={this.clusterName}/>
+                        <PodCard key={pod.name} pod={pod} clusterName={this.clusterName}/>
                     )
                 })}
                 {

@@ -35,7 +35,6 @@ export class CronjobCard extends PureComponent<Props>{
 
     showMoreJobs = () => {
         this.setState({
-            ...this.state,
             limited: false
         })
     }
@@ -59,7 +58,7 @@ export class CronjobCard extends PureComponent<Props>{
                     this.getJobsArray().map((job: Job) => {
                         return job.pods.map((pod: Pod) => {
                             return (
-                                <PodCard pod={pod} clusterName={this.clusterName}/>
+                                <PodCard key={pod.name} pod={pod} clusterName={this.clusterName}/>
                             )
                         })
                     })

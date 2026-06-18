@@ -29,10 +29,12 @@ export class Namespace extends BaseModel{
     toggle() {
         super.toggle();
 
-        let namespaceStore = store.getObject('namespaceStore');
+        let namespaceStore = store.getObject('namespaceStore', []);
         let index = namespaceStore.findIndex((item: any) => item.name === this.name);
-        if (index || index === 0) {
+        if (index >= 0) {
             namespaceStore[index].open = this.open;
+        } else {
+            namespaceStore.push({ name: this.name, open: this.open });
         }
         store.setObject('namespaceStore', namespaceStore);
     }

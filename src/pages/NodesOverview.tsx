@@ -17,7 +17,6 @@ export class NodesOverviewPage extends BasePage {
 
     this.prepareDs().then(() => {
       this.setState({
-        ...this.state,
         currentClusterName: this.cluster?.instanceSettings.name,
         currentClusterId: this.cluster?.instanceSettings.id,
         pageReady: true,
@@ -26,7 +25,7 @@ export class NodesOverviewPage extends BasePage {
     });
 
     this.getAvailableClusters().then((res) => {
-      this.setState({ ...this.state, clusters: res });
+      this.setState({ clusters: res });
     });
   }
 

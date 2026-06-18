@@ -8,7 +8,7 @@ export class Component extends BaseModel {
 
     get status(){
 
-        const type = this.data.conditions.filter((item: any) => item.type === 'Healthy')[0];
+        const type = (this.data.conditions || []).filter((item: any) => item.type === 'Healthy')[0];
 
         if (type !== undefined && type.status === 'True') {
             return SUCCESS;

@@ -43,7 +43,6 @@ export class StatefulsetCard extends PureComponent<Props>{
 
     showMorePods = () => {
         this.setState({
-            ...this.state,
             limited: false
         })
     }
@@ -69,7 +68,7 @@ export class StatefulsetCard extends PureComponent<Props>{
                 </h4>
                 {this.getPodsArray().map((pod: Pod) => {
                     return(
-                        <PodCard pod={pod} clusterName={this.clusterName}/>
+                        <PodCard key={pod.name} pod={pod} clusterName={this.clusterName}/>
                     )
                 })}
                 {
@@ -87,7 +86,7 @@ export class StatefulsetCard extends PureComponent<Props>{
                             <h5>Services</h5>
                             {this.statefulset.services.map((svc : Service) => {
                                 return (
-                                    <ServiceCard service={svc}/>
+                                    <ServiceCard key={svc.name} service={svc}/>
                                 )
                             })}
                         </div>

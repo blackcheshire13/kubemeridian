@@ -3,6 +3,7 @@ import React, {PureComponent} from "react";
 import {Styles} from "../common/styles";
 import {isLight} from "../common/utils";
 import {cx} from "@emotion/css";
+import {Icon} from "@grafana/ui";
 import {DeploymentCard} from "./DeploymentCard";
 import {Deployment} from "../models/Deployment";
 import {Statefulset} from "../models/Statefulset";
@@ -82,7 +83,6 @@ export class NamespaceCard extends PureComponent<Props>{
 
     togglePanel = () => {
         this.setState({
-            ...this.state,
             isPanelOpen: !this.state.isPanelOpen
         });
     }
@@ -102,13 +102,10 @@ export class NamespaceCard extends PureComponent<Props>{
             col.isOpen = !col.isOpen
         }
         this.setState({
-            ...this.state,
             columns: []
         }, () => this.setState({
-            ...this.state,
             columns: cols
         }));
-        console.log(this.state);
     }
 
 
@@ -117,7 +114,7 @@ export class NamespaceCard extends PureComponent<Props>{
             <div className={cx(this.styles.namespacePanel)}>
                 <div className={'header'}>
                     <div className={cx(this.styles.title)} onClick={this.togglePanel}>
-                        <span className={cx(this.styles.chevron, this.isPanelOpenClass())} />
+                        <Icon name={this.state.isPanelOpen ? 'angle-down' : 'angle-right'} size="xl" />
                         <h1>Namespace: {this.namespace.name}</h1>
                     </div>
                     <div className={cx(this.styles.namespacePanelBtn)}>
@@ -146,7 +143,7 @@ export class NamespaceCard extends PureComponent<Props>{
                             </span>
                         )}
 
-                        <div className={cx(this.styles.status)}>Status : <span className={'status'}>{this.namespace.data.status.phase}</span> </div>
+                        <div className={cx(this.styles.status)}>Status : <span className={'status'}>{this.namespace.data.status?.phase}</span> </div>
                     </div>
                 </div>
                 {
@@ -154,7 +151,7 @@ export class NamespaceCard extends PureComponent<Props>{
                         <div className={cx(this.styles.namespacePanelBody)}>
                             {this.state.columns.map((col: any) => {
                                     return col.isOpen && (
-                                        <>
+                                        <React.Fragment key={col.nsKey}>
                                             <div className={'column'}>
                                                 <div className={'column_header'}>
                                                     <h3>{col.colName}</h3>
@@ -177,7 +174,7 @@ export class NamespaceCard extends PureComponent<Props>{
                                                 {col.nsKey === 'deployments' && (
                                                     (
                                                         (
-                                                        this.namespace.deployments.length > 0 && this.namespace.deployments.map((deployment: Deployment) => <DeploymentCard clusterName={this.clusterName} deployment={deployment}/>)
+                                                        this.namespace.deployments.length > 0 && this.namespace.deployments.map((deployment: Deployment) => <DeploymentCard key={deployment.name} clusterName={this.clusterName} deployment={deployment}/>)
                                                         )
                                                         ||
                                                         (
@@ -192,7 +189,7 @@ export class NamespaceCard extends PureComponent<Props>{
                                                 {col.nsKey === 'statefulsets' && (
                                                     (
                                                         (
-                                                        this.namespace.statefulsets.length > 0 && this.namespace.statefulsets.map((statefulset: Statefulset) => <StatefulsetCard clusterName={this.clusterName} statefulset={statefulset}/>)
+                                                        this.namespace.statefulsets.length > 0 && this.namespace.statefulsets.map((statefulset: Statefulset) => <StatefulsetCard key={statefulset.name} clusterName={this.clusterName} statefulset={statefulset}/>)
                                                         )
                                                         ||
                                                         (
@@ -207,7 +204,7 @@ export class NamespaceCard extends PureComponent<Props>{
                                                 {col.nsKey === 'daemonsets' && (
                                                     (
                                                         (
-                                                        this.namespace.daemonsets.length > 0 && this.namespace.daemonsets.map((daemonset: Daemonset) => <DaemonsetCard clusterName={this.clusterName} daemonset={daemonset}/>)
+                                                        this.namespace.daemonsets.length > 0 && this.namespace.daemonsets.map((daemonset: Daemonset) => <DaemonsetCard key={daemonset.name} clusterName={this.clusterName} daemonset={daemonset}/>)
                                                         )
                                                         ||
                                                         (
@@ -222,7 +219,7 @@ export class NamespaceCard extends PureComponent<Props>{
                                                 {col.nsKey === 'cronjobs' && (
                                                     (
                                                         (
-                                                        this.namespace.cronjobs.length > 0 && this.namespace.cronjobs.map((cron: CronJob) => <CronjobCard clusterName={this.clusterName} cronjob={cron}/>)
+                                                        this.namespace.cronjobs.length > 0 && this.namespace.cronjobs.map((cron: CronJob) => <CronjobCard key={cron.name} clusterName={this.clusterName} cronjob={cron}/>)
                                                         )
                                                         ||
                                                         (
@@ -237,7 +234,7 @@ export class NamespaceCard extends PureComponent<Props>{
                                                 {col.nsKey === 'jobs' && (
                                                     (
                                                         (
-                                                        this.namespace.jobs.length > 0 && this.namespace.jobs.map((job: Job) => <JobCard clusterName={this.clusterName} job={job}/>)
+                                                        this.namespace.jobs.length > 0 && this.namespace.jobs.map((job: Job) => <JobCard key={job.name} clusterName={this.clusterName} job={job}/>)
                                                         )
                                                         ||
                                                         (
@@ -255,7 +252,7 @@ export class NamespaceCard extends PureComponent<Props>{
                                                         &&
                                                         this.namespace.other[0].pods.map((pod: Pod) => {
                                                             return (
-                                                                <div className={'column_cell'}>
+                                                                <div key={pod.name} className={'column_cell'}>
                                                                     <PodCard pod={pod} clusterName={this.clusterName}/>
                                                                 </div>
                                                             )
@@ -273,7 +270,7 @@ export class NamespaceCard extends PureComponent<Props>{
                                                     )
                                                 )}
                                             </div>
-                                        </>
+                                        </React.Fragment>
                                     )
                                 })
                             }

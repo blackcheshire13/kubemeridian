@@ -53,7 +53,6 @@ export class BasePage extends PureComponent<Props>{
     constructor(props: any) {
         super(props);
         this.styles = Styles(isLight());
-        console.log(this.styles);
         this.cluster_id = props.cluster_id;
 
         try{
@@ -123,14 +122,8 @@ export class BasePage extends PureComponent<Props>{
             this.refreshRate = Number(this.cluster.instanceSettings.jsonData.refresh_pods_rate) * 1000;
     }
 
-    getNodesMap = (withoutPods: boolean = false) => {
-        let promises = [];
-        promises.push(this.getNodes());
-
-        return Promise.all(promises)
-            .then(() => {
-                console.log(123);
-            })
+    getNodesMap = (_withoutPods: boolean = false) => {
+        return Promise.all([this.getNodes()]);
     }
 
     getNamespacesMap = () => {
@@ -163,28 +156,19 @@ export class BasePage extends PureComponent<Props>{
             promises.push(this.getCronJobs());
             promises.push(this.getJobs());
 
-            Promise.all(promises)
+            return Promise.all(promises)
                 .then(() => {
                     this.attachJobs();
                     this.attachCronJobs();
 
-                    let _promises : any[] = [];
-                    _promises.push(this.getAllServices());
-                    _promises.push(this.getPods());
-                    Promise.all(_promises)
+                    return Promise.all([this.getAllServices(), this.getPods()])
                         .then(() => {
                             this.attachPodsToMap();
                             this.setState({
-                                ...this.state,
                                 namespacesMap: this.namespacesMap
                             });
-                            const checker = this.namespacesMap.filter((ns: Namespace) => {
-                                return ns.other[0].pods.length > 0;
-                            });
-                            console.log(checker);
-                            console.log(this.state);
-                        })
-                })
+                        });
+                });
         });
     }
 
@@ -193,9 +177,9 @@ export class BasePage extends PureComponent<Props>{
             .then((deployments) => {
                 deployments.forEach((item : any) => {
                     const deploy = new Deployment(item);
-                    let _ns = this.__getNamespace(item.metadata.namespace);
                     this.storeDeployments.push(deploy);
-                    _ns.deployments.push(deploy)
+                    let _ns = this.__getNamespace(item.metadata.namespace);
+                    if (_ns) { _ns.deployments.push(deploy); }
                 });
             })
     }
@@ -205,9 +189,9 @@ export class BasePage extends PureComponent<Props>{
             .then((statefulsets) => {
                 statefulsets.forEach((item: any) => {
                     const statefulSet = new Statefulset(item);
-                    let _ns = this.__getNamespace(item.metadata.namespace);
                     this.storeStatefulsets.push(statefulSet);
-                    _ns.statefulsets.push(statefulSet);
+                    let _ns = this.__getNamespace(item.metadata.namespace);
+                    if (_ns) { _ns.statefulsets.push(statefulSet); }
                 })
             })
     }
@@ -217,9 +201,9 @@ export class BasePage extends PureComponent<Props>{
             .then((daemonsets) => {
                 daemonsets.forEach((item: any) => {
                     const daemonset = new Daemonset(item);
-                    let _ns = this.__getNamespace(item.metadata.namespace);
                     this.storeDaemonsets.push(daemonset);
-                    _ns.daemonsets.push(daemonset);
+                    let _ns = this.__getNamespace(item.metadata.namespace);
+                    if (_ns) { _ns.daemonsets.push(daemonset); }
                 })
             })
     }

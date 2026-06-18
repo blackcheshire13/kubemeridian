@@ -46,3 +46,5 @@ ci/
 .idea
 
 .eslintcache
+provisioning/datasources/kubegraf-local.yaml
+docker-compose.override.yaml

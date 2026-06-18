@@ -26,9 +26,9 @@ export class ServiceCard extends PureComponent<Props>{
                 <span className={'service_title'}>
                     {this.service.name}:&nbsp;
                     {
-                        this.service.data.spec.ports.map((port: any) => {
+                        (this.service.data.spec?.ports || []).map((port: any, i: number) => {
                             return (
-                                <span>{port.port} / {port.protocol}</span>
+                                <span key={i}>{port.port} / {port.protocol}</span>
                             )
                         })
                     }

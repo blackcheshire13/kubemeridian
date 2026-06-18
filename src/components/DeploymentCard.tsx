@@ -44,7 +44,6 @@ export class DeploymentCard extends PureComponent<Props>{
 
     showMorePods = () => {
         this.setState({
-            ...this.state,
             limited: false
         })
     }
@@ -70,7 +69,7 @@ export class DeploymentCard extends PureComponent<Props>{
                 </h4>
                 {this.getPodsArray().map((pod: Pod) => {
                     return(
-                        <PodCard pod={pod} clusterName={this.clusterName}/>
+                        <PodCard key={pod.name} pod={pod} clusterName={this.clusterName}/>
                     )
                 })}
                 {
@@ -88,7 +87,7 @@ export class DeploymentCard extends PureComponent<Props>{
                             <h5>Services</h5>
                             {this.deployment.services.map((svc : Service) => {
                                 return (
-                                    <ServiceCard service={svc}/>
+                                    <ServiceCard key={svc.name} service={svc}/>
                                 )
                             })}
                         </div>

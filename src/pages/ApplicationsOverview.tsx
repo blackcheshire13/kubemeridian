@@ -1,6 +1,6 @@
 import React from 'react';
 import { BasePage } from './BasePage';
-import { ToolbarButton, ToolbarButtonRow } from '@grafana/ui';
+import { Icon, ToolbarButton, ToolbarButtonRow } from '@grafana/ui';
 import { PluginPage } from '@grafana/runtime';
 import { cx } from '@emotion/css';
 import { PageHeader } from '../components/PageHeader';
@@ -31,19 +31,18 @@ export class ApplicationsOverview extends BasePage {
     super(props);
     this.prepareDs().then(() => {
       this.setState({
-        ...this.state,
         currentClusterName: this.cluster?.instanceSettings.name,
         currentClusterId: this.cluster?.instanceSettings.id,
       });
       this.getNamespacesMap().then(() => {
-        this.setState({ ...this.state, pageReady: true });
+        this.setState({ pageReady: true });
       });
 
       this.getClusterComponents();
     });
 
     this.getAvailableClusters().then((res) => {
-      this.setState({ ...this.state, clusters: res });
+      this.setState({ clusters: res });
     });
   }
 
@@ -56,7 +55,7 @@ export class ApplicationsOverview extends BasePage {
         this.componentsError = components;
       }
 
-      this.setState({ ...this.state, clusterComponents: this.storeComponents });
+      this.setState({ clusterComponents: this.storeComponents });
 
       setTimeout(() => this.getClusterComponents(), this.refreshRate);
     });
@@ -106,8 +105,8 @@ export class ApplicationsOverview extends BasePage {
   }
 
   private refreshNamespacesMapView() {
-    this.setState({ ...this.state, namespacesMap: [] }, () => {
-      this.setState({ ...this.state, namespacesMap: this.namespacesMap });
+    this.setState({ namespacesMap: [] }, () => {
+      this.setState({ namespacesMap: this.namespacesMap });
     });
   }
 
@@ -130,8 +129,8 @@ export class ApplicationsOverview extends BasePage {
     } else {
       panels.set(name, true);
     }
-    this.setState({ ...this.state, openPanels: new Map<string, boolean>(Object.entries({ foo: false })) }, () =>
-      this.setState({ ...this.state, openPanels: panels })
+    this.setState({ openPanels: new Map<string, boolean>(Object.entries({ foo: false })) }, () =>
+      this.setState({ openPanels: panels })
     );
   };
 
@@ -160,7 +159,7 @@ export class ApplicationsOverview extends BasePage {
             <div className={cx(this.styles.overviewPanel)}>
               <div className={cx(this.styles.header)}>
                 <div className={cx(this.styles.title)} onClick={this.togglePanel('__overview')}>
-                  <span className={cx(this.styles.chevron, this.isPanelOpenClass('__overview'))}></span>
+                  <Icon name={this.isPanelOpen('__overview') ? 'angle-down' : 'angle-right'} size="xl" />
                   <h1>Overview: {this.cluster?.instanceSettings.name}. Applications</h1>
                 </div>
                 <div className={cx(this.styles.overviewPanelBtn)}>
