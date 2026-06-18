@@ -13627,5 +13627,6 @@
       "type": "dashboards"
     }
   ],
-  "uid": "kubegraf-node"
+  "uid": "kubegraf-node",
+  "revision": 2
 }
