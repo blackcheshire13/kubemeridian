@@ -1,0 +1,69 @@
+# Read-only ServiceAccount for the KubeGraf datasource.
+#
+# The bundled datasource proxies GET requests to the Kubernetes API. When Grafana
+# runs in-cluster (e.g. kube-prometheus-stack in the `monitoring` namespace) it can
+# reach https://kubernetes.default.svc and authenticate with this SA's bearer token.
+#
+# Apply:  kubectl apply -f deploy/rbac.yaml
+# Token:  kubectl -n monitoring get secret kubegraf-readonly-token -o jsonpath='{.data.token}' | base64 -d
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubegraf-readonly
+  namespace: monitoring
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubegraf-readonly
+rules:
+  - apiGroups: [""]
+    resources:
+      - nodes
+      - pods
+      - namespaces
+      - services
+      - componentstatuses
+      - events
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources:
+      - deployments
+      - statefulsets
+      - daemonsets
+      - replicasets
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["batch"]
+    resources:
+      - jobs
+      - cronjobs
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["metrics.k8s.io"]
+    resources:
+      - nodes
+      - pods
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubegraf-readonly
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kubegraf-readonly
+subjects:
+  - kind: ServiceAccount
+    name: kubegraf-readonly
+    namespace: monitoring
+---
+# Long-lived token (Kubernetes 1.24+ no longer auto-creates SA token Secrets).
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kubegraf-readonly-token
+  namespace: monitoring
+  annotations:
+    kubernetes.io/service-account.name: kubegraf-readonly
+type: kubernetes.io/service-account-token
