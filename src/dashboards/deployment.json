@@ -94,12 +94,32 @@
         "current": {}
       },
       {
+        "name": "cluster",
+        "label": "cluster",
+        "type": "query",
+        "datasource": "$PromDs",
+        "query": "label_values(node_uname_info, cluster)",
+        "definition": "label_values(node_uname_info, cluster)",
+        "refresh": 1,
+        "sort": 1,
+        "includeAll": true,
+        "multi": false,
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "hide": 0
+      },
+      {
         "name": "namespace",
         "label": "namespace",
         "type": "query",
         "datasource": "$PromDs",
-        "query": "label_values(kube_deployment_created, namespace)",
-        "definition": "label_values(kube_deployment_created, namespace)",
+        "query": "label_values(kube_deployment_created{cluster=~\"$cluster\"}, namespace)",
+        "definition": "label_values(kube_deployment_created{cluster=~\"$cluster\"}, namespace)",
         "refresh": 1,
         "sort": 1,
         "includeAll": false,
@@ -114,8 +134,8 @@
         "label": "deployment",
         "type": "query",
         "datasource": "$PromDs",
-        "query": "label_values(kube_deployment_created{namespace=\"$namespace\"}, deployment)",
-        "definition": "label_values(kube_deployment_created{namespace=\"$namespace\"}, deployment)",
+        "query": "label_values(kube_deployment_created{cluster=~\"$cluster\", namespace=\"$namespace\"}, deployment)",
+        "definition": "label_values(kube_deployment_created{cluster=~\"$cluster\", namespace=\"$namespace\"}, deployment)",
         "refresh": 1,
         "sort": 1,
         "includeAll": false,
@@ -1103,5 +1123,5 @@
     }
   ],
   "uid": "B_WA19v7z",
-  "revision": 3
+  "revision": 6
 }

@@ -94,12 +94,32 @@
         "current": {}
       },
       {
+        "name": "cluster",
+        "label": "cluster",
+        "type": "query",
+        "datasource": "$PromDs",
+        "query": "label_values(node_uname_info, cluster)",
+        "definition": "label_values(node_uname_info, cluster)",
+        "refresh": 1,
+        "sort": 1,
+        "includeAll": true,
+        "multi": false,
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "hide": 0
+      },
+      {
         "name": "namespace",
         "label": "namespace",
         "type": "query",
         "datasource": "$PromDs",
-        "query": "label_values(kube_daemonset_created, namespace)",
-        "definition": "label_values(kube_daemonset_created, namespace)",
+        "query": "label_values(kube_daemonset_created{cluster=~\"$cluster\"}, namespace)",
+        "definition": "label_values(kube_daemonset_created{cluster=~\"$cluster\"}, namespace)",
         "refresh": 1,
         "sort": 1,
         "includeAll": false,
@@ -114,8 +134,8 @@
         "label": "daemonset",
         "type": "query",
         "datasource": "$PromDs",
-        "query": "label_values(kube_daemonset_created{namespace=\"$namespace\"}, daemonset)",
-        "definition": "label_values(kube_daemonset_created{namespace=\"$namespace\"}, daemonset)",
+        "query": "label_values(kube_daemonset_created{cluster=~\"$cluster\", namespace=\"$namespace\"}, daemonset)",
+        "definition": "label_values(kube_daemonset_created{cluster=~\"$cluster\", namespace=\"$namespace\"}, daemonset)",
         "refresh": 1,
         "sort": 1,
         "includeAll": false,
@@ -1098,5 +1118,5 @@
     }
   ],
   "uid": "DXW019Dnz",
-  "revision": 3
+  "revision": 6
 }

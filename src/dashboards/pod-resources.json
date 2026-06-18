@@ -88,12 +88,32 @@
         "current": {}
       },
       {
+        "name": "cluster",
+        "label": "cluster",
+        "type": "query",
+        "datasource": "$PromDs",
+        "query": "label_values(node_uname_info, cluster)",
+        "definition": "label_values(node_uname_info, cluster)",
+        "refresh": 1,
+        "sort": 1,
+        "includeAll": true,
+        "multi": false,
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "hide": 0
+      },
+      {
         "name": "namespace",
         "label": "namespace",
         "type": "query",
         "datasource": "$PromDs",
-        "query": "label_values(kube_pod_info, namespace)",
-        "definition": "label_values(kube_pod_info, namespace)",
+        "query": "label_values(kube_pod_info{cluster=~\"$cluster\"}, namespace)",
+        "definition": "label_values(kube_pod_info{cluster=~\"$cluster\"}, namespace)",
         "refresh": 1,
         "sort": 1,
         "includeAll": false,
@@ -992,5 +1012,5 @@
     }
   ],
   "uid": "zlWA1rDnk",
-  "revision": 3
+  "revision": 6
 }

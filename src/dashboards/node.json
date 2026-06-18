@@ -88,12 +88,32 @@
         "current": {}
       },
       {
+        "name": "cluster",
+        "label": "cluster",
+        "type": "query",
+        "datasource": "$PromDs",
+        "query": "label_values(node_uname_info, cluster)",
+        "definition": "label_values(node_uname_info, cluster)",
+        "refresh": 1,
+        "sort": 1,
+        "includeAll": true,
+        "multi": false,
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "hide": 0
+      },
+      {
         "name": "node",
         "label": "node",
         "type": "query",
         "datasource": "$PromDs",
-        "query": "label_values(node_uname_info, instance)",
-        "definition": "label_values(node_uname_info, instance)",
+        "query": "label_values(node_uname_info{cluster=~\"$cluster\"}, instance)",
+        "definition": "label_values(node_uname_info{cluster=~\"$cluster\"}, instance)",
         "refresh": 1,
         "sort": 1,
         "includeAll": false,
@@ -13643,5 +13663,5 @@
     }
   ],
   "uid": "kubegraf-node",
-  "revision": 5
+  "revision": 6
 }
