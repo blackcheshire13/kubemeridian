@@ -67,7 +67,12 @@
       "30d"
     ]
   },
-  "tags": ["kubernetes", "DevOpsProdigy", "pod", "KubeGraf"],
+  "tags": [
+    "kubernetes",
+    "DevOpsProdigy",
+    "pod",
+    "KubeGraf"
+  ],
   "timezone": "browser",
   "title": "DevOpsProdigy KubeGraf Pod's Dashboard",
   "templating": {
@@ -1028,5 +1033,6 @@
       "title": "Dashboards",
       "type": "dashboards"
     }
-  ]
+  ],
+  "uid": "zlWA1rDnk"
 }

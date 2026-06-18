@@ -3,7 +3,7 @@ import {Daemonset} from "../models/Daemonset";
 import {config} from "@grafana/runtime";
 import {Pod} from "../models/Pod";
 import {PodCard} from "./PodCard";
-import {Button} from "@grafana/ui";
+import {Button, Icon} from "@grafana/ui";
 import {Service} from "../models/Service";
 import {ServiceCard} from "./ServiceCard";
 
@@ -30,11 +30,7 @@ export class DaemonsetCard extends PureComponent<Props>{
     }
 
     getDaemonsetDashboardLink(){
-        return `d/DXW019Dnz/devopsprodigy-kubegraf-daemonsets-dashboard
-        ?orgId=${this.orgId}
-        &var-cluster=${this.clusterName}
-        &var-namespace=${this.daemonset.data.metadata.namespace}
-        &var-daemonset=${this.daemonset.name}`;
+        return `d/DXW019Dnz/devopsprodigy-kubegraf-daemonsets-dashboard?orgId=${this.orgId}&var-cluster=${this.clusterName}&var-namespace=${this.daemonset.data.metadata.namespace}&var-daemonset=${this.daemonset.name}`;
     }
 
     getPodsArray(){
@@ -69,7 +65,7 @@ export class DaemonsetCard extends PureComponent<Props>{
                     <span>{this.daemonset.name}</span>
                     &nbsp;
                     <a href={this.getDaemonsetDashboardLink()} target={'_blank'}>
-                        <i className={'fa fa-eye'}/>
+                        <Icon name="eye" />
                     </a>
                 </h4>
                 {this.getPodsArray().map((pod: Pod) => {

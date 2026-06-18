@@ -3,7 +3,7 @@ import {Statefulset} from "../models/Statefulset";
 import {config} from "@grafana/runtime";
 import {Pod} from "../models/Pod";
 import {PodCard} from "./PodCard";
-import {Button} from "@grafana/ui";
+import {Button, Icon} from "@grafana/ui";
 import {Service} from "../models/Service";
 import {ServiceCard} from "./ServiceCard";
 
@@ -29,11 +29,7 @@ export class StatefulsetCard extends PureComponent<Props>{
     }
 
     getStatefulsetDashboardLink(){
-        return `d/rXZAJ9Dnz/devopsprodigy-kubegraf-statefulsets-dashboard
-        ?orgId=${this.orgId}
-        &var-cluster=${this.clusterName}
-        &var-namespace=${this.statefulset.data.metadata.namespace}
-        &var-statefulset=${this.statefulset.name}`;
+        return `d/rXZAJ9Dnz/devopsprodigy-kubegraf-statefulsets-dashboard?orgId=${this.orgId}&var-cluster=${this.clusterName}&var-namespace=${this.statefulset.data.metadata.namespace}&var-statefulset=${this.statefulset.name}`;
     }
 
     getPodsArray(){
@@ -68,7 +64,7 @@ export class StatefulsetCard extends PureComponent<Props>{
                     <span>{this.statefulset.name}</span>
                     &nbsp;
                     <a href={this.getStatefulsetDashboardLink()} target={'_blank'}>
-                        <i className={'fa fa-eye'}/>
+                        <Icon name="eye" />
                     </a>
                 </h4>
                 {this.getPodsArray().map((pod: Pod) => {

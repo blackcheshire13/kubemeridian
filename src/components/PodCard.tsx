@@ -4,7 +4,7 @@ import {config} from "@grafana/runtime";
 import {Styles} from "../common/styles";
 import {isLight} from "../common/utils";
 import {cx} from "@emotion/css";
-import {Tooltip} from "@grafana/ui";
+import {Icon, Tooltip} from "@grafana/ui";
 
 interface Props{
     pod: Pod;
@@ -26,11 +26,7 @@ export class PodCard extends PureComponent<Props>{
     }
 
     getPodDashboardLink(){
-        return `d/zlWA1rDnk/devopsprodigy-kubegraf-pods-dashboard
-        ?orgId=${this.orgId}
-        &var-cluster=${this.clusterName}
-        &var-namespace=${this.pod.data.metadata.namespace}
-        &var-pod=${this.pod.name}`;
+        return `d/zlWA1rDnk/devopsprodigy-kubegraf-pods-dashboard?orgId=${this.orgId}&var-cluster=${this.clusterName}&var-namespace=${this.pod.data.metadata.namespace}&var-pod=${this.pod.name}`;
     }
 
     render(){
@@ -43,7 +39,7 @@ export class PodCard extends PureComponent<Props>{
                 </Tooltip>
                 &nbsp;
                 <a href={this.getPodDashboardLink()} target={'_blank'}>
-                    <i className={'fa fa-eye'}/>
+                    <Icon name="eye" />
                 </a>
             </div>
         )

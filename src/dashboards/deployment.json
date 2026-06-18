@@ -73,7 +73,12 @@
       "30d"
     ]
   },
-  "tags": ["kubernetes", "DevOpsProdigy", "deployment", "KubeGraf"],
+  "tags": [
+    "kubernetes",
+    "DevOpsProdigy",
+    "deployment",
+    "KubeGraf"
+  ],
   "timezone": "browser",
   "title": "DevOpsProdigy KubeGraf Deployment's Dashboard",
   "templating": {
@@ -1000,7 +1005,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$PromDs",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1135,5 +1139,6 @@
       "title": "Dashboards",
       "type": "dashboards"
     }
-  ]
+  ],
+  "uid": "B_WA19v7z"
 }

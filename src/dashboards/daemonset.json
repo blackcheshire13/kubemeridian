@@ -44,7 +44,12 @@
   "graphTooltip": 1,
   "refresh": "1m",
   "schemaVersion": 21,
-  "tags": ["kubernetes", "DevOpsProdigy", "daemonset", "KubeGraf"],
+  "tags": [
+    "kubernetes",
+    "DevOpsProdigy",
+    "daemonset",
+    "KubeGraf"
+  ],
   "time": {
     "from": "now-30m",
     "to": "now"
@@ -1129,5 +1134,6 @@
       "title": "Dashboards",
       "type": "dashboards"
     }
-  ]
+  ],
+  "uid": "DXW019Dnz"
 }

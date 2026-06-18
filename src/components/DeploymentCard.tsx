@@ -3,7 +3,7 @@ import {Deployment} from "../models/Deployment";
 import {config} from "@grafana/runtime";
 import {Pod} from "../models/Pod";
 import {PodCard} from "./PodCard";
-import {Button} from "@grafana/ui";
+import {Button, Icon} from "@grafana/ui";
 import {Service} from "../models/Service";
 import {ServiceCard} from "./ServiceCard";
 
@@ -30,11 +30,7 @@ export class DeploymentCard extends PureComponent<Props>{
     }
 
     getDeploymentDashboardLink(){
-        return `d/B_WA19v7z/devopsprodigy-kubegraf-deployments-dashboard
-        ?orgId=${this.orgId}
-        &var-cluster=${this.clusterName}
-        &var-namespace=${this.deployment.data.metadata.namespace}
-        &var-deployment=${this.deployment.name}`;
+        return `d/B_WA19v7z/devopsprodigy-kubegraf-deployments-dashboard?orgId=${this.orgId}&var-cluster=${this.clusterName}&var-namespace=${this.deployment.data.metadata.namespace}&var-deployment=${this.deployment.name}`;
     }
 
     getPodsArray(){
@@ -69,7 +65,7 @@ export class DeploymentCard extends PureComponent<Props>{
                     <span>{this.deployment.name}</span>
                     &nbsp;
                     <a href={this.getDeploymentDashboardLink()} target={'_blank'}>
-                        <i className={'fa fa-eye'}/>
+                        <Icon name="eye" />
                     </a>
                 </h4>
                 {this.getPodsArray().map((pod: Pod) => {

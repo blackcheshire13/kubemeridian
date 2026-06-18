@@ -67,7 +67,12 @@
       "30d"
     ]
   },
-  "tags": ["kubernetes", "DevOpsProdigy", "node", "KubeGraf"],
+  "tags": [
+    "kubernetes",
+    "DevOpsProdigy",
+    "node",
+    "KubeGraf"
+  ],
   "timezone": "browser",
   "title": "DevOpsProdigy KubeGraf Node's Dashboard",
   "templating": {
@@ -594,7 +599,6 @@
       "title": "Sys Load (15m avg)",
       "type": "gauge"
     },
-
     {
       "collapsed": true,
       "datasource": null,
@@ -1117,7 +1121,6 @@
       "title": "Server Info",
       "type": "row"
     },
-
     {
       "collapsed": false,
       "gridPos": {
@@ -1384,7 +1387,6 @@
       ],
       "valueName": "current"
     },
-
     {
       "cacheTimeout": null,
       "colorBackground": false,
@@ -1572,7 +1574,6 @@
       "title": "",
       "type": "text"
     },
-
     {
       "collapsed": true,
       "datasource": null,
@@ -1903,7 +1904,6 @@
       "title": "Node Info",
       "type": "row"
     },
-
     {
       "collapsed": false,
       "datasource": null,
@@ -2502,7 +2502,6 @@
         "alignLevel": null
       }
     },
-
     {
       "collapsed": true,
       "datasource": null,
@@ -13681,5 +13680,6 @@
       "title": "Dashboards",
       "type": "dashboards"
     }
-  ]
+  ],
+  "uid": "kubegraf-node"
 }

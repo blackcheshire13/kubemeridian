@@ -1,340 +1,237 @@
-import React, {SyntheticEvent} from "react";
-import {BasePage} from "./BasePage";
-import {
-    Button,
-    InlineFormLabel,
-    Tab,
-    TabsBar,
-    LegacyForms,
-    ToolbarButtonRow,
-    ToolbarButton,
-} from "@grafana/ui";
-import {SelectableValue} from "@grafana/data";
-import {cx} from "@emotion/css";
-import {PLUGIN_BASE_URL, ROUTES} from "../constants";
-import {Namespace} from "../models/Namespace";
-import {Component} from "../models/Component";
-import {ClusterComponent} from "../components/ClusterComponent";
-import store from "../common/store";
-import {NamespaceCard} from "../components/NamespaceCard";
-
-
-
-const {Select} = LegacyForms;
+import React from 'react';
+import { BasePage } from './BasePage';
+import { ToolbarButton, ToolbarButtonRow } from '@grafana/ui';
+import { PluginPage } from '@grafana/runtime';
+import { cx } from '@emotion/css';
+import { PageHeader } from '../components/PageHeader';
+import { APP_ID, PLUGIN_BASE_URL, ROUTES } from '../constants';
+import { Namespace } from '../models/Namespace';
+import { Component } from '../models/Component';
+import { ClusterComponent } from '../components/ClusterComponent';
+import store from '../common/store';
+import { NamespaceCard } from '../components/NamespaceCard';
 
 const startPanelsMap = {
-    "__overview" : true
-}
+  __overview: true,
+};
 
-export class ApplicationsOverview extends BasePage{
+export class ApplicationsOverview extends BasePage {
+  state = {
+    pageReady: false,
+    clusters: [],
+    currentClusterName: '',
+    currentClusterId: '',
 
+    clusterComponents: [],
+    namespacesMap: [],
+    openPanels: new Map<string, boolean>(Object.entries(startPanelsMap)),
+  };
 
-    state = {
-        pageReady: false,
-        clusters: [],
-        currentClusterName : '',
-        currentClusterId : '',
+  constructor(props: any) {
+    super(props);
+    this.prepareDs().then(() => {
+      this.setState({
+        ...this.state,
+        currentClusterName: this.cluster?.instanceSettings.name,
+        currentClusterId: this.cluster?.instanceSettings.id,
+      });
+      this.getNamespacesMap().then(() => {
+        this.setState({ ...this.state, pageReady: true });
+      });
 
-        clusterComponents: [],
-        namespacesMap: [],
-        openPanels: new Map<string,boolean>(Object.entries(startPanelsMap))
+      this.getClusterComponents();
+    });
+
+    this.getAvailableClusters().then((res) => {
+      this.setState({ ...this.state, clusters: res });
+    });
+  }
+
+  getClusterComponents() {
+    this.cluster?.getComponents().then((components: any) => {
+      if (components instanceof Array) {
+        this.componentsError = false;
+        this.storeComponents = components.map((component: any) => new Component(component));
+      } else {
+        this.componentsError = components;
+      }
+
+      this.setState({ ...this.state, clusterComponents: this.storeComponents });
+
+      setTimeout(() => this.getClusterComponents(), this.refreshRate);
+    });
+  }
+
+  getNamespacesCount() {
+    return this.state.namespacesMap.length;
+  }
+
+  getActiveNamespacesCount() {
+    return this.state.namespacesMap.filter((item: Namespace) => item.open).length;
+  }
+
+  showAll = () => {
+    this.toggleNamespaces(true);
+  };
+
+  hideAll = () => {
+    this.toggleNamespaces(false);
+  };
+
+  namespaceClickHandler(e: any, namespace: Namespace) {
+    if (e.ctrlKey || e.metaKey) {
+      if (namespace.open) {
+        e.preventDefault();
+      }
+      this.toggleNamespaces(namespace);
+    } else {
+      this.toggleOneNamespace(namespace);
     }
+  }
 
-    constructor(props: any) {
-        super(props);
-        this.prepareDs().then(() => {
-            this.setState({
-                ...this.state,
-                currentClusterName: this.cluster?.instanceSettings.name,
-                currentClusterId: this.cluster?.instanceSettings.id
-            });
-            this.getNamespacesMap().then(() => {
-                this.setState({
-                    ...this.state,
-                    pageReady: true
-                });
-            });
+  toggleNamespaces(namespace: boolean | Namespace) {
+    store.delete('namespaceStore');
+    let namespaceStore: any = [];
+    this.namespacesMap.map((ns: Namespace) => {
+      ns.open = namespace === true || namespace === false ? namespace : namespace.name === ns.name;
+      namespaceStore.push({ name: ns.name, open: ns.open });
+    });
+    this.refreshNamespacesMapView();
+    store.setObject('namespaceStore', namespaceStore);
+  }
 
-            this.getClusterComponents();
+  toggleOneNamespace(namespace: Namespace) {
+    namespace.toggle();
+    this.refreshNamespacesMapView();
+  }
 
-        });
+  private refreshNamespacesMapView() {
+    this.setState({ ...this.state, namespacesMap: [] }, () => {
+      this.setState({ ...this.state, namespacesMap: this.namespacesMap });
+    });
+  }
 
-
-        this.getAvailableClusters()
-            .then((res) => {
-                this.setState({
-                    ...this.state,
-                    clusters: res
-                })
-            });
+  isPanelOpenClass(name: string) {
+    if (this.state.openPanels.get(name) === undefined || this.state.openPanels.get(name) === true) {
+      return 'active';
+    } else {
+      return 'disable';
     }
+  }
 
-    getClusterComponents(){
-        this.cluster?.getComponents().then((components: any) => {
-            if(components instanceof Array){
-                this.componentsError = false;
-                this.storeComponents = components.map((component: any) => new Component(component));
-            }else {
-                this.componentsError = components;
-            }
+  isPanelOpen(name: string) {
+    return this.state.openPanels.get(name) === undefined || this.state.openPanels.get(name) === true;
+  }
 
-            this.setState({
-                ...this.state,
-                clusterComponents: this.storeComponents
-            });
-
-            setTimeout(() => this.getClusterComponents(), this.refreshRate);
-        });
+  togglePanel = (name: string) => (_e: any) => {
+    let panels = this.state.openPanels;
+    if (panels.get(name) === undefined || panels.get(name) === true) {
+      panels.set(name, false);
+    } else {
+      panels.set(name, true);
     }
+    this.setState({ ...this.state, openPanels: new Map<string, boolean>(Object.entries({ foo: false })) }, () =>
+      this.setState({ ...this.state, openPanels: panels })
+    );
+  };
 
-    getNamespacesCount(){
-        return this.state.namespacesMap.length;
-    }
+  render() {
+    return (
+      <PluginPage>
+        <PageHeader
+          active="apps"
+          clusters={this.state.clusters}
+          currentClusterId={this.state.currentClusterId}
+          isAdmin={this.isAdmin}
+          links={{
+            status: this.generateCLusterStatusLink(),
+            apps: this.generateApplicationsOverviewLink(),
+            nodes: this.generateNodesOverviewLink(),
+            edit: this.generateEditLink(),
+            config: `/plugins/${APP_ID}`,
+          }}
+          onClusterChange={(value) => {
+            window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.ApplicationsOverview}/${value}`;
+          }}
+        />
 
-    getActiveNamespacesCount(){
-        return this.state.namespacesMap.filter((item : Namespace) => item.open).length;
-    }
-
-    goToTheAnotherCluster = () => (eventItem: SyntheticEvent<HTMLInputElement> | SelectableValue<string>) => {
-        const value = this.getValueFromEventItem(eventItem);
-        window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.ApplicationsOverview}/${value}`;
-    }
-
-    showAll = () => {
-        this.toggleNamespaces(true);
-    }
-
-    hideAll = () => {
-        this.toggleNamespaces(false);
-    }
-
-    namespaceClickHandler(e: any, namespace: Namespace){
-        if(e.ctrlKey || e.metaKey){
-            if(namespace.open){
-                e.preventDefault();
-            }
-            this.toggleNamespaces(namespace);
-        }else{
-            this.toggleOneNamespace(namespace);
-        }
-    }
-
-    toggleNamespaces(namespace: boolean | Namespace){
-        store.delete('namespaceStore');
-        let namespaceStore : any = [];
-        this.namespacesMap.map((ns: Namespace) => {
-            ns.open = namespace === true || namespace === false ? namespace : namespace.name === ns.name;
-            namespaceStore.push({name: ns.name, open: ns.open});
-        });
-        this.refreshNamespacesMapView();
-        store.setObject('namespaceStore', namespaceStore);
-    }
-
-    toggleOneNamespace(namespace: Namespace){
-        namespace.toggle();
-        this.refreshNamespacesMapView();
-    }
-
-    private refreshNamespacesMapView(){
-        this.setState({
-            ...this.state,
-            namespacesMap: []
-        }, () => {
-            this.setState({
-                ...this.state,
-                namespacesMap: this.namespacesMap
-            })
-        });
-    }
-
-    isPanelOpenClass(name: string){
-        if(
-            this.state.openPanels.get(name) === undefined || this.state.openPanels.get(name) === true
-        ){
-            return 'active';
-        }else{
-            return 'disable';
-        }
-    }
-
-    isPanelOpen(name: string){
-        return (this.state.openPanels.get(name) === undefined || this.state.openPanels.get(name) === true);
-    }
-
-    togglePanel = (name: string) => (e : any) =>{
-        let panels = this.state.openPanels;
-        if(
-            panels.get(name) === undefined
-            ||
-            panels.get(name) === true
-        ){
-            panels.set(name, false);
-        }else{
-            panels.set(name, true);
-        }
-        this.setState({
-            ...this.state,
-            openPanels: new Map<string, boolean>(Object.entries({foo: false}))
-        }, () => this.setState({
-            ...this.state,
-            openPanels: panels
-        }))
-        console.log(this.state);
-    }
-
-    render() {
-
-        const hintBorder = {
-            marginTop: 0
-        }
-        return (
-            <>
-                <div>
-                    <div className='page-header'>
-                        <div className='row'>
-                            <div className='col-md-5'>
-                                <TabsBar hideBorder={true}>
-                                    <Tab href={this.generateCLusterStatusLink()} label={'Cluster status'}  onChangeTab={() => {}}/>
-                                    <Tab href={this.generateApplicationsOverviewLink()} label={'Applications Overview'} active={true}  onChangeTab={() => {}}/>
-                                    <Tab href={this.generateNodesOverviewLink()} label={'Nodes Overview'} onChangeTab={() => {}}/>
-                                </TabsBar>
-                            </div>
-                            {this.isAdmin && (
-                                <div className='col-md-7'>
-                                    <div className='pull-right'>
-                                        <div className={cx('gf-form-group', this.styles.gfInline)}>
-                                            <div className='gf-form-inline'>
-                                                <div className='gf-form'>
-                                                    <InlineFormLabel width={6}>Select cluster</InlineFormLabel>
-                                                    <Select options={this.state.clusters}
-                                                            value={this.state.clusters.find((o: any) => o.value === this.state.currentClusterId)}
-                                                            width={8}
-                                                            onChange={this.goToTheAnotherCluster()} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        &nbsp;
-                                        &nbsp;
-                                        <a href="/plugins/starcrown-kubegraf-app?page=dashboards">
-                                            <Button variant="primary">
-                                                <i className="fa fa-fw fa-tachometer"/>&nbsp;&nbsp;Dashboards
-                                            </Button>
-                                        </a>
-                                        &nbsp; &nbsp;
-                                        <a href={this.generateEditLink()}>
-                                            <Button variant="primary">
-                                                <i className="fa fa-fw fa-cog" />&nbsp;&nbsp;Edit
-                                            </Button>
-                                        </a>
-                                        &nbsp; &nbsp;
-                                        <a href="/plugins/starcrown-kubegraf-app">
-                                            <Button variant="primary">
-                                                <i className="fa fa-fw fa-cog"/>&nbsp;&nbsp;Plugin config
-                                            </Button>
-                                        </a>
-                                    </div>
-
-                                </div>
-                            )}
-
-                            {!this.isAdmin && (
-                                <div className='col-md-7'>
-                                    <div className='pull-right'>
-                                        <div className={cx('gf-form-group', this.styles.gfInline)}>
-                                            <div className='gf-form-inline'>
-                                                <div className='gf-form'>
-                                                    <InlineFormLabel width={6}>Select cluster</InlineFormLabel>
-                                                    <Select options={this.state.clusters}
-                                                            value={this.state.clusters.find((o: any) => o.value === this.state.currentClusterId)}
-                                                            width={8}
-                                                            onChange={this.goToTheAnotherCluster()} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        &nbsp;
-                                        &nbsp;
-                                        <a href="/plugins/starcrown-kubegraf-app">
-                                            <Button variant="primary">
-                                                <i className="fa fa-fw fa-cog"/>&nbsp;&nbsp;Plugin info
-                                            </Button>
-                                        </a>
-                                    </div>
-
-                                </div>
-                            )}
-
-                        </div>
-
-                        <hr style={hintBorder} />
-
-
-
-                        {this.state.pageReady && this.cluster && (
-                            <>
-                                <div className={cx(this.styles.overviewPanel)}>
-
-                                    <div className={cx(this.styles.header)}>
-                                        <div className={cx(this.styles.title)} onClick={this.togglePanel("__overview")} >
-                                            <span className={cx(this.styles.chevron, this.isPanelOpenClass('__overview'))}></span>
-                                            <h1>Overview: {this.cluster?.instanceSettings.name}. Applications</h1>
-                                        </div>
-                                        <div className={cx(this.styles.overviewPanelBtn)}>
-                                            <span className={cx(this.styles.namespaceCounter, this.styles.overviewSpan)}>
-                                                <span className={'active'}>{this.getActiveNamespacesCount()}</span> / {this.getNamespacesCount()}
-                                            </span>
-                                            <span className={cx(this.styles.verticalLine, this.styles.overviewSpanLast)}></span>
-
-                                            <ToolbarButtonRow>
-                                                <ToolbarButton variant={'primary'} onClick={this.showAll}>Show all</ToolbarButton>
-                                                <ToolbarButton variant={'primary'} onClick={this.hideAll} icon={'question-circle'} tooltip={'Use Ctrl+Click or ⌘+Click to select only one Namespace'}>Hide all</ToolbarButton>
-                                            </ToolbarButtonRow>
-
-                                        </div>
-                                    </div>
-
-                                    {this.isPanelOpen("__overview") && (
-                                        <>
-                                            <div className={cx(this.styles.overviewPanelBody)}>
-                                                <div className={cx(this.styles.clusterComponents)}>
-                                                    <h2>Components</h2>
-                                                    {this.state.clusterComponents.map((component: Component) => {
-                                                        return (<ClusterComponent component={component} />)
-                                                    })}
-                                                </div>
-                                                <div className={cx(this.styles.clusterNamespaces)}>
-                                                    {this.state.namespacesMap.filter((namespace: Namespace) => !namespace.is_deleted).map((namespace: Namespace) => {
-                                                        return (
-                                                            <div className={cx(this.styles.checkboxContainer)} >
-                                                                <input type="checkbox" id={"namespace_" + namespace.name}  checked={namespace.open} onClick={(e) => {this.namespaceClickHandler(e, namespace)}} />
-                                                                <span />
-                                                                <label htmlFor={"namespace_" + namespace.name} >{namespace.name}</label>
-                                                            </div>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </div>
-
-                                        </>
-                                    )}
-                                </div>
-
-                                {
-                                    this.state.namespacesMap.filter((namespace: Namespace) => !namespace.is_deleted).map((ns : Namespace) => {
-                                        return ns.open && (
-                                            <NamespaceCard
-                                                namespace={ns}
-                                                clusterName={this.cluster?.name}
-                                                isPanelOpen={this.isPanelOpen(ns.name)}
-                                            />
-                                        )
-                                    })
-                                }
-                            </>
-                        )}
-
-                    </div>
+        {this.state.pageReady && this.cluster && (
+          <>
+            <div className={cx(this.styles.overviewPanel)}>
+              <div className={cx(this.styles.header)}>
+                <div className={cx(this.styles.title)} onClick={this.togglePanel('__overview')}>
+                  <span className={cx(this.styles.chevron, this.isPanelOpenClass('__overview'))}></span>
+                  <h1>Overview: {this.cluster?.instanceSettings.name}. Applications</h1>
                 </div>
-            </>
-        );
-    }
+                <div className={cx(this.styles.overviewPanelBtn)}>
+                  <span className={cx(this.styles.namespaceCounter, this.styles.overviewSpan)}>
+                    <span className={'active'}>{this.getActiveNamespacesCount()}</span> / {this.getNamespacesCount()}
+                  </span>
+                  <span className={cx(this.styles.verticalLine, this.styles.overviewSpanLast)}></span>
+
+                  <ToolbarButtonRow>
+                    <ToolbarButton variant={'primary'} onClick={this.showAll}>
+                      Show all
+                    </ToolbarButton>
+                    <ToolbarButton
+                      variant={'primary'}
+                      onClick={this.hideAll}
+                      icon={'question-circle'}
+                      tooltip={'Use Ctrl+Click or ⌘+Click to select only one Namespace'}
+                    >
+                      Hide all
+                    </ToolbarButton>
+                  </ToolbarButtonRow>
+                </div>
+              </div>
+
+              {this.isPanelOpen('__overview') && (
+                <div className={cx(this.styles.overviewPanelBody)}>
+                  <div className={cx(this.styles.clusterComponents)}>
+                    <h2>Components</h2>
+                    {this.state.clusterComponents.map((component: Component, i) => (
+                      <ClusterComponent key={i} component={component} />
+                    ))}
+                  </div>
+                  <div className={cx(this.styles.clusterNamespaces)}>
+                    {this.state.namespacesMap
+                      .filter((namespace: Namespace) => !namespace.is_deleted)
+                      .map((namespace: Namespace) => (
+                        <div key={namespace.name} className={cx(this.styles.checkboxContainer)}>
+                          <input
+                            type="checkbox"
+                            id={'namespace_' + namespace.name}
+                            checked={namespace.open}
+                            onChange={() => {}}
+                            onClick={(e) => {
+                              this.namespaceClickHandler(e, namespace);
+                            }}
+                          />
+                          <span />
+                          <label htmlFor={'namespace_' + namespace.name}>{namespace.name}</label>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {this.state.namespacesMap
+              .filter((namespace: Namespace) => !namespace.is_deleted)
+              .map(
+                (ns: Namespace) =>
+                  ns.open && (
+                    <NamespaceCard
+                      key={ns.name}
+                      namespace={ns}
+                      clusterName={this.cluster?.name}
+                      isPanelOpen={this.isPanelOpen(ns.name)}
+                    />
+                  )
+              )}
+          </>
+        )}
+      </PluginPage>
+    );
+  }
 }
