@@ -1,0 +1,38 @@
+{
+  "name": "KubeGraf Kubernetes",
+  "id": "starcrown-kubegraf-datasource",
+  "type": "datasource",
+  "metrics": true,
+  "info": {
+    "description": "KubeGraf datasource — thin proxy to the Kubernetes API server",
+    "author": {
+      "name": "Starcrown"
+    },
+    "logos": {
+      "small": "img/grafanaLogo.png",
+      "large": "img/grafanaLogo.png"
+    },
+    "links": [
+      { "name": "GitHub", "url": "https://github.com/blackcheshire13/kubegraf" }
+    ],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=12.3.0",
+    "plugins": []
+  },
+  "routes": [
+    {
+      "path": "__proxy",
+      "method": "GET",
+      "url": "{{ .JsonData.cluster_url }}",
+      "headers": [
+        {
+          "name": "Authorization",
+          "content": "Bearer {{ .SecureJsonData.access_token }}"
+        }
+      ]
+    }
+  ]
+}

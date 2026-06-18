@@ -1,0 +1,41 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "app",
+  "name": "KubeGraf",
+  "id": "starcrown-kubegraf-app",
+  "info": {
+    "keywords": ["app", "kubernetes", "k8s"],
+    "description": "Kubernetes cluster monitoring — revived KubeGraf for modern Grafana",
+    "author": {
+      "name": "Starcrown"
+    },
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "includes": [
+    {
+      "type": "page",
+      "name": "Clusters",
+      "path": "/a/%PLUGIN_ID%/clusters",
+      "addToNav": true,
+      "defaultNav": true
+    },
+    {
+      "type": "page",
+      "icon": "cog",
+      "name": "Configuration",
+      "path": "/plugins/%PLUGIN_ID%",
+      "role": "Admin",
+      "addToNav": true
+    }
+  ],
+  "dependencies": {
+    "grafanaDependency": ">=12.3.0",
+    "plugins": []
+  }
+}
