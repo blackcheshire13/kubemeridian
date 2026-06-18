@@ -69,12 +69,11 @@
   },
   "tags": [
     "kubernetes",
-    "DevOpsProdigy",
     "pod",
     "KubeGraf"
   ],
   "timezone": "browser",
-  "title": "DevOpsProdigy KubeGraf Pod's Dashboard",
+  "title": "KubeGraf Pod's Dashboard",
   "templating": {
     "list": [
       {
@@ -82,7 +81,7 @@
         "label": null,
         "name": "cluster",
         "options": [],
-        "query": "devopsprodidy-kubegraf-datasource",
+        "query": "starcrown-kubegraf-datasource",
         "refresh": 1,
         "regex": "",
         "type": "datasource"
@@ -1007,23 +1006,6 @@
     }
   ],
   "links": [
-    {
-      "icon": "external link",
-      "tags": [],
-      "targetBlank": true,
-      "title": "DevOpsProdigy",
-      "type": "link",
-      "url": "https://devopsprodigy.com/"
-    },
-    {
-      "icon": "external link",
-      "tags": [],
-      "targetBlank": true,
-      "title": "KubeGraf",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://devopsprodigy.com/products/kubegraf"
-    },
     {
       "asDropdown": true,
       "icon": "external link",

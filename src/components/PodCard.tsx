@@ -26,7 +26,7 @@ export class PodCard extends PureComponent<Props>{
     }
 
     getPodDashboardLink(){
-        return `d/zlWA1rDnk/devopsprodigy-kubegraf-pods-dashboard?orgId=${this.orgId}&var-cluster=${this.clusterName}&var-namespace=${this.pod.data.metadata.namespace}&var-pod=${this.pod.name}`;
+        return `d/zlWA1rDnk/kubegraf-pods-dashboard?orgId=${this.orgId}&var-cluster=${this.clusterName}&var-namespace=${this.pod.data.metadata.namespace}&var-pod=${this.pod.name}`;
     }
 
     render(){

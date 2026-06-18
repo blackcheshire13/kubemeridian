@@ -46,7 +46,6 @@
   "schemaVersion": 21,
   "tags": [
     "kubernetes",
-    "DevOpsProdigy",
     "daemonset",
     "KubeGraf"
   ],
@@ -80,7 +79,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "DevOpsProdigy KubeGraf Daemonset's Dashboard",
+  "title": "KubeGraf Daemonset's Dashboard",
   "templating": {
     "list": [
       {
@@ -88,7 +87,7 @@
         "label": null,
         "name": "cluster",
         "options": [],
-        "query": "devopsprodidy-kubegraf-datasource",
+        "query": "starcrown-kubegraf-datasource",
         "refresh": 1,
         "regex": "",
         "type": "datasource"
@@ -1108,23 +1107,6 @@
     }
   ],
   "links": [
-    {
-      "icon": "external link",
-      "tags": [],
-      "targetBlank": true,
-      "title": "DevOpsProdigy",
-      "type": "link",
-      "url": "https://devopsprodigy.com/"
-    },
-    {
-      "icon": "external link",
-      "tags": [],
-      "targetBlank": true,
-      "title": "KubeGraf",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://devopsprodigy.com/products/kubegraf"
-    },
     {
       "asDropdown": true,
       "icon": "external link",

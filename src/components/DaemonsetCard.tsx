@@ -30,7 +30,7 @@ export class DaemonsetCard extends PureComponent<Props>{
     }
 
     getDaemonsetDashboardLink(){
-        return `d/DXW019Dnz/devopsprodigy-kubegraf-daemonsets-dashboard?orgId=${this.orgId}&var-cluster=${this.clusterName}&var-namespace=${this.daemonset.data.metadata.namespace}&var-daemonset=${this.daemonset.name}`;
+        return `d/DXW019Dnz/kubegraf-daemonsets-dashboard?orgId=${this.orgId}&var-cluster=${this.clusterName}&var-namespace=${this.daemonset.data.metadata.namespace}&var-daemonset=${this.daemonset.name}`;
     }
 
     getPodsArray(){

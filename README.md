@@ -1,13 +1,8 @@
 # KubeGraf — Kubernetes monitoring app for modern Grafana
 
-A revival of the abandoned [DevOpsProdigy KubeGraf](https://github.com/devopsprodigy/kubegraf)
-Grafana app plugin, modernized to run on **Grafana 13.x**.
-
-The original v1 was an AngularJS app plugin (dead since Grafana 11 removed AngularJS). The
-unfinished [kubegraf-v2](https://github.com/devopsprodigy/kubegraf-v2) React rewrite targeted
-Grafana 8 on the long-removed `@grafana/toolkit`. This repo rebuilds it on the current
-`@grafana/create-plugin` toolchain (`@grafana/*` 13.x, React 18, webpack) and ports the source
-forward.
+**KubeGraf** is a Grafana app plugin for monitoring Kubernetes clusters, built for
+**Grafana 13.x** on the current `@grafana/create-plugin` toolchain (`@grafana/*` 13.x,
+React 18, webpack).
 
 ## What it provides
 
@@ -54,6 +49,6 @@ Create a `KubeGraf Kubernetes` datasource and point it at the Kubernetes API:
 
 Each datasource instance is treated as one "cluster" on the Clusters page.
 
-## Origin
+## License
 
-Based on `devopsprodigy/kubegraf-v2` (Apache-2.0). See [LICENSE](./LICENSE).
+Distributed under Apache-2.0. See [LICENSE](./LICENSE).
