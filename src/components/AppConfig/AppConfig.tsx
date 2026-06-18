@@ -1,140 +1,65 @@
-import React, { ChangeEvent, useState } from 'react';
+import React from 'react';
 import { lastValueFrom } from 'rxjs';
-import { css } from '@emotion/css';
-import { AppPluginMeta, GrafanaTheme2, PluginConfigPageProps, PluginMeta } from '@grafana/data';
+import { AppPluginMeta, GrafanaTheme2, PluginConfigPageProps } from '@grafana/data';
 import { getBackendSrv } from '@grafana/runtime';
-import { Button, Field, FieldSet, Input, SecretInput, useStyles2 } from '@grafana/ui';
+import { Button, LinkButton, Stack, useStyles2 } from '@grafana/ui';
+import { css } from '@emotion/css';
 import { testIds } from '../testIds';
+import { APP_ID, PLUGIN_BASE_URL, ROUTES } from '../../constants';
 
-type AppPluginSettings = {
-  apiUrl?: string;
+export interface AppConfigProps extends PluginConfigPageProps<AppPluginMeta<{}>> {}
+
+const updateEnabled = async (enabled: boolean) => {
+  await lastValueFrom(
+    getBackendSrv().fetch({
+      url: `/api/plugins/${APP_ID}/settings`,
+      method: 'POST',
+      data: { enabled, pinned: enabled },
+    })
+  );
+  // Reload so Grafana picks up the new nav / enabled state.
+  window.location.reload();
 };
-
-type State = {
-  // The URL to reach our custom API.
-  apiUrl: string;
-  // Tells us if the API key secret is set.
-  isApiKeySet: boolean;
-  // A secret key for our custom API.
-  apiKey: string;
-};
-
-export interface AppConfigProps extends PluginConfigPageProps<AppPluginMeta<AppPluginSettings>> {}
 
 const AppConfig = ({ plugin }: AppConfigProps) => {
   const s = useStyles2(getStyles);
-  const { enabled, pinned, jsonData, secureJsonFields } = plugin.meta;
-  const [state, setState] = useState<State>({
-    apiUrl: jsonData?.apiUrl || '',
-    apiKey: '',
-    isApiKeySet: Boolean(secureJsonFields?.apiKey),
-  });
-
-  const isSubmitDisabled = Boolean(!state.apiUrl || (!state.isApiKeySet && !state.apiKey));
-
-  const onResetApiKey = () =>
-    setState({
-      ...state,
-      apiKey: '',
-      isApiKeySet: false,
-    });
-
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.value.trim(),
-    });
-  };
-
-  const onSubmit = () => {
-    if (isSubmitDisabled) {
-      return;
-    }
-
-    updatePluginAndReload(plugin.meta.id, {
-      enabled,
-      pinned,
-      jsonData: {
-        apiUrl: state.apiUrl,
-      },
-      // This cannot be queried later by the frontend.
-      // We don't want to override it in case it was set previously and left untouched now.
-      secureJsonData: state.isApiKeySet
-        ? undefined
-        : {
-            apiKey: state.apiKey,
-          },
-    });
-  };
+  const enabled = Boolean(plugin.meta.enabled);
 
   return (
-    <form onSubmit={onSubmit}>
-      <FieldSet label="API Settings">
-        <Field label="API Key" description="A secret key for authenticating to our custom API">
-          <SecretInput
-            width={60}
-            id="config-api-key"
-            data-testid={testIds.appConfig.apiKey}
-            name="apiKey"
-            value={state.apiKey}
-            isConfigured={state.isApiKeySet}
-            placeholder={'Your secret API key'}
-            onChange={onChange}
-            onReset={onResetApiKey}
-          />
-        </Field>
+    <div data-testid={testIds.appConfig.container} className={s.wrap}>
+      <h3>KubeGraf — Kubernetes monitoring</h3>
+      <p className={s.desc}>
+        Visualize and analyze your Kubernetes clusters: an applications map (namespaces → workloads → pods), a
+        nodes overview with resource usage, and bundled Prometheus dashboards. Each cluster is a datasource
+        instance pointed at a Kubernetes API server.
+      </p>
 
-        <Field label="API Url" description="" className={s.marginTop}>
-          <Input
-            width={60}
-            name="apiUrl"
-            id="config-api-url"
-            data-testid={testIds.appConfig.apiUrl}
-            value={state.apiUrl}
-            placeholder={`E.g.: http://mywebsite.com/api/v1`}
-            onChange={onChange}
-          />
-        </Field>
-
-        <div className={s.marginTop}>
-          <Button type="submit" data-testid={testIds.appConfig.submit} disabled={isSubmitDisabled}>
-            Save API settings
+      {enabled ? (
+        <Stack direction="row" gap={2} alignItems="center">
+          <LinkButton
+            data-testid={testIds.appConfig.clusters}
+            variant="primary"
+            icon="apps"
+            href={`${PLUGIN_BASE_URL}/${ROUTES.Clusters}`}
+          >
+            Open Clusters
+          </LinkButton>
+          <Button data-testid={testIds.appConfig.disable} variant="destructive" onClick={() => updateEnabled(false)}>
+            Disable plugin
           </Button>
-        </div>
-      </FieldSet>
-    </form>
+        </Stack>
+      ) : (
+        <Button data-testid={testIds.appConfig.enable} variant="primary" onClick={() => updateEnabled(true)}>
+          Enable plugin
+        </Button>
+      )}
+    </div>
   );
 };
 
 export default AppConfig;
 
 const getStyles = (theme: GrafanaTheme2) => ({
-  colorWeak: css`
-    color: ${theme.colors.text.secondary};
-  `,
-  marginTop: css`
-    margin-top: ${theme.spacing(3)};
-  `,
+  wrap: css({ maxWidth: 720, display: 'flex', flexDirection: 'column', gap: theme.spacing(2) }),
+  desc: css({ color: theme.colors.text.secondary, margin: 0 }),
 });
-
-const updatePluginAndReload = async (pluginId: string, data: Partial<PluginMeta<AppPluginSettings>>) => {
-  try {
-    await updatePlugin(pluginId, data);
-
-    // Reloading the page as the changes made here wouldn't be propagated to the actual plugin otherwise.
-    // This is not ideal, however unfortunately currently there is no supported way for updating the plugin state.
-    window.location.reload();
-  } catch (e) {
-    console.error('Error while updating the plugin', e);
-  }
-};
-
-const updatePlugin = async (pluginId: string, data: Partial<PluginMeta>) => {
-  const response = await getBackendSrv().fetch({
-    url: `/api/plugins/${pluginId}/settings`,
-    method: 'POST',
-    data,
-  });
-
-  return lastValueFrom(response);
-};

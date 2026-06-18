@@ -28,7 +28,7 @@ export class NodesOverviewPage extends BasePage {
     super(props);
 
     this.prepareDs().then(() => {
-      this.setState({ currentClusterId: this.cluster?.instanceSettings.id });
+      this.setState({ currentClusterId: this.cluster?.instanceSettings.uid });
       this.loadNodes();
     });
 

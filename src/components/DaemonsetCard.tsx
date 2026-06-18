@@ -63,7 +63,7 @@ export class DaemonsetCard extends PureComponent<Props>{
                 <h4 className={'column_cell_header'}>
                     <span>{this.daemonset.name}</span>
                     &nbsp;
-                    <a href={this.getDaemonsetDashboardLink()} target={'_blank'}>
+                    <a href={this.getDaemonsetDashboardLink()} target={'_blank'} rel="noreferrer">
                         <Icon name="eye" />
                     </a>
                 </h4>
@@ -85,7 +85,7 @@ export class DaemonsetCard extends PureComponent<Props>{
                     (
                         <div className={'services'}>
                             <h5>Services</h5>
-                            {this.daemonset.services.map((svc : Service) => {
+                            {this.daemonset.services.map((svc: Service) => {
                                 return (
                                     <ServiceCard key={svc.name} service={svc}/>
                                 )

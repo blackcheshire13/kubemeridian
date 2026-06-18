@@ -6,24 +6,28 @@ React 18, webpack).
 
 ## What it provides
 
-- **App plugin** (`starcrown-kubegraf-app`) with cluster pages: Clusters list, Applications
-  Overview (namespaces → workloads → pods map + cluster components), Nodes Overview.
+- **App plugin** (`starcrown-kubegraf-app`) with cluster pages:
+  - **Clusters** — manage cluster datasource instances.
+  - **Applications Overview** — control-plane components + a namespaces → workloads → pods map
+    (deployments / statefulsets / daemonsets / jobs / cronjobs / other pods) with services.
+  - **Nodes Overview** — per-node status, roles, CPU/memory **requests vs allocatable** (summed
+    from pods on the node), pod count, kubelet/OS/runtime info, and a Node-dashboard deep-link.
 - **Bundled datasource** (`starcrown-kubegraf-datasource`) — a thin proxy to the Kubernetes API
   server. Frontend-only: it proxies `GET` calls (nodes, pods, namespaces, deployments,
   statefulsets, daemonsets, jobs, cronjobs, services, component statuses) through Grafana with an
-  optional ServiceAccount **bearer token** injected server-side.
+  optional ServiceAccount **bearer token** injected server-side. Implements `metricFindQuery` so
+  dashboard template variables (`$node`, `$nodeHost`, `$namespace`) resolve from the cluster.
 - **5 bundled Prometheus dashboards**: Node, Pod resources, Deployment, StatefulSet, DaemonSet.
 
 ## Status
 
 | Area | State |
 |------|-------|
-| Build on `@grafana/create-plugin` (Grafana 13.0.2) | ✅ `npm run build` clean |
+| Build on `@grafana/create-plugin` (Grafana 13.0.2) | ✅ clean (`build`, `typecheck`, `lint`, unit tests) |
 | Loads unsigned in Grafana 13 (app + datasource registered) | ✅ verified |
-| Datasource ported to current SDK (`lastValueFrom`, `getAppEvents`, batch/v1) | ✅ |
-| Modern config editor (URL / bearer token / TLS skip-verify / Prometheus / refresh) | ✅ |
-| Page UI modernization (path-based routing, `@grafana/ui` icons, theming) | 🚧 in progress |
-| Deploy to in-cluster Grafana via GitOps + RBAC ServiceAccount | 🚧 planned |
+| Datasource on current SDK (`lastValueFrom`, `getAppEvents`, batch/v1, `metricFindQuery`) | ✅ |
+| Pages (path-based routing, `@grafana/ui` icons, theming, hardened models) | ✅ |
+| Deployed to in-cluster Grafana via Helm + RBAC ServiceAccount (`deploy/`) | ✅ |
 
 ## Develop
 

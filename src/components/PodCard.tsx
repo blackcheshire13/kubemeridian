@@ -38,7 +38,7 @@ export class PodCard extends PureComponent<Props>{
                     <span className={'pod_title'}>{this.pod.name}</span>
                 </Tooltip>
                 &nbsp;
-                <a href={this.getPodDashboardLink()} target={'_blank'}>
+                <a href={this.getPodDashboardLink()} target={'_blank'} rel="noreferrer">
                     <Icon name="eye" />
                 </a>
             </div>

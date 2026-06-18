@@ -87,10 +87,10 @@ export class NamespaceCard extends PureComponent<Props>{
         });
     }
 
-    isColOpen = (colKey : string) => {
+    isColOpen = (colKey: string) => {
         const col = this.state.columns.filter((item: any) => item.nsKey === colKey)[0];
         if(col === undefined)
-            return false;
+            {return false;}
 
         return col.isOpen
     }
@@ -98,7 +98,7 @@ export class NamespaceCard extends PureComponent<Props>{
     toggleCol = (colKey: string) => {
         let cols = this.state.columns;
         let col = cols.filter((col: any) => col.nsKey === colKey)[0];
-        if(col != undefined){
+        if(col !== undefined){
             col.isOpen = !col.isOpen
         }
         this.setState({

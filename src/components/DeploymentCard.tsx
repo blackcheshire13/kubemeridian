@@ -63,7 +63,7 @@ export class DeploymentCard extends PureComponent<Props>{
                 <h4 className={'column_cell_header'}>
                     <span>{this.deployment.name}</span>
                     &nbsp;
-                    <a href={this.getDeploymentDashboardLink()} target={'_blank'}>
+                    <a href={this.getDeploymentDashboardLink()} target={'_blank'} rel="noreferrer">
                         <Icon name="eye" />
                     </a>
                 </h4>
@@ -85,7 +85,7 @@ export class DeploymentCard extends PureComponent<Props>{
                     (
                         <div className={'services'}>
                             <h5>Services</h5>
-                            {this.deployment.services.map((svc : Service) => {
+                            {this.deployment.services.map((svc: Service) => {
                                 return (
                                     <ServiceCard key={svc.name} service={svc}/>
                                 )

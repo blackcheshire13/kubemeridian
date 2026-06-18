@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useMemo } from 'react';
 import { DataSourcePluginOptionsEditorProps, SelectableValue } from '@grafana/data';
 import { getDataSourceSrv } from '@grafana/runtime';
 import { FieldSet, InlineField, InlineSwitch, Input, SecretInput, Select } from '@grafana/ui';
@@ -21,14 +21,13 @@ export function ConfigEditor({ options, onOptionsChange }: Props) {
   const { jsonData, secureJsonFields } = options;
   const secureJsonData = (options.secureJsonData ?? {}) as SecureJsonData;
 
-  const [promList, setPromList] = useState<Array<SelectableValue<string>>>([]);
-
-  useEffect(() => {
-    const list = getDataSourceSrv()
-      .getList({ type: PROMETHEUS_ID })
-      .map((ds) => ({ value: ds.name, label: ds.name }));
-    setPromList(list);
-  }, []);
+  const promList = useMemo<Array<SelectableValue<string>>>(
+    () =>
+      getDataSourceSrv()
+        .getList({ type: PROMETHEUS_ID })
+        .map((ds) => ({ value: ds.name, label: ds.name })),
+    []
+  );
 
   const setJsonData = (patch: Partial<KubegrafDSOptions>) => {
     onOptionsChange({ ...options, jsonData: { ...jsonData, ...patch } });

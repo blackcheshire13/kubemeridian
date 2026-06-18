@@ -15,7 +15,7 @@ interface State {
 export class ClusterCard extends PureComponent<Props, State> {
   state: State = { showDeleteModal: false };
 
-  private link = (route: ROUTES) => `${PLUGIN_BASE_URL}/${route}/${this.props.cluster.id}`;
+  private link = (route: ROUTES) => `${PLUGIN_BASE_URL}/${route}/${this.props.cluster.uid}`;
   private editLink = () => `/connections/datasources/edit/${this.props.cluster.uid}`;
 
   showDeleteModal = () => this.setState({ showDeleteModal: true });

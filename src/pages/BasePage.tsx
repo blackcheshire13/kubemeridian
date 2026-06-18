@@ -26,9 +26,9 @@ export class BasePage extends PureComponent<Props>{
 
     styles: any;
 
-    pageReady : boolean = false;
+    pageReady = false;
 
-    cluster_id : string;
+    cluster_id: string;
     cluster: KubeGrafDatasource | undefined = undefined;
     promDs: any;
     refreshRate: number = 60 * 1000;
@@ -66,11 +66,11 @@ export class BasePage extends PureComponent<Props>{
         let clusters: [] = [];
         await getBackendSrv().get('/api/datasources')
             .then(res => {
-                clusters = res.filter((item : any) => {
+                clusters = res.filter((item: any) => {
                     return item.type === DS_ID;
-                }).map((item : any) => {
+                }).map((item: any) => {
                     return {
-                        value: item.id,
+                        value: item.uid,
                         label: item.name
                     }
                 });
@@ -78,7 +78,7 @@ export class BasePage extends PureComponent<Props>{
         return clusters;
     }
 
-    getValueFromEventItem(eventItem : SyntheticEvent<HTMLInputElement> | SelectableValue<string>){
+    getValueFromEventItem(eventItem: SyntheticEvent<HTMLInputElement> | SelectableValue<string>){
         if (!eventItem) {
             return '';
         }
@@ -119,19 +119,19 @@ export class BasePage extends PureComponent<Props>{
             &&
             this.cluster.instanceSettings.jsonData.refresh_pods_rate !== undefined
         )
-            this.refreshRate = Number(this.cluster.instanceSettings.jsonData.refresh_pods_rate) * 1000;
+            {this.refreshRate = Number(this.cluster.instanceSettings.jsonData.refresh_pods_rate) * 1000;}
     }
 
-    getNodesMap = (_withoutPods: boolean = false) => {
+    getNodesMap = (_withoutPods = false) => {
         return Promise.all([this.getNodes()]);
     }
 
     getNamespacesMap = () => {
         if(this.cluster === undefined)
-            return Promise.reject(false);
+            {return Promise.reject(false);}
 
         return this.cluster.getNamespaces().then((namespaces: any) => {
-            let namespaceStore : any = [];
+            let namespaceStore: any = [];
             let getStore = store.getObject('namespaceStore');
             if (getStore) {
                 namespaceStore = getStore;
@@ -149,7 +149,7 @@ export class BasePage extends PureComponent<Props>{
             });
             store.setObject('namespaceStore', namespaceStore);
 
-            let promises : any[] = [];
+            let promises: any[] = [];
             promises.push(this.attachDeployments());
             promises.push(this.attachStatefulsets());
             promises.push(this.attachDaemonsets());
@@ -175,7 +175,7 @@ export class BasePage extends PureComponent<Props>{
     attachDeployments(){
         return this.cluster?.getDeployments()
             .then((deployments) => {
-                deployments.forEach((item : any) => {
+                deployments.forEach((item: any) => {
                     const deploy = new Deployment(item);
                     this.storeDeployments.push(deploy);
                     let _ns = this.__getNamespace(item.metadata.namespace);
@@ -218,14 +218,14 @@ export class BasePage extends PureComponent<Props>{
     attachJobs(){
         this.namespacesMap.forEach((ns: Namespace) => {
             const jobsList = this.storeJobs.filter((job: Job) => {
-                return job.data.metadata.ownerReferences == undefined && job.data.metadata.namespace === ns.name;
+                return job.data.metadata.ownerReferences === undefined && job.data.metadata.namespace === ns.name;
             });
 
             let nsCrons = this.storeCronJobs.filter((cron: CronJob) => cron.data.metadata.namespace === ns.name);
-            nsCrons.forEach((cj : CronJob) => {
+            nsCrons.forEach((cj: CronJob) => {
                 let uid = cj.data.metadata.uid;
-                this.storeJobs.filter((_j: Job) => _j.data.metadata.ownerReferences !== undefined).forEach((job : Job) => {
-                    if (job.data.metadata.ownerReferences.filter((item : any) => item.kind === 'CronJob' && item.uid === uid)[0]) {
+                this.storeJobs.filter((_j: Job) => _j.data.metadata.ownerReferences !== undefined).forEach((job: Job) => {
+                    if (job.data.metadata.ownerReferences.filter((item: any) => item.kind === 'CronJob' && item.uid === uid)[0]) {
                         jobsList.push(job);
                     }
                 })
@@ -241,7 +241,7 @@ export class BasePage extends PureComponent<Props>{
 
             ns.cronjobs.forEach((cj) => {
                 let uid = cj.data.metadata.uid;
-                let jobsList : any[] = [];
+                let jobsList: any[] = [];
 
                 this.storeJobs.filter((_j: Job) => _j.data.metadata.ownerReferences !== undefined).forEach((job) => {
                     if (job.data.metadata.ownerReferences.filter((item: any) => item.kind === 'CronJob' && item.uid === uid)[0]) {
@@ -270,7 +270,7 @@ export class BasePage extends PureComponent<Props>{
 
     getNodes(){
         return this.cluster?.getNodes().then((nodes: any) => {
-            let nodeStore : any = [];
+            let nodeStore: any = [];
             let getStore = store.getObject('nodeStore');
 
             if (getStore) {
@@ -279,11 +279,11 @@ export class BasePage extends PureComponent<Props>{
 
             if (nodes instanceof Array) {
                 this.nodesError = false;
-                nodes.forEach((node : any) => {
+                nodes.forEach((node: any) => {
                     let nd = new Node(node);
                     this.nodesMap.push(nd);
 
-                    let index = nodeStore.findIndex((item : any) => item.name === nd.name);
+                    let index = nodeStore.findIndex((item: any) => item.name === nd.name);
                     if (index > -1) {
                         nd.open = nodeStore[index].open;
                     } else {
@@ -314,7 +314,7 @@ export class BasePage extends PureComponent<Props>{
 
     attachPodsToMap(){
         this.namespacesMap.forEach((ns: Namespace) => {
-            ns.deployments.forEach((dep : Deployment) => {
+            ns.deployments.forEach((dep: Deployment) => {
                 dep.pods = this.__findPodsBySelector(dep.data.spec.selector.matchLabels, ns.name);
                 dep.services = this.__findServices(dep);
             });
@@ -344,7 +344,7 @@ export class BasePage extends PureComponent<Props>{
         })
     }
 
-    __getNamespace(namespace : string){
+    __getNamespace(namespace: string){
         return this.namespacesMap.filter((ns) => {
             return ns.name === namespace;
         })[0];
@@ -365,10 +365,10 @@ export class BasePage extends PureComponent<Props>{
         });
     }
 
-    __findPodsBySelector(filter : any, namespace : string, pods = this.storePods){
+    __findPodsBySelector(filter: any, namespace: string, pods = this.storePods){
         return pods
             .filter((item: Pod) => item.data.metadata.namespace === namespace)
-            .filter((item : Pod) => {
+            .filter((item: Pod) => {
                 let labels = item.data.metadata.labels;
 
                 if (typeof labels === 'undefined') {

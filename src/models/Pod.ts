@@ -21,7 +21,7 @@ export class Pod extends BaseModel{
             let initContainerStatuses;
 
             if (st.conditions) {
-                conditionStatus = st.conditions.filter((item : any) => item.status === 'False');
+                conditionStatus = st.conditions.filter((item: any) => item.status === 'False');
                 conditionStatus.length > 0 ? (conditionStatus = true) : (conditionStatus = false);
             }
             if (st.containerStatuses) {

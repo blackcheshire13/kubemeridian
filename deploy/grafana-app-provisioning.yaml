@@ -1,0 +1,30 @@
+# Durable, declarative app-enable for KubeGraf.
+#
+# The live enable currently persists in Grafana's DB (on the PVC) and survives
+# restarts. This makes it declarative too (survives a DB wipe / fresh install).
+#
+# Apply the ConfigMap, then mount it into the Grafana pod's plugins-provisioning
+# directory via the kube-prometheus-stack values (subPath keeps the rest of the
+# directory intact):
+#
+#   grafana:
+#     extraConfigmapMounts:
+#       - name: kubegraf-app-provisioning
+#         configMap: kubegraf-app-provisioning
+#         mountPath: /etc/grafana/provisioning/plugins/kubegraf-app.yaml
+#         subPath: kubegraf-app.yaml
+#         readOnly: true
+#
+# Then: helm upgrade ... --reuse-values -f deploy/kps-grafana-overlay.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubegraf-app-provisioning
+  namespace: monitoring
+data:
+  kubegraf-app.yaml: |
+    apiVersion: 1
+    apps:
+      - type: starcrown-kubegraf-app
+        org_id: 1
+        disabled: false

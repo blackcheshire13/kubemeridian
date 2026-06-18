@@ -4,6 +4,7 @@ import {
   DataQueryResponse,
   DataSourceApi,
   DataSourceInstanceSettings,
+  MetricFindValue,
   TestDataSourceResponse,
 } from '@grafana/data';
 import { getAppEvents, getBackendSrv } from '@grafana/runtime';
@@ -23,6 +24,32 @@ export class KubeGrafDatasource extends DataSourceApi<KubegrafDSQuery, KubegrafD
   // back panel queries directly, so query() returns an empty frame set.
   async query(_request: DataQueryRequest<KubegrafDSQuery>): Promise<DataQueryResponse> {
     return { data: [] };
+  }
+
+  // Powers dashboard template variables (e.g. the bundled dashboards' $node /
+  // $nodeHost / $namespace) by resolving names from the Kubernetes API.
+  async metricFindQuery(query: string): Promise<MetricFindValue[]> {
+    const q = (query || '').trim();
+
+    // "nodeHost <node-name>" -> the node's InternalIP (node-exporter instance label)
+    if (/^nodeHost\b/i.test(q)) {
+      const name = q.replace(/^nodeHost\s*/i, '').trim();
+      const nodes = await this.getNodes();
+      const node = nodes.find((n: any) => n.metadata?.name === name);
+      const addresses = node?.status?.addresses || [];
+      const addr = addresses.find((a: any) => a.type === 'InternalIP') || addresses[0];
+      return addr ? [{ text: addr.address }] : [];
+    }
+    if (/^nodes?$/i.test(q)) {
+      return (await this.getNodes()).map((n: any) => ({ text: n.metadata?.name })).filter((v) => v.text);
+    }
+    if (/^namespaces?$/i.test(q)) {
+      return (await this.getNamespaces()).map((n: any) => ({ text: n.metadata?.name })).filter((v) => v.text);
+    }
+    if (/^pods?$/i.test(q)) {
+      return (await this.getPods()).map((p: any) => ({ text: p.metadata?.name })).filter((v) => v.text);
+    }
+    return [];
   }
 
   async testDatasource(): Promise<TestDataSourceResponse> {

@@ -2,7 +2,7 @@ import {BaseModel} from "./BaseModel";
 import {COLOR_GREEN, COLOR_RED, ERROR, SUCCESS} from "../constants";
 
 export class Component extends BaseModel {
-    constructor(data : any) {
+    constructor(data: any) {
         super(data);
     }
 
@@ -32,7 +32,7 @@ export class Component extends BaseModel {
         let conditions = this.data.conditions;
 
         if (conditions) {
-            let message = conditions.filter((item : any) => item.type === 'Healthy')[0];
+            let message = conditions.filter((item: any) => item.type === 'Healthy')[0];
             return message && message.message;
         }
     }

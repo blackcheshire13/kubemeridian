@@ -1,38 +1,32 @@
 import React from 'react';
+import { AppPluginMeta, PluginType } from '@grafana/data';
 import { render, screen } from '@testing-library/react';
-import { PluginType } from '@grafana/data';
 import AppConfig, { AppConfigProps } from './AppConfig';
-import { testIds } from 'components/testIds';
+import { testIds } from '../testIds';
+
+const makeProps = (enabled: boolean): AppConfigProps =>
+  ({
+    plugin: {
+      meta: {
+        id: 'starcrown-kubegraf-app',
+        name: 'KubeGraf',
+        type: PluginType.app,
+        enabled,
+        jsonData: {},
+      } as unknown as AppPluginMeta,
+    },
+    query: {},
+  }) as unknown as AppConfigProps;
 
 describe('Components/AppConfig', () => {
-  let props: AppConfigProps;
-
-  beforeEach(() => {
-    jest.resetAllMocks();
-
-    props = {
-      plugin: {
-        meta: {
-          id: 'sample-app',
-          name: 'Sample App',
-          type: PluginType.app,
-          enabled: true,
-          jsonData: {},
-        },
-      },
-      query: {},
-    } as unknown as AppConfigProps;
+  test('shows Enable when the app is disabled', () => {
+    render(<AppConfig {...makeProps(false)} />);
+    expect(screen.getByTestId(testIds.appConfig.enable)).toBeInTheDocument();
   });
 
-  test('renders the "API Settings" fieldset with API key, API url inputs and button', () => {
-    const plugin = { meta: { ...props.plugin.meta, enabled: false } };
-
-    // @ts-ignore - We don't need to provide `addConfigPage()` and `setChannelSupport()` for these tests
-    render(<AppConfig plugin={plugin} query={props.query} />);
-
-    expect(screen.queryByRole('group', { name: /api settings/i })).toBeInTheDocument();
-    expect(screen.queryByTestId(testIds.appConfig.apiKey)).toBeInTheDocument();
-    expect(screen.queryByTestId(testIds.appConfig.apiUrl)).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /save api settings/i })).toBeInTheDocument();
+  test('shows Open Clusters + Disable when the app is enabled', () => {
+    render(<AppConfig {...makeProps(true)} />);
+    expect(screen.getByTestId(testIds.appConfig.clusters)).toBeInTheDocument();
+    expect(screen.getByTestId(testIds.appConfig.disable)).toBeInTheDocument();
   });
 });

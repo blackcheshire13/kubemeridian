@@ -32,7 +32,7 @@ export class ApplicationsOverview extends BasePage {
     this.prepareDs().then(() => {
       this.setState({
         currentClusterName: this.cluster?.instanceSettings.name,
-        currentClusterId: this.cluster?.instanceSettings.id,
+        currentClusterId: this.cluster?.instanceSettings.uid,
       });
       this.getNamespacesMap().then(() => {
         this.setState({ pageReady: true });

@@ -62,7 +62,7 @@ export class StatefulsetCard extends PureComponent<Props>{
                 <h4 className={'column_cell_header'}>
                     <span>{this.statefulset.name}</span>
                     &nbsp;
-                    <a href={this.getStatefulsetDashboardLink()} target={'_blank'}>
+                    <a href={this.getStatefulsetDashboardLink()} target={'_blank'} rel="noreferrer">
                         <Icon name="eye" />
                     </a>
                 </h4>
@@ -84,7 +84,7 @@ export class StatefulsetCard extends PureComponent<Props>{
                     (
                         <div className={'services'}>
                             <h5>Services</h5>
-                            {this.statefulset.services.map((svc : Service) => {
+                            {this.statefulset.services.map((svc: Service) => {
                                 return (
                                     <ServiceCard key={svc.name} service={svc}/>
                                 )
