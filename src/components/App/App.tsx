@@ -5,6 +5,7 @@ import { ROUTES } from '../../constants';
 import { ClustersListPage } from '../../pages/ClustersList';
 import { NodesOverviewPage } from '../../pages/NodesOverview';
 import { ApplicationsOverview } from '../../pages/ApplicationsOverview';
+import { ClusterStatus } from '../../pages/ClusterStatus';
 
 function NodesRoute() {
   const { clusterId = '' } = useParams();
@@ -16,13 +17,17 @@ function ApplicationsRoute() {
   return <ApplicationsOverview cluster_id={clusterId} />;
 }
 
+function ClusterStatusRoute() {
+  const { clusterId = '' } = useParams();
+  return <ClusterStatus cluster_id={clusterId} />;
+}
+
 function App(_props: AppRootProps) {
   return (
     <Routes>
       <Route path={`${ROUTES.NodesOverview}/:clusterId`} element={<NodesRoute />} />
       <Route path={`${ROUTES.ApplicationsOverview}/:clusterId`} element={<ApplicationsRoute />} />
-      {/* Cluster status reuses the applications overview until a dedicated page exists */}
-      <Route path={`${ROUTES.ClusterStatus}/:clusterId`} element={<ApplicationsRoute />} />
+      <Route path={`${ROUTES.ClusterStatus}/:clusterId`} element={<ClusterStatusRoute />} />
       <Route path={ROUTES.Clusters} element={<ClustersListPage />} />
       {/* Default page */}
       <Route path="*" element={<ClustersListPage />} />
