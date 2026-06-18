@@ -1,19 +1,22 @@
 import React, { PureComponent } from 'react';
-import { Button, LinkButton, LoadingPlaceholder, Stack } from '@grafana/ui';
-import { PluginPage, getBackendSrv, locationService } from '@grafana/runtime';
+import { Button, EmptyState, LinkButton, LoadingPlaceholder, Stack } from '@grafana/ui';
+import { PluginPage, getBackendSrv } from '@grafana/runtime';
 import { APP_ID, DS_ID } from '../constants';
 import { K8sCluster } from '../types';
 import { ClusterCard } from '../components/ClusterCard';
+import { AddClusterModal } from '../components/AddClusterModal';
 
 interface State {
   visible: boolean;
   clusters: K8sCluster[];
+  addOpen: boolean;
 }
 
 export class ClustersListPage extends PureComponent<{}, State> {
   state: State = {
     visible: false,
     clusters: [],
+    addOpen: false,
   };
 
   constructor(props: {}) {
@@ -25,48 +28,9 @@ export class ClustersListPage extends PureComponent<{}, State> {
     getBackendSrv()
       .delete(`/api/datasources/uid/${uid}`)
       .then(() => {
-        this.setState({
-          visible: true,
-          clusters: this.state.clusters.filter((item) => item.uid !== uid),
-        });
+        this.setState({ clusters: this.state.clusters.filter((item) => item.uid !== uid) });
       });
   };
-
-  createCluster = async () => {
-    const name = this.generateName();
-    const data = {
-      name,
-      type: DS_ID,
-      access: 'proxy',
-      jsonData: {
-        access_via_token: true,
-        refresh_pods_rate: '60',
-      },
-    };
-
-    const res = await getBackendSrv().post('/api/datasources', data);
-    locationService.push(`/connections/datasources/edit/${res.datasource.uid}`);
-  };
-
-  generateName = () => {
-    let name = 'New K8S cluster';
-    while (this.isNameExists(name)) {
-      if (!this.nameHasSuffix(name)) {
-        name = `${name}-1`;
-      } else {
-        name = `${this.getNewName(name)}${this.incrementLastDigit(this.getLastDigit(name))}`;
-      }
-    }
-    return name;
-  };
-
-  private isNameExists = (name: string) =>
-    this.state.clusters.filter((cluster) => cluster.name.toLowerCase() === name.toLowerCase()).length > 0;
-
-  private nameHasSuffix = (name: string) => name.endsWith('-', name.length - 1);
-  private getNewName = (name: string) => name.slice(0, name.length - 1);
-  private incrementLastDigit = (digit: number) => (isNaN(digit) ? 1 : digit + 1);
-  private getLastDigit = (name: string) => parseInt(name.slice(-1), 10);
 
   loadClusters = async () => {
     const res = await getBackendSrv().get('/api/datasources');
@@ -76,35 +40,55 @@ export class ClustersListPage extends PureComponent<{}, State> {
     this.setState({ visible: true, clusters });
   };
 
+  onCreated = () => {
+    this.setState({ addOpen: false });
+    this.loadClusters();
+  };
+
   render() {
-    const { visible, clusters } = this.state;
+    const { visible, clusters, addOpen } = this.state;
     return (
       <PluginPage>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Button variant="primary" icon="plus" onClick={this.createCluster}>
-            Add new cluster
+          <Button variant="primary" icon="plus" onClick={() => this.setState({ addOpen: true })}>
+            Add cluster
           </Button>
           <LinkButton variant="secondary" icon="cog" href={`/plugins/${APP_ID}`}>
             Plugin config
           </LinkButton>
         </Stack>
 
-        {!visible && <LoadingPlaceholder text="Loading..." />}
+        {!visible && <LoadingPlaceholder text="Loading clusters..." />}
 
         {visible && clusters.length === 0 && (
-          <p>
-            No Kubernetes clusters configured yet. Click <strong>Add new cluster</strong> to create a datasource
-            pointing at a Kubernetes API server.
-          </p>
+          <EmptyState
+            variant="call-to-action"
+            message="No Kubernetes clusters yet"
+            button={
+              <Button variant="primary" icon="plus" size="lg" onClick={() => this.setState({ addOpen: true })}>
+                Add cluster
+              </Button>
+            }
+          >
+            Add a cluster by pointing it at a Kubernetes API server with a read-only ServiceAccount token. Each
+            cluster you add can be browsed via Cluster Status, Applications and Nodes overviews.
+          </EmptyState>
         )}
 
-        {visible && (
+        {visible && clusters.length > 0 && (
           <Stack direction="column" gap={1}>
             {clusters.map((cluster) => (
               <ClusterCard key={cluster.uid} cluster={cluster} clusterDelete={this.deleteCluster} />
             ))}
           </Stack>
         )}
+
+        <AddClusterModal
+          isOpen={addOpen}
+          existingNames={clusters.map((c) => c.name)}
+          onDismiss={() => this.setState({ addOpen: false })}
+          onCreated={this.onCreated}
+        />
       </PluginPage>
     );
   }
