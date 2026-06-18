@@ -32,7 +32,12 @@
       "path": "/plugins/%PLUGIN_ID%",
       "role": "Admin",
       "addToNav": true
-    }
+    },
+    { "type": "dashboard", "name": "Node", "path": "dashboards/node.json", "addToNav": false },
+    { "type": "dashboard", "name": "Pod resources", "path": "dashboards/pod-resources.json", "addToNav": false },
+    { "type": "dashboard", "name": "Deployment", "path": "dashboards/deployment.json", "addToNav": false },
+    { "type": "dashboard", "name": "StatefulSet", "path": "dashboards/statefulset.json", "addToNav": false },
+    { "type": "dashboard", "name": "DaemonSet", "path": "dashboards/daemonset.json", "addToNav": false }
   ],
   "dependencies": {
     "grafanaDependency": ">=12.3.0",

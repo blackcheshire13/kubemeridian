@@ -3,7 +3,7 @@ import {getBackendSrv, getDataSourceSrv} from "@grafana/runtime";
 import {KubeGrafDatasource} from "../datasource/datasource";
 import store from "../common/store";
 import {Node} from "../models/Node";
-import {DS_ID} from "../constants";
+import {DS_ID, PLUGIN_BASE_URL, ROUTES} from "../constants";
 import {hasRole, isLight} from "../common/utils";
 import {OrgRole} from "../types";
 import {SelectableValue} from "@grafana/data";
@@ -92,19 +92,19 @@ export class BasePage extends PureComponent<Props>{
     }
 
     generateCLusterStatusLink(){
-        return `/a/devopsprodigy-kubegraf-app/?page=cluster-status&clusterId=${this.props.cluster_id}`;
+        return `${PLUGIN_BASE_URL}/${ROUTES.ClusterStatus}/${this.props.cluster_id}`;
     }
 
     generateApplicationsOverviewLink(){
-        return `/a/devopsprodigy-kubegraf-app/?page=applications-overview&clusterId=${this.props.cluster_id}`;
+        return `${PLUGIN_BASE_URL}/${ROUTES.ApplicationsOverview}/${this.props.cluster_id}`;
     }
 
     generateNodesOverviewLink = () => {
-        return `/a/devopsprodigy-kubegraf-app/?page=nodes-overview&clusterId=${this.props.cluster_id}`;
+        return `${PLUGIN_BASE_URL}/${ROUTES.NodesOverview}/${this.props.cluster_id}`;
     }
 
     generateEditLink = () => {
-        return `/datasources/edit/${this.cluster?.instanceSettings.uid}`;
+        return `/connections/datasources/edit/${this.cluster?.instanceSettings.uid}`;
     }
 
     prepareDs = async () => {

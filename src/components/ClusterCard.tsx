@@ -1,110 +1,64 @@
-import React, {PureComponent} from "react";
-import {K8sCluster} from "../types";
-import {Button, ConfirmModal} from "@grafana/ui";
+import React, { PureComponent } from 'react';
+import { K8sCluster } from '../types';
+import { Button, Card, ConfirmModal, LinkButton } from '@grafana/ui';
+import { PLUGIN_BASE_URL, ROUTES } from '../constants';
 
 interface Props {
-    cluster: K8sCluster,
-    clusterDelete: (uid: string) => void
+  cluster: K8sCluster;
+  clusterDelete: (uid: string) => void;
 }
 
-export class ClusterCard extends PureComponent<Props>{
-    private cluster;
+interface State {
+  showDeleteModal: boolean;
+}
 
-    state = {
-        showDeleteModal: false
-    }
+export class ClusterCard extends PureComponent<Props, State> {
+  state: State = { showDeleteModal: false };
 
-    constructor(props: any) {
-        super(props);
-        this.cluster = props.cluster;
-    }
+  private link = (route: ROUTES) => `${PLUGIN_BASE_URL}/${route}/${this.props.cluster.id}`;
+  private editLink = () => `/connections/datasources/edit/${this.props.cluster.uid}`;
 
-    generateLink = () => {
-        return `/datasources/edit/${this.cluster.uid}`;
-    }
+  showDeleteModal = () => this.setState({ showDeleteModal: true });
+  hideDeleteModal = () => this.setState({ showDeleteModal: false });
 
-    generateNodesOverviewLink = () => {
-        return `/a/devopsprodigy-kubegraf-app/?page=nodes-overview&clusterId=${this.cluster.id}`;
-    }
-    generateApplicationsOverviewLink = () => {
-        return `/a/devopsprodigy-kubegraf-app/?page=applications-overview&clusterId=${this.cluster.id}`;
-    }
+  handleDelete = () => {
+    this.props.clusterDelete(this.props.cluster.uid);
+    this.hideDeleteModal();
+  };
 
-    showDeleteModal = () => {
-        this.setState({showDeleteModal: true});
-    }
-
-    hideDeleteModal = () => {
-        this.setState({showDeleteModal: false});
-    }
-
-    handleDelete = (uid: string) =>{
-        this.props.clusterDelete(uid);
-        this.hideDeleteModal();
-    }
-
-    render() {
-        return (
-            <>
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="card-section">
-                            <div className="card-item">
-                                <div className="card-item-header">
-                                    <h2>{ this.cluster.name }</h2>
-                                </div>
-                                <hr/>
-                                <div className="row">
-                                    <div className="col-md-8">
-                                        <a href="#">
-                                            <Button variant="primary">
-                                                <i className="fa fa-fw fa-eye" />&nbsp;&nbsp;Cluster Status
-                                            </Button>
-                                        </a>
-                                        &nbsp;
-                                        <a href={this.generateApplicationsOverviewLink()}>
-                                            <Button variant="primary">
-                                                <i className="fa fa-fw fa-eye" />&nbsp;&nbsp;Applications Overview
-                                            </Button>
-                                        </a>
-                                        &nbsp;
-                                        <a href={this.generateNodesOverviewLink()}>
-                                            <Button variant="primary">
-                                                <i className="fa fa-fw fa-eye" />&nbsp;&nbsp;Nodes Overview
-                                            </Button>
-                                        </a>
-                                    </div>
-                                    <div className="col-md-4">
-                                        <div className="pull-right">
-                                            <a href={this.generateLink()}>
-                                                <Button variant="primary">
-                                                    <i className="fa fa-fw fa-cog" />&nbsp;&nbsp;Edit
-                                                </Button>
-                                            </a>
-                                            &nbsp;
-                                            <ConfirmModal
-                                                isOpen={this.state.showDeleteModal}
-                                                title="Delete cluster"
-                                                body="Are you sure you want to delete this cluster?"
-                                                confirmText="Yes"
-                                                onConfirm={() => {
-                                                    this.handleDelete(this.cluster.uid);
-                                                }}
-                                                onDismiss={this.hideDeleteModal}
-                                            />
-                                            <Button variant="destructive" onClick={this.showDeleteModal}>
-                                                <i className="fa fa-fw fa-trash" />&nbsp;&nbsp;Delete
-                                            </Button>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </>
-        );
-    }
+  render() {
+    const { cluster } = this.props;
+    return (
+      <Card>
+        <Card.Heading>{cluster.name}</Card.Heading>
+        <Card.Actions>
+          <LinkButton variant="primary" icon="eye" href={this.link(ROUTES.ClusterStatus)}>
+            Cluster Status
+          </LinkButton>
+          <LinkButton variant="primary" icon="apps" href={this.link(ROUTES.ApplicationsOverview)}>
+            Applications Overview
+          </LinkButton>
+          <LinkButton variant="primary" icon="cube" href={this.link(ROUTES.NodesOverview)}>
+            Nodes Overview
+          </LinkButton>
+        </Card.Actions>
+        <Card.SecondaryActions>
+          <LinkButton variant="secondary" icon="cog" href={this.editLink()}>
+            Edit
+          </LinkButton>
+          <Button variant="destructive" icon="trash-alt" onClick={this.showDeleteModal}>
+            Delete
+          </Button>
+          <ConfirmModal
+            isOpen={this.state.showDeleteModal}
+            title="Delete cluster"
+            body="Are you sure you want to delete this cluster?"
+            confirmText="Delete"
+            onConfirm={this.handleDelete}
+            onDismiss={this.hideDeleteModal}
+          />
+        </Card.SecondaryActions>
+      </Card>
+    );
+  }
 }

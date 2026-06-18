@@ -3,6 +3,7 @@ import {BasePage} from "./BasePage";
 import {Button, InlineFormLabel, LegacyForms, Tab, TabsBar} from "@grafana/ui";
 import {SelectableValue} from "@grafana/data";
 import {cx} from "@emotion/css";
+import {PLUGIN_BASE_URL, ROUTES} from "../constants";
 
 const {Select} = LegacyForms;
 
@@ -43,7 +44,7 @@ export class NodesOverviewPage extends BasePage{
 
     goToTheAnotherCluster = () => (eventItem: SyntheticEvent<HTMLInputElement> | SelectableValue<string>) => {
         const value = this.getValueFromEventItem(eventItem);
-        window.location.href = `/a/devopsprodigy-kubegraf-app/?page=nodes-overview&clusterId=${value}`;
+        window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.NodesOverview}/${value}`;
     }
 
 
@@ -82,7 +83,7 @@ export class NodesOverviewPage extends BasePage{
                                         </div>
                                         &nbsp;
                                         &nbsp;
-                                        <a href="/plugins/devopsprodigy-kubegraf-app?page=dashboards">
+                                        <a href="/plugins/starcrown-kubegraf-app?page=dashboards">
                                             <Button variant="primary">
                                                 <i className="fa fa-fw fa-tachometer"/>&nbsp;&nbsp;Dashboards
                                             </Button>
@@ -94,7 +95,7 @@ export class NodesOverviewPage extends BasePage{
                                             </Button>
                                         </a>
                                         &nbsp; &nbsp;
-                                        <a href="/plugins/devopsprodigy-kubegraf-app">
+                                        <a href="/plugins/starcrown-kubegraf-app">
                                             <Button variant="primary">
                                                 <i className="fa fa-fw fa-cog"/>&nbsp;&nbsp;Plugin config
                                             </Button>
@@ -120,7 +121,7 @@ export class NodesOverviewPage extends BasePage{
                                         </div>
                                         &nbsp;
                                         &nbsp;
-                                        <a href="/plugins/devopsprodigy-kubegraf-app">
+                                        <a href="/plugins/starcrown-kubegraf-app">
                                             <Button variant="primary">
                                                 <i className="fa fa-fw fa-cog"/>&nbsp;&nbsp;Plugin info
                                             </Button>

@@ -11,6 +11,7 @@ import {
 } from "@grafana/ui";
 import {SelectableValue} from "@grafana/data";
 import {cx} from "@emotion/css";
+import {PLUGIN_BASE_URL, ROUTES} from "../constants";
 import {Namespace} from "../models/Namespace";
 import {Component} from "../models/Component";
 import {ClusterComponent} from "../components/ClusterComponent";
@@ -96,7 +97,7 @@ export class ApplicationsOverview extends BasePage{
 
     goToTheAnotherCluster = () => (eventItem: SyntheticEvent<HTMLInputElement> | SelectableValue<string>) => {
         const value = this.getValueFromEventItem(eventItem);
-        window.location.href = `/a/devopsprodigy-kubegraf-app/?page=applications-overview&clusterId=${value}`;
+        window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.ApplicationsOverview}/${value}`;
     }
 
     showAll = () => {
@@ -214,7 +215,7 @@ export class ApplicationsOverview extends BasePage{
                                         </div>
                                         &nbsp;
                                         &nbsp;
-                                        <a href="/plugins/devopsprodigy-kubegraf-app?page=dashboards">
+                                        <a href="/plugins/starcrown-kubegraf-app?page=dashboards">
                                             <Button variant="primary">
                                                 <i className="fa fa-fw fa-tachometer"/>&nbsp;&nbsp;Dashboards
                                             </Button>
@@ -226,7 +227,7 @@ export class ApplicationsOverview extends BasePage{
                                             </Button>
                                         </a>
                                         &nbsp; &nbsp;
-                                        <a href="/plugins/devopsprodigy-kubegraf-app">
+                                        <a href="/plugins/starcrown-kubegraf-app">
                                             <Button variant="primary">
                                                 <i className="fa fa-fw fa-cog"/>&nbsp;&nbsp;Plugin config
                                             </Button>
@@ -252,7 +253,7 @@ export class ApplicationsOverview extends BasePage{
                                         </div>
                                         &nbsp;
                                         &nbsp;
-                                        <a href="/plugins/devopsprodigy-kubegraf-app">
+                                        <a href="/plugins/starcrown-kubegraf-app">
                                             <Button variant="primary">
                                                 <i className="fa fa-fw fa-cog"/>&nbsp;&nbsp;Plugin info
                                             </Button>

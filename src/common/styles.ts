@@ -32,7 +32,7 @@ export const Styles = (isLight: boolean) => {
             min-width: 14px;
             height: 24px;
             margin-right: 6px;
-            background: url('/public/plugins/devopsprodigy-kubegraf-app/img/chevron.svg') center no-repeat;
+            background: url('/public/plugins/starcrown-kubegraf-app/img/chevron.svg') center no-repeat;
             
             &.active{
                 transform: rotate(180deg);
