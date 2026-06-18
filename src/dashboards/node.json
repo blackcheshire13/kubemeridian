@@ -1554,8 +1554,7 @@
       "valueName": "current"
     },
     {
-      "content": "<br><br><br>\n<h1 style=\"text-align:center\">Requested<br> resources</h1>",
-      "datasource": null,
+      "datasource": "$PromDs",
       "gridPos": {
         "h": 5,
         "w": 8,
@@ -1564,13 +1563,51 @@
       },
       "id": 306,
       "mode": "html",
-      "options": {},
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto"
+      },
       "repeat": null,
       "repeatDirection": "h",
       "timeFrom": null,
       "timeShift": null,
-      "title": "",
-      "type": "text"
+      "title": "Pods running",
+      "type": "stat",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "expr": "count(kube_pod_info{node=~\"$nodeName\"})",
+          "refId": "A",
+          "datasource": "$PromDs"
+        }
+      ]
     },
     {
       "collapsed": true,
@@ -13663,5 +13700,5 @@
     }
   ],
   "uid": "kubegraf-node",
-  "revision": 6
+  "revision": 7
 }
