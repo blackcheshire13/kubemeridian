@@ -5,6 +5,7 @@ import {Styles} from "../common/styles";
 import {isLight} from "../common/utils";
 import {cx} from "@emotion/css";
 import {Icon, Tooltip} from "@grafana/ui";
+import {PodLogsContext} from "./PodLogsContext";
 
 interface Props{
     pod: Pod;
@@ -12,6 +13,9 @@ interface Props{
 }
 
 export class PodCard extends PureComponent<Props>{
+    static contextType = PodLogsContext;
+    declare context: React.ContextType<typeof PodLogsContext>;
+
     private pod;
     private orgId;
     private clusterName;
@@ -30,6 +34,7 @@ export class PodCard extends PureComponent<Props>{
     }
 
     render(){
+        const podLogs = this.context;
         return(
             <div className={'pod'}>
                 <span className={cx(this.styles.statusIndicator, this.pod.color)}/>
@@ -38,7 +43,21 @@ export class PodCard extends PureComponent<Props>{
                     <span className={'pod_title'}>{this.pod.name}</span>
                 </Tooltip>
                 &nbsp;
-                <a href={this.getPodDashboardLink()} target={'_blank'} rel="noreferrer">
+                {podLogs && (
+                    <>
+                        <a
+                            role="button"
+                            tabIndex={0}
+                            style={{ cursor: 'pointer' }}
+                            title="View logs"
+                            onClick={() => podLogs.show(this.pod.data.metadata.namespace, this.pod.name)}
+                        >
+                            <Icon name="align-left" />
+                        </a>
+                        &nbsp;
+                    </>
+                )}
+                <a href={this.getPodDashboardLink()} target={'_blank'} rel="noreferrer" title="Open pod dashboard">
                     <Icon name="eye" />
                 </a>
             </div>

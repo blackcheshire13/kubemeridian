@@ -73,6 +73,7 @@ export class EventsPage extends BasePage {
             apps: this.generateApplicationsOverviewLink(),
             nodes: this.generateNodesOverviewLink(),
             events: this.generateEventsLink(),
+            logs: this.generateLogsLink(),
             edit: this.generateEditLink(),
             config: `/plugins/${APP_ID}`,
           }}

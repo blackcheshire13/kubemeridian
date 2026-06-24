@@ -18,6 +18,7 @@ export enum ROUTES {
   ApplicationsOverview = 'applications-overview',
   NodesOverview = 'nodes-overview',
   Events = 'events',
+  Logs = 'logs',
 }
 
 export const PODS_LIMIT = 10;
