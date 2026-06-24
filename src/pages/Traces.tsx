@@ -4,16 +4,16 @@ import { EmptyState, LinkButton, LoadingPlaceholder } from '@grafana/ui';
 import { EmbeddedScene } from '@grafana/scenes';
 import { BasePage } from './BasePage';
 import { PageHeader } from '../components/PageHeader';
-import { buildLogsScene } from '../scenes/logs';
+import { buildTracesScene } from '../scenes/traces';
 import { APP_ID, PLUGIN_BASE_URL, ROUTES } from '../constants';
 import { KubegrafDSOptions } from '../types';
 
-export class LogsPage extends BasePage {
+export class TracesPage extends BasePage {
   state = {
     pageReady: false,
     clusters: [],
     currentClusterId: '',
-    logsUid: undefined as string | undefined,
+    tracesUid: undefined as string | undefined,
     scene: undefined as EmbeddedScene | undefined,
   };
 
@@ -22,11 +22,11 @@ export class LogsPage extends BasePage {
 
     this.prepareDs().then(() => {
       const jsonData = this.cluster?.instanceSettings.jsonData as KubegrafDSOptions | undefined;
-      const logsUid = jsonData?.logs_uid;
+      const tracesUid = jsonData?.traces_uid;
       this.setState({
         currentClusterId: this.cluster?.instanceSettings.uid,
-        logsUid,
-        scene: logsUid ? buildLogsScene({ logsUid }) : undefined,
+        tracesUid,
+        scene: tracesUid ? buildTracesScene({ tracesUid }) : undefined,
         pageReady: true,
       });
     });
@@ -37,12 +37,12 @@ export class LogsPage extends BasePage {
   }
 
   render() {
-    const { scene, logsUid, pageReady } = this.state;
+    const { scene, tracesUid, pageReady } = this.state;
 
     return (
       <PluginPage>
         <PageHeader
-          active="logs"
+          active="traces"
           clusters={this.state.clusters}
           currentClusterId={this.state.currentClusterId}
           isAdmin={this.isAdmin}
@@ -57,15 +57,15 @@ export class LogsPage extends BasePage {
             config: `/plugins/${APP_ID}`,
           }}
           onClusterChange={(value) => {
-            window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.Logs}/${value}`;
+            window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.Traces}/${value}`;
           }}
         />
 
-        {!pageReady && <LoadingPlaceholder text="Loading logs..." />}
+        {!pageReady && <LoadingPlaceholder text="Loading traces..." />}
 
-        {pageReady && !logsUid && (
-          <EmptyState variant="not-found" message="No Loki datasource is linked to this cluster">
-            Link a Loki datasource in the cluster configuration to explore logs here.
+        {pageReady && !tracesUid && (
+          <EmptyState variant="not-found" message="No Tempo datasource is linked to this cluster">
+            Link a Tempo datasource in the cluster configuration to explore traces and the service graph here.
             <div style={{ marginTop: 12 }}>
               <LinkButton icon="cog" href={this.generateEditLink()}>
                 Configure cluster

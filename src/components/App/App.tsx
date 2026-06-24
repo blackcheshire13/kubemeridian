@@ -8,6 +8,7 @@ import { ApplicationsOverview } from '../../pages/ApplicationsOverview';
 import { ClusterStatus } from '../../pages/ClusterStatus';
 import { EventsPage } from '../../pages/Events';
 import { LogsPage } from '../../pages/Logs';
+import { TracesPage } from '../../pages/Traces';
 
 function NodesRoute() {
   const { clusterId = '' } = useParams();
@@ -22,6 +23,11 @@ function EventsRoute() {
 function LogsRoute() {
   const { clusterId = '' } = useParams();
   return <LogsPage cluster_id={clusterId} />;
+}
+
+function TracesRoute() {
+  const { clusterId = '' } = useParams();
+  return <TracesPage cluster_id={clusterId} />;
 }
 
 function ApplicationsRoute() {
@@ -40,6 +46,7 @@ function App(_props: AppRootProps) {
       <Route path={`${ROUTES.NodesOverview}/:clusterId`} element={<NodesRoute />} />
       <Route path={`${ROUTES.Events}/:clusterId`} element={<EventsRoute />} />
       <Route path={`${ROUTES.Logs}/:clusterId`} element={<LogsRoute />} />
+      <Route path={`${ROUTES.Traces}/:clusterId`} element={<TracesRoute />} />
       <Route path={`${ROUTES.ApplicationsOverview}/:clusterId`} element={<ApplicationsRoute />} />
       <Route path={`${ROUTES.ClusterStatus}/:clusterId`} element={<ClusterStatusRoute />} />
       <Route path={ROUTES.Clusters} element={<ClustersListPage />} />

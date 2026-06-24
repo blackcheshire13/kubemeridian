@@ -75,6 +75,7 @@ export class NodesOverviewPage extends BasePage {
             nodes: this.generateNodesOverviewLink(),
             events: this.generateEventsLink(),
             logs: this.generateLogsLink(),
+            traces: this.generateTracesLink(),
             edit: this.generateEditLink(),
             config: `/plugins/${APP_ID}`,
           }}
