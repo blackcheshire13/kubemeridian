@@ -200,7 +200,7 @@ export function ConfigEditor({ options, onOptionsChange }: Props) {
             width={FIELD_WIDTH}
             options={refreshRates}
             value={refreshRates.find((o) => o.value === String(jsonData.refresh_pods_rate)) ?? null}
-            onChange={(v) => setJsonData({ refresh_pods_rate: v.value })}
+            onChange={(v) => setJsonData({ refresh_pods_rate: v?.value })}
           />
         </InlineField>
       </FieldSet>

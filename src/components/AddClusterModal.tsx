@@ -62,10 +62,15 @@ export function AddClusterModal({ isOpen, existingNames, onDismiss, onCreated }:
         },
         secureJsonData: token ? { access_token: token } : undefined,
       });
+      const uid = res?.datasource?.uid;
+      if (!uid) {
+        throw new Error('Datasource created but no uid was returned');
+      }
       reset();
-      onCreated(res.datasource.uid);
+      onCreated(uid);
     } catch (e: any) {
-      setError(e?.data?.message ?? e?.statusText ?? 'Failed to create the cluster datasource');
+      setError(e?.data?.message ?? e?.statusText ?? e?.message ?? 'Failed to create the cluster datasource');
+    } finally {
       setBusy(false);
     }
   };

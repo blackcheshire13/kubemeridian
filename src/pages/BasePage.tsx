@@ -63,7 +63,7 @@ export class BasePage extends PureComponent<Props>{
     }
 
     async getAvailableClusters(){
-        let clusters: [] = [];
+        let clusters: Array<SelectableValue<string>> = [];
         await getBackendSrv().get('/api/datasources')
             .then(res => {
                 clusters = res.filter((item: any) => {
@@ -83,7 +83,7 @@ export class BasePage extends PureComponent<Props>{
             return '';
         }
 
-        if (eventItem.hasOwnProperty('currentTarget')) {
+        if ('currentTarget' in eventItem) {
             return eventItem.currentTarget.value;
         }
 
@@ -235,13 +235,13 @@ export class BasePage extends PureComponent<Props>{
     attachJobs(){
         this.namespacesMap.forEach((ns: Namespace) => {
             const jobsList = this.storeJobs.filter((job: Job) => {
-                return job.data.metadata.ownerReferences === undefined && job.data.metadata.namespace === ns.name;
+                return !job.data.metadata.ownerReferences?.length && job.data.metadata.namespace === ns.name;
             });
 
             let nsCrons = this.storeCronJobs.filter((cron: CronJob) => cron.data.metadata.namespace === ns.name);
             nsCrons.forEach((cj: CronJob) => {
                 let uid = cj.data.metadata.uid;
-                this.storeJobs.filter((_j: Job) => _j.data.metadata.ownerReferences !== undefined).forEach((job: Job) => {
+                this.storeJobs.filter((_j: Job) => _j.data.metadata.ownerReferences?.length).forEach((job: Job) => {
                     if (job.data.metadata.ownerReferences.filter((item: any) => item.kind === 'CronJob' && item.uid === uid)[0]) {
                         jobsList.push(job);
                     }
@@ -260,7 +260,7 @@ export class BasePage extends PureComponent<Props>{
                 let uid = cj.data.metadata.uid;
                 let jobsList: any[] = [];
 
-                this.storeJobs.filter((_j: Job) => _j.data.metadata.ownerReferences !== undefined).forEach((job) => {
+                this.storeJobs.filter((_j: Job) => _j.data.metadata.ownerReferences?.length).forEach((job) => {
                     if (job.data.metadata.ownerReferences.filter((item: any) => item.kind === 'CronJob' && item.uid === uid)[0]) {
                         jobsList.push(job);
                     }
@@ -320,7 +320,7 @@ export class BasePage extends PureComponent<Props>{
                 if(pods instanceof Array){
                     this.podsError = false;
                     if(skipEmptyHost){
-                        pods = pods.filter((pod: any) => pod.status.hostIP !== undefined);
+                        pods = pods.filter((pod: any) => pod.status?.hostIP !== undefined);
                     }
                     this.storePods = pods.map((pod: any) => new Pod(pod));
                 }else if(pods instanceof Error){
@@ -383,6 +383,11 @@ export class BasePage extends PureComponent<Props>{
     }
 
     __findPodsBySelector(filter: any, namespace: string, pods = this.storePods){
+        // An empty/absent selector (e.g. a workload using matchExpressions only)
+        // must NOT match every pod in the namespace.
+        if (!filter || Object.keys(filter).length === 0) {
+            return [];
+        }
         return pods
             .filter((item: Pod) => item.data.metadata.namespace === namespace)
             .filter((item: Pod) => {

@@ -1658,21 +1658,21 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kube_node_status_capacity{resource=\"cpu\",unit=\"core\",node=~\"$node\"})",
+              "expr": "sum(kube_node_status_capacity{resource=\"cpu\",unit=\"core\",node=~\"$nodeName\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Capacity",
               "refId": "A"
             },
             {
-              "expr": "sum(kube_node_status_allocatable{resource=\"cpu\",unit=\"core\",node=~\"$node\"})",
+              "expr": "sum(kube_node_status_allocatable{resource=\"cpu\",unit=\"core\",node=~\"$nodeName\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Allocatable",
               "refId": "B"
             },
             {
-              "expr": "sum(kube_pod_container_resource_requests{resource=\"cpu\",unit=\"core\",node=~\"$node\"})",
+              "expr": "sum(kube_pod_container_resource_requests{resource=\"cpu\",unit=\"core\",node=~\"$nodeName\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Requested",
@@ -1766,21 +1766,21 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kube_node_status_capacity{resource=\"memory\",unit=\"byte\",node=~\"$node\"})",
+              "expr": "sum(kube_node_status_capacity{resource=\"memory\",unit=\"byte\",node=~\"$nodeName\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Capacity",
               "refId": "A"
             },
             {
-              "expr": "sum(kube_node_status_allocatable{resource=\"memory\",unit=\"byte\",node=~\"$node\"})",
+              "expr": "sum(kube_node_status_allocatable{resource=\"memory\",unit=\"byte\",node=~\"$nodeName\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Allocatable",
               "refId": "B"
             },
             {
-              "expr": "sum(kube_pod_container_resource_requests{resource=\"memory\", unit=\"byte\", node=~\"$node\"})",
+              "expr": "sum(kube_pod_container_resource_requests{resource=\"memory\", unit=\"byte\", node=~\"$nodeName\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Requested",
@@ -1872,14 +1872,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kube_node_status_capacity{resource=\"pods\",node=~\"$node\"})",
+              "expr": "sum(kube_node_status_capacity{resource=\"pods\",node=~\"$nodeName\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Capacity",
               "refId": "A"
             },
             {
-              "expr": "sum(kube_node_status_allocatable{resource=\"pods\",node=~\"$node\"})",
+              "expr": "sum(kube_node_status_allocatable{resource=\"pods\",node=~\"$nodeName\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Allocatable",
@@ -13700,5 +13700,5 @@
     }
   ],
   "uid": "kubegraf-node",
-  "revision": 7
+  "revision": 8
 }

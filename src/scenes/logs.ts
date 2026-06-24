@@ -43,7 +43,10 @@ export function buildLogsScene(opts: LogsSceneOpts): EmbeddedScene {
   const ds = { uid: opts.logsUid, type: LOKI_ID };
   const pageMode = !opts.namespace;
   const sel = selector(opts);
-  const logExpr = pageMode ? `${sel} |~ "(?i)$search"` : sel;
+  // Backtick-delimited LogQL string so a search containing quotes/backslashes
+  // does not break the query (only a literal backtick would, which is rare).
+  const bt = '`';
+  const logExpr = pageMode ? `${sel} |~ ${bt}(?i)$search${bt}` : sel;
 
   const variables = pageMode
     ? new SceneVariableSet({
@@ -63,7 +66,7 @@ export function buildLogsScene(opts: LogsSceneOpts): EmbeddedScene {
             includeAll: true,
             defaultToAll: true,
             allValue: '.+',
-            isMulti: false,
+            isMulti: true,
           }),
           new TextBoxVariable({ name: 'search', label: 'Search', value: '' }),
         ],

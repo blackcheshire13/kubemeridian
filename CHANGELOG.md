@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.0.2 — Audit fixes
+
+Bug fixes from a full dashboard-vs-live-Prometheus + code audit:
+
+- **statefulset dashboard**: CPU request/limit reference lines used the wrong
+  label `container_name` on `kube_pod_container_resource_*` (KSM exposes
+  `container`) — they were permanently empty. Fixed.
+- **node dashboard**: the kube-state "Node CPU/Memory/Pods" panels filtered by
+  `node=~"$node"` (a node-exporter `instance` IP) instead of `node=~"$nodeName"`
+  (the node name) — permanently empty. Fixed all 8 targets.
+- **logs scene**: free-text search is now backtick-delimited LogQL (a search with
+  quotes/backslashes no longer breaks the query); the `pod` variable is `isMulti`
+  so "All" interpolates correctly.
+- **lifecycle**: Events/Logs/Traces pages guard against setState-after-unmount and
+  the Events refresh timer leak.
+- **Add cluster modal**: guards a missing `datasource.uid` and always clears the
+  busy state.
+- **topology**: workloads with `matchExpressions`-only selectors no longer attach
+  every pod in the namespace; Jobs with an empty `ownerReferences` no longer
+  disappear; Pending pods without `status` no longer risk a throw.
+
 ## 2.0.1
 
 - **RED & SLO dashboard now uses Istio service-mesh telemetry**

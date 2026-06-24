@@ -17,10 +17,15 @@ export class TracesPage extends BasePage {
     scene: undefined as EmbeddedScene | undefined,
   };
 
+  private mounted = true;
+
   constructor(props: any) {
     super(props);
 
     this.prepareDs().then(() => {
+      if (!this.mounted) {
+        return;
+      }
       const jsonData = this.cluster?.instanceSettings.jsonData as KubegrafDSOptions | undefined;
       const tracesUid = jsonData?.traces_uid;
       this.setState({
@@ -32,8 +37,14 @@ export class TracesPage extends BasePage {
     });
 
     this.getAvailableClusters().then((res) => {
-      this.setState({ clusters: res });
+      if (this.mounted) {
+        this.setState({ clusters: res });
+      }
     });
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
   }
 
   render() {

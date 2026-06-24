@@ -6,11 +6,12 @@ import { PageHeader } from '../components/PageHeader';
 import { EventsTable, KEvent } from '../components/EventsTable';
 import { APP_ID, PLUGIN_BASE_URL, ROUTES } from '../constants';
 
-function normalize(e: any): KEvent {
+function normalize(e: any, i: number): KEvent {
   const last =
     e.lastTimestamp || e.eventTime || e.series?.lastObservedTime || e.metadata?.creationTimestamp;
+  const ms = last ? Date.parse(last) : 0;
   return {
-    uid: e.metadata?.uid ?? `${e.metadata?.namespace}/${e.metadata?.name}`,
+    uid: e.metadata?.uid ?? (e.metadata?.name ? `${e.metadata?.namespace}/${e.metadata?.name}` : `evt-${i}`),
     type: e.type || 'Normal',
     reason: e.reason || '',
     message: (e.message || '').trim(),
@@ -19,7 +20,7 @@ function normalize(e: any): KEvent {
     objectName: e.involvedObject?.name || '',
     source: e.source?.component || e.reportingComponent || '',
     count: e.count ?? e.series?.count ?? 1,
-    lastSeenMs: last ? Date.parse(last) : 0,
+    lastSeenMs: Number.isNaN(ms) ? 0 : ms,
   };
 }
 
@@ -32,21 +33,28 @@ export class EventsPage extends BasePage {
   };
 
   private timer: ReturnType<typeof setTimeout> | undefined;
+  private mounted = true;
 
   constructor(props: any) {
     super(props);
 
     this.prepareDs().then(() => {
+      if (!this.mounted) {
+        return;
+      }
       this.setState({ currentClusterId: this.cluster?.instanceSettings.uid });
       this.loadEvents();
     });
 
     this.getAvailableClusters().then((res) => {
-      this.setState({ clusters: res });
+      if (this.mounted) {
+        this.setState({ clusters: res });
+      }
     });
   }
 
   componentWillUnmount() {
+    this.mounted = false;
     if (this.timer) {
       clearTimeout(this.timer);
     }
@@ -54,6 +62,9 @@ export class EventsPage extends BasePage {
 
   loadEvents = async () => {
     const raw = (await this.cluster?.getEvents()) ?? [];
+    if (!this.mounted) {
+      return;
+    }
     this.setState({ events: raw.map(normalize), pageReady: true });
     this.timer = setTimeout(this.loadEvents, this.refreshRate);
   };
