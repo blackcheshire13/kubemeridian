@@ -160,6 +160,7 @@ export class ApplicationsOverview extends BasePage {
             logs: this.generateLogsLink(),
             traces: this.generateTracesLink(),
             services: this.generateServicesLink(),
+            cost: this.generateCostLink(),
             edit: this.generateEditLink(),
             config: `/plugins/${APP_ID}`,
           }}
