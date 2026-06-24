@@ -37,6 +37,7 @@
     { "type": "dashboard", "name": "Namespace Overview", "path": "dashboards/namespace-overview.json", "addToNav": false },
     { "type": "dashboard", "name": "Workload Health", "path": "dashboards/workload-health.json", "addToNav": false },
     { "type": "dashboard", "name": "Storage", "path": "dashboards/storage.json", "addToNav": false },
+    { "type": "dashboard", "name": "Cost & Efficiency", "path": "dashboards/cost-efficiency.json", "addToNav": false },
     { "type": "dashboard", "name": "Node", "path": "dashboards/node.json", "addToNav": false },
     { "type": "dashboard", "name": "Pod resources", "path": "dashboards/pod-resources.json", "addToNav": false },
     { "type": "dashboard", "name": "Deployment", "path": "dashboards/deployment.json", "addToNav": false },
