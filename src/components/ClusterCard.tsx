@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { K8sCluster } from '../types';
 import { Button, Card, ConfirmModal, LinkButton } from '@grafana/ui';
 import { PLUGIN_BASE_URL, ROUTES } from '../constants';
+import { ClusterMeta } from './ClusterMeta';
 
 interface Props {
   cluster: K8sCluster;
@@ -31,7 +32,13 @@ export class ClusterCard extends PureComponent<Props, State> {
     return (
       <Card>
         <Card.Heading>{cluster.name}</Card.Heading>
+        <Card.Description>
+          <ClusterMeta uid={cluster.uid} />
+        </Card.Description>
         <Card.Actions>
+          <LinkButton variant="primary" icon="graph-bar" href={this.link(ROUTES.Services)}>
+            Services (RED)
+          </LinkButton>
           <LinkButton variant="primary" icon="eye" href={this.link(ROUTES.ClusterStatus)}>
             Cluster Status
           </LinkButton>
