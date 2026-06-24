@@ -4,8 +4,8 @@
   "name": "KubeMeridian",
   "id": "devopstech-kubemeridian-app",
   "info": {
-    "keywords": ["app", "kubernetes", "k8s"],
-    "description": "Kubernetes cluster monitoring — revived KubeMeridian for modern Grafana",
+    "keywords": ["app", "kubernetes", "k8s", "observability", "monitoring", "logs", "cost", "slo"],
+    "description": "Turnkey Kubernetes observability for Grafana — link your Prometheus, Loki, Tempo and cost data and get topology, dashboards, logs, traces, cost and SLOs from one app.",
     "author": {
       "name": "devopstech"
     },
@@ -13,7 +13,20 @@
       "small": "img/logo.svg",
       "large": "img/logo.svg"
     },
-    "screenshots": [],
+    "links": [
+      { "name": "Website", "url": "https://devopstech.net" },
+      { "name": "Documentation", "url": "https://devopstech.net/guide/introduction" },
+      { "name": "GitHub", "url": "https://github.com/blackcheshire13/kubemeridian" },
+      { "name": "Report issue", "url": "https://github.com/blackcheshire13/kubemeridian/issues" }
+    ],
+    "screenshots": [
+      { "name": "Fleet & connections", "path": "img/screenshots/clusters.png" },
+      { "name": "Cluster Overview", "path": "img/screenshots/cluster-overview.png" },
+      { "name": "Applications topology", "path": "img/screenshots/applications.png" },
+      { "name": "Workload Health", "path": "img/screenshots/workload-health.png" },
+      { "name": "Cost & Efficiency", "path": "img/screenshots/cost-efficiency.png" },
+      { "name": "Inline logs (Loki)", "path": "img/screenshots/logs.png" }
+    ],
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },
