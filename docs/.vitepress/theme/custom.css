@@ -1,0 +1,26 @@
+/* KubeMeridian brand — Kubernetes blue #326CE5 + brass transit accent */
+:root {
+  --vp-c-brand-1: #2a5bd0;
+  --vp-c-brand-2: #326CE5;
+  --vp-c-brand-3: #326CE5;
+  --vp-c-brand-soft: rgba(50, 108, 229, 0.14);
+
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #326CE5, #5B8DEF);
+  --vp-home-hero-image-background-image: linear-gradient(160deg, rgba(50, 108, 229, 0.30), rgba(242, 180, 65, 0.20));
+  --vp-home-hero-image-filter: blur(56px);
+}
+
+.dark {
+  --vp-c-brand-1: #6f9bf2;
+  --vp-c-brand-2: #5B8DEF;
+  --vp-c-brand-3: #326CE5;
+}
+
+/* tighten hero name wrapping */
+.VPHero .name { line-height: 1.1; }
+
+/* brass accent on the "transit" — custom block tip border */
+.custom-block.tip {
+  border-color: #F2B441;
+}
