@@ -14,6 +14,10 @@ export function listDatasources(type: string): DsOption[] {
     .map((ds) => ({ uid: ds.uid, name: ds.name }));
 }
 
+/** Map a datasource list to Select options (value = uid, label = name). */
+export const toSelectOptions = (list: DsOption[]): Array<{ value: string; label: string }> =>
+  list.map((d) => ({ value: d.uid, label: d.name }));
+
 export const listMetricsDatasources = () => listDatasources(PROMETHEUS_ID);
 export const listLogsDatasources = () => listDatasources(LOKI_ID);
 export const listTracesDatasources = () => listDatasources(TEMPO_ID);

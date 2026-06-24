@@ -3,11 +3,11 @@ import { DataSourcePluginOptionsEditorProps, SelectableValue } from '@grafana/da
 import { Alert, Button, FieldSet, InlineField, InlineSwitch, Input, SecretInput, Select } from '@grafana/ui';
 import { CostSettings, KubegrafDSOptions, SecureJsonData } from '../types';
 import {
-  DsOption,
   listLogsDatasources,
   listMetricsDatasources,
   listTracesDatasources,
   migrateMetricsUid,
+  toSelectOptions,
 } from '../common/connections';
 import { PROFILES_BY_ID, TRAFFIC_PROFILES, TrafficConfig, TrafficProfile } from '../traffic/profiles';
 import { detectProfiles } from '../traffic/detect';
@@ -25,9 +25,6 @@ const refreshRates: Array<SelectableValue<string>> = [
 const LABEL_WIDTH = 24;
 const FIELD_WIDTH = 40;
 
-const toOptions = (list: DsOption[]): Array<SelectableValue<string>> =>
-  list.map((d) => ({ value: d.uid, label: d.name }));
-
 export function ConfigEditor({ options, onOptionsChange }: Props) {
   const { jsonData, secureJsonFields } = options;
   const secureJsonData = (options.secureJsonData ?? {}) as SecureJsonData;
@@ -38,9 +35,9 @@ export function ConfigEditor({ options, onOptionsChange }: Props) {
   const [detecting, setDetecting] = useState(false);
   const [detected, setDetected] = useState<string[] | null>(null);
 
-  const metricsOptions = useMemo(() => toOptions(listMetricsDatasources()), []);
-  const logsOptions = useMemo(() => toOptions(listLogsDatasources()), []);
-  const tracesOptions = useMemo(() => toOptions(listTracesDatasources()), []);
+  const metricsOptions = useMemo(() => toSelectOptions(listMetricsDatasources()), []);
+  const logsOptions = useMemo(() => toSelectOptions(listLogsDatasources()), []);
+  const tracesOptions = useMemo(() => toSelectOptions(listTracesDatasources()), []);
 
   // Migrate the legacy prometheus_name (a NAME) to a UID for display.
   const metricsValue = useMemo(

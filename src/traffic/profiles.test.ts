@@ -1,6 +1,7 @@
 import {
   PROFILES_BY_ID,
   errorRatioExpr,
+  isProfileComplete,
   latencyQuantileExpr,
   matchers,
   namespaceVarQuery,
@@ -29,10 +30,10 @@ describe('traffic profiles', () => {
     expect(latencyQuantileExpr(p, 0.99)).toContain('istio_request_duration_milliseconds_bucket');
   });
 
-  it('envoy errors use a different metric and single-digit class', () => {
+  it('envoy errors use a different metric and match both class forms (5 / 5xx)', () => {
     const e = errorRatioExpr(PROFILES_BY_ID['envoy']);
     expect(e).toContain('envoy_cluster_upstream_rq_xx{');
-    expect(e).toContain('envoy_response_code_class=~"5"');
+    expect(e).toContain('envoy_response_code_class=~"5|5xx"');
     expect(e).toContain('/ sum(rate(envoy_cluster_upstream_rq_total{');
   });
 
@@ -58,5 +59,34 @@ describe('traffic profiles', () => {
   it('resolveProfile falls back to the default when unknown', () => {
     expect(resolveProfile(undefined).id).toBe('prometheus-http');
     expect(resolveProfile({ profile: 'nope' }).id).toBe('prometheus-http');
+  });
+
+  it('custom profile uses an empty base, not prometheus-http defaults', () => {
+    const r = resolveProfile({ profile: 'custom', custom: { rateMetric: 'mycounter', serviceLabel: 'app' } });
+    expect(r.id).toBe('custom');
+    expect(r.rateMetric).toBe('mycounter');
+    expect(r.serviceLabel).toBe('app');
+    // must NOT inherit prometheus-http's bucket/labels
+    expect(r.latencyBucket).toBeNull();
+    expect(r.namespaceLabel).toBeNull();
+  });
+
+  it('empty error label never produces a broken matcher', () => {
+    const r = resolveProfile({ profile: 'custom', custom: { rateMetric: 'mycounter', serviceLabel: 'app', errorMatch: { label: '', regex: '5..' } } });
+    // builder yields a safe 0 rather than an empty-label matcher
+    expect(errorRatioExpr(r)).toBe('0');
+    // and matchers never emits a leading comma / empty label name
+    expect(matchers(r)).not.toMatch(/(^|,\s*)=~/);
+  });
+
+  it('clearing a field on a registry profile reverts to the base value', () => {
+    const r = resolveProfile({ profile: 'istio', custom: { serviceLabel: '' } });
+    expect(r.serviceLabel).toBe('destination_workload');
+  });
+
+  it('isProfileComplete needs a rate metric and a service label', () => {
+    expect(isProfileComplete(resolveProfile({ profile: 'istio' }))).toBe(true);
+    expect(isProfileComplete(resolveProfile({ profile: 'custom' }))).toBe(false);
+    expect(isProfileComplete(resolveProfile({ profile: 'custom', custom: { rateMetric: 'm', serviceLabel: 's' } }))).toBe(true);
   });
 });

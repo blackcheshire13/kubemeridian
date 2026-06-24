@@ -1,9 +1,8 @@
 import React, { useMemo, useState } from 'react';
-import { SelectableValue } from '@grafana/data';
 import { getBackendSrv } from '@grafana/runtime';
 import { Alert, Button, Field, Input, InlineSwitch, Modal, Select } from '@grafana/ui';
 import { DS_ID } from '../constants';
-import { DsOption, listLogsDatasources, listMetricsDatasources, listTracesDatasources } from '../common/connections';
+import { listLogsDatasources, listMetricsDatasources, listTracesDatasources, toSelectOptions } from '../common/connections';
 
 interface Props {
   isOpen: boolean;
@@ -23,11 +22,9 @@ export function AddClusterModal({ isOpen, existingNames, onDismiss, onCreated }:
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const toOptions = (list: DsOption[]): Array<SelectableValue<string>> =>
-    list.map((d) => ({ value: d.uid, label: d.name }));
-  const metricsOptions = useMemo(() => toOptions(listMetricsDatasources()), []);
-  const logsOptions = useMemo(() => toOptions(listLogsDatasources()), []);
-  const tracesOptions = useMemo(() => toOptions(listTracesDatasources()), []);
+  const metricsOptions = useMemo(() => toSelectOptions(listMetricsDatasources()), []);
+  const logsOptions = useMemo(() => toSelectOptions(listLogsDatasources()), []);
+  const tracesOptions = useMemo(() => toSelectOptions(listTracesDatasources()), []);
 
   const nameTaken = existingNames.map((n) => n.toLowerCase()).includes(name.trim().toLowerCase());
   const canSubmit = name.trim().length > 0 && apiUrl.trim().length > 0 && !nameTaken && !busy;
@@ -75,8 +72,13 @@ export function AddClusterModal({ isOpen, existingNames, onDismiss, onCreated }:
     }
   };
 
+  const handleDismiss = () => {
+    reset();
+    onDismiss();
+  };
+
   return (
-    <Modal title="Add Kubernetes cluster" isOpen={isOpen} onDismiss={onDismiss}>
+    <Modal title="Add Kubernetes cluster" isOpen={isOpen} onDismiss={handleDismiss}>
       {error && (
         <Alert title="Could not add cluster" severity="error">
           {error}
@@ -138,7 +140,7 @@ export function AddClusterModal({ isOpen, existingNames, onDismiss, onCreated }:
       </Field>
 
       <Modal.ButtonRow>
-        <Button variant="secondary" fill="outline" onClick={onDismiss}>
+        <Button variant="secondary" fill="outline" onClick={handleDismiss}>
           Cancel
         </Button>
         <Button variant="primary" icon="plus" disabled={!canSubmit} onClick={submit}>

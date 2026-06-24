@@ -131,7 +131,7 @@ export const TRAFFIC_PROFILES: TrafficProfile[] = [
     detectMetric: 'envoy_cluster_upstream_rq_total',
     rateMetric: 'envoy_cluster_upstream_rq_total',
     errorMetric: 'envoy_cluster_upstream_rq_xx',
-    errorMatch: { label: 'envoy_response_code_class', regex: '5' },
+    errorMatch: { label: 'envoy_response_code_class', regex: '5|5xx' },
     denomMetric: 'envoy_cluster_upstream_rq_total',
     latencyBucket: 'envoy_cluster_upstream_rq_time_bucket',
     latencyUnit: 'ms',
@@ -159,7 +159,7 @@ export const TRAFFIC_PROFILES: TrafficProfile[] = [
     detectMetric: 'consul_destination_service',
     rateMetric: 'envoy_cluster_upstream_rq_total',
     errorMetric: 'envoy_cluster_upstream_rq_xx',
-    errorMatch: { label: 'envoy_response_code_class', regex: '5' },
+    errorMatch: { label: 'envoy_response_code_class', regex: '5|5xx' },
     denomMetric: 'envoy_cluster_upstream_rq_total',
     latencyBucket: 'envoy_cluster_upstream_rq_time_bucket',
     latencyUnit: 'ms',
@@ -172,7 +172,7 @@ export const TRAFFIC_PROFILES: TrafficProfile[] = [
     detectMetric: 'envoy_cluster_upstream_rq_total',
     rateMetric: 'envoy_cluster_upstream_rq_total',
     errorMetric: 'envoy_cluster_upstream_rq_xx',
-    errorMatch: { label: 'envoy_response_code_class', regex: '5' },
+    errorMatch: { label: 'envoy_response_code_class', regex: '5|5xx' },
     denomMetric: 'envoy_cluster_upstream_rq_total',
     latencyBucket: 'envoy_cluster_upstream_rq_time_bucket',
     latencyUnit: 'ms',
@@ -204,9 +204,9 @@ export const TRAFFIC_PROFILES: TrafficProfile[] = [
     denomMetric: 'http_server_request_duration_seconds_count',
     latencyBucket: 'http_server_request_duration_seconds_bucket',
     latencyUnit: 's',
-    serviceLabel: 'service_name',
-    namespaceLabel: 'service_namespace',
-    enablementHint: 'Stable HTTP semconv (v1.23+). Older agents emit http_server_duration_milliseconds with http_status_code.',
+    serviceLabel: 'job',
+    namespaceLabel: 'namespace',
+    enablementHint: 'Stable HTTP semconv (v1.23+). service.name/service.namespace are resource attributes — set them as labels (target_info / resource promotion) or keep the job/namespace scrape labels. Older agents emit http_server_duration_milliseconds with http_status_code.',
   },
 ];
 
@@ -230,23 +230,67 @@ export interface TrafficConfig {
   custom?: Partial<TrafficProfile>;
 }
 
-/** Resolve the effective profile: a registry profile merged with any overrides. */
+/** Empty template used as the base for a fully-custom profile. */
+const CUSTOM_DEFAULTS: TrafficProfile = {
+  id: 'custom',
+  label: 'Custom',
+  detectMetric: '',
+  rateMetric: '',
+  errorMetric: '',
+  errorMatch: { label: '', regex: '5..' },
+  denomMetric: '',
+  latencyBucket: null,
+  latencyUnit: 's',
+  serviceLabel: '',
+  namespaceLabel: null,
+};
+
+/**
+ * Resolve the effective profile: a registry profile (or an empty template for
+ * 'custom') merged with any overrides. Empty-string overrides are dropped for
+ * registry profiles so clearing a field reverts to the registry value rather
+ * than clobbering it with '' (which would emit broken PromQL).
+ */
 export function resolveProfile(cfg?: TrafficConfig): TrafficProfile {
-  const base =
-    cfg && cfg.profile && cfg.profile !== 'custom' && PROFILES_BY_ID[cfg.profile]
-      ? PROFILES_BY_ID[cfg.profile]
-      : PROFILES_BY_ID[DEFAULT_PROFILE_ID];
+  const isCustom = cfg?.profile === 'custom';
+  const base = isCustom
+    ? CUSTOM_DEFAULTS
+    : (cfg && cfg.profile && PROFILES_BY_ID[cfg.profile]) || PROFILES_BY_ID[DEFAULT_PROFILE_ID];
+
   const custom = cfg?.custom;
   if (!custom) {
     return base;
   }
+
+  const clean: Partial<TrafficProfile> = {};
+  for (const [k, v] of Object.entries(custom)) {
+    // For registry profiles an empty string means "use the base value".
+    if (v === '' && !isCustom) {
+      continue;
+    }
+    (clean as any)[k] = v;
+  }
+
+  const errorMatch = { ...base.errorMatch, ...(clean.errorMatch ?? {}) };
+  if (!errorMatch.label) {
+    errorMatch.label = base.errorMatch.label;
+  }
+  if (!errorMatch.regex) {
+    errorMatch.regex = base.errorMatch.regex;
+  }
+
   return {
     ...base,
-    ...custom,
-    id: cfg?.profile === 'custom' ? 'custom' : base.id,
-    errorMatch: { ...base.errorMatch, ...(custom.errorMatch ?? {}) },
-    sideFilter: custom.sideFilter ?? base.sideFilter,
+    ...clean,
+    id: isCustom ? 'custom' : base.id,
+    errorMatch,
+    sideFilter: clean.sideFilter ?? base.sideFilter,
   };
+}
+
+/** A profile can build RED queries only with at least a rate metric + service label. */
+export function isProfileComplete(p: TrafficProfile): boolean {
+  return Boolean(p.rateMetric) && Boolean(p.serviceLabel);
 }
 
 // ---- PromQL builders ----------------------------------------------------
@@ -264,7 +308,7 @@ export function matchers(p: TrafficProfile, opts: { includeNs?: boolean; include
   if (p.namespaceLabel && includeNs) {
     parts.push(`${p.namespaceLabel}="${NS_VAR}"`);
   }
-  if (includeSvc) {
+  if (includeSvc && p.serviceLabel) {
     parts.push(`${p.serviceLabel}=~"${SVC_VAR}"`);
   }
   return parts.join(', ');
@@ -277,6 +321,11 @@ export function rateExpr(p: TrafficProfile, window = RI): string {
 }
 
 export function errorRatioExpr(p: TrafficProfile, window = RI): string {
+  // Without an error label/metric we cannot identify errors — yield 0 rather
+  // than emit a matcher with an empty label name (a PromQL parse error).
+  if (!p.errorMatch.label || !p.errorMetric) {
+    return '0';
+  }
   const m = matchers(p);
   const errSel = m ? `${m}, ${p.errorMatch.label}=~"${p.errorMatch.regex}"` : `${p.errorMatch.label}=~"${p.errorMatch.regex}"`;
   return `sum(rate(${p.errorMetric}{${errSel}}[${window}])) / sum(rate(${p.denomMetric}{${m}}[${window}]))`;
