@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
-import { Button, EmptyState, LinkButton, LoadingPlaceholder, Stack } from '@grafana/ui';
+import { Alert, Button, EmptyState, LinkButton, LoadingPlaceholder, Stack } from '@grafana/ui';
 import { PluginPage, getBackendSrv } from '@grafana/runtime';
 import { APP_ID, DS_ID } from '../constants';
+import { listMetricsDatasources } from '../common/connections';
 import { K8sCluster } from '../types';
 import { ClusterCard } from '../components/ClusterCard';
 import { AddClusterModal } from '../components/AddClusterModal';
@@ -57,6 +58,16 @@ export class ClustersListPage extends PureComponent<{}, State> {
             Plugin config
           </LinkButton>
         </Stack>
+
+        {visible && listMetricsDatasources().length === 0 && (
+          <Alert severity="info" title="No Prometheus datasource found">
+            KubeGraf dashboards and the Services (RED) page need a Prometheus-compatible datasource. Add one, then
+            link it per cluster.{' '}
+            <LinkButton size="sm" fill="text" href="/connections/datasources/new">
+              Add datasource
+            </LinkButton>
+          </Alert>
+        )}
 
         {!visible && <LoadingPlaceholder text="Loading clusters..." />}
 

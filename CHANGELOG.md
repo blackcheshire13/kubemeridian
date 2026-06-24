@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.2.0 — Fleet overview & onboarding
+
+- The Clusters page is now a **fleet overview**: each cluster card shows live
+  health (nodes ready / pods / namespaces, from the k8s API) and a **connection
+  checklist** — chips for K8s API / Metrics / Logs / Traces / RED profile, so you
+  see at a glance what's configured and what's missing, with edit deep-links.
+- A **Services (RED)** shortcut on each cluster card.
+- An onboarding hint when no Prometheus datasource exists yet.
+
 ## 2.1.0 — Configurable traffic stacks (RED for everyone)
 
 RED/SLO no longer assumes one stack. A **traffic-profile registry** ships mappings
