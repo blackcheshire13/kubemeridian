@@ -5,7 +5,7 @@ import store from "../common/store";
 import {Node} from "../models/Node";
 import {DS_ID, PLUGIN_BASE_URL, ROUTES} from "../constants";
 import {hasRole, isLight} from "../common/utils";
-import {OrgRole} from "../types";
+import {KubegrafDSOptions, OrgRole} from "../types";
 import {SelectableValue} from "@grafana/data";
 import {Namespace} from "../models/Namespace";
 import {Styles} from "../common/styles";
@@ -107,9 +107,14 @@ export class BasePage extends PureComponent<Props>{
     }
 
     prepareDs = async () => {
-        await this.getCluster().then(async () => {
-            this.promDs = await getDataSourceSrv().get(this.cluster?.instanceSettings.jsonData.prometheus_name);
-        })
+        await this.getCluster();
+        const jsonData = this.cluster?.instanceSettings.jsonData as KubegrafDSOptions | undefined;
+        // Prefer the UID-based link; fall back to the legacy prometheus_name (a NAME).
+        // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentional back-compat read
+        const metricsRef = jsonData?.metrics_uid ?? jsonData?.prometheus_name;
+        if (metricsRef) {
+            this.promDs = await getDataSourceSrv().get(metricsRef).catch(() => undefined);
+        }
     }
 
      getCluster = async () => {
