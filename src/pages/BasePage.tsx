@@ -114,6 +114,10 @@ export class BasePage extends PureComponent<Props>{
         return `${PLUGIN_BASE_URL}/${ROUTES.Traces}/${this.props.cluster_id}`;
     }
 
+    generateServicesLink = () => {
+        return `${PLUGIN_BASE_URL}/${ROUTES.Services}/${this.props.cluster_id}`;
+    }
+
     generateEditLink = () => {
         return `/connections/datasources/edit/${this.cluster?.instanceSettings.uid}`;
     }

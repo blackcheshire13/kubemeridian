@@ -18,6 +18,10 @@ Built for **Grafana 13.x** on `@grafana/create-plugin` (`@grafana/*` 13.x, React
 - **Events** — live, filterable Kubernetes events feed (type / namespace / text).
 - **Logs** — Loki logs explorer (namespace/pod/container + free-text), built with Grafana Scenes.
 - **Traces** — Tempo TraceQL search + service graph, built with Grafana Scenes.
+- **Services (RED)** — request rate / errors / latency / SLO + error-budget burn rate,
+  driven by your cluster's **traffic profile** (Istio / Linkerd / Cilium / nginx /
+  Traefik / HAProxy / Envoy / Kong / Consul / Kuma / app-HTTP / OTel — or a custom
+  metric mapping). Pick or auto-detect the stack in the cluster config.
 
 ### Bundled dashboards (Prometheus)
 Curated, computed inline from raw kube-state-metrics / node-exporter / cAdvisor (no mixin

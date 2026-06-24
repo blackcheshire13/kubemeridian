@@ -40,7 +40,6 @@
     { "type": "dashboard", "name": "Cost & Efficiency", "path": "dashboards/cost-efficiency.json", "addToNav": false },
     { "type": "dashboard", "name": "Control Plane", "path": "dashboards/control-plane.json", "addToNav": false },
     { "type": "dashboard", "name": "Networking", "path": "dashboards/networking.json", "addToNav": false },
-    { "type": "dashboard", "name": "RED & SLO", "path": "dashboards/red-slo.json", "addToNav": false },
     { "type": "dashboard", "name": "Node", "path": "dashboards/node.json", "addToNav": false },
     { "type": "dashboard", "name": "Pod resources", "path": "dashboards/pod-resources.json", "addToNav": false },
     { "type": "dashboard", "name": "Deployment", "path": "dashboards/deployment.json", "addToNav": false },

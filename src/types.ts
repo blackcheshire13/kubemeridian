@@ -1,5 +1,6 @@
 import { DataSourceJsonData } from '@grafana/data';
 import { DataQuery } from '@grafana/schema';
+import { TrafficConfig } from './traffic/profiles';
 
 export interface GlobalSettings {}
 
@@ -17,6 +18,7 @@ export interface KubegrafDSOptions extends DataSourceJsonData {
   logs_uid?: string; // Loki
   traces_uid?: string; // Tempo
   cost?: CostSettings;
+  traffic?: TrafficConfig; // RED source: which ingress/mesh stack to query
   /** @deprecated legacy: Prometheus datasource NAME, migrated to metrics_uid on read */
   prometheus_name?: string;
 

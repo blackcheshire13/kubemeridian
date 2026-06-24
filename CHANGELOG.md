@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.1.0 — Configurable traffic stacks (RED for everyone)
+
+RED/SLO no longer assumes one stack. A **traffic-profile registry** ships mappings
+for the common ingress controllers and service meshes, and each cluster picks its
+stack (or defines a custom mapping) — the plugin builds the RED queries to match.
+
+### Added
+- **Traffic profiles** (`src/traffic/profiles.ts`) for **Istio, Linkerd,
+  Cilium/Hubble, ingress-nginx, Traefik, HAProxy, Envoy (Gateway API/Contour/
+  Emissary), Kong, Consul, Kuma, Prometheus-client HTTP and OpenTelemetry HTTP**.
+  Each encodes the rate/error/latency metrics + labels, the status-label form
+  (numeric `5..` / digit `5` / class `5xx`), latency unit (s vs ms), histogram
+  availability (HAProxy has none → avg fallback), the side filter (reporter/
+  direction) and an enablement hint.
+- **Per-cluster "Traffic / RED source"** in the ConfigEditor: pick a profile,
+  **auto-detect** it from the linked Prometheus, or define a **Custom** mapping.
+- **Services (RED) page** — a Grafana Scenes page that builds request rate,
+  error %, SLI, latency percentiles, 30-day error budget and multi-window burn
+  rate from the selected profile. Adapts variables to whether the stack exposes a
+  namespace label.
+
+### Changed / removed
+- The static Istio-only `red-slo.json` dashboard is replaced by the
+  profile-driven Services page (removed from the bundle).
+
 ## 2.0.2 — Audit fixes
 
 Bug fixes from a full dashboard-vs-live-Prometheus + code audit:

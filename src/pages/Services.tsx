@@ -4,16 +4,19 @@ import { EmptyState, LinkButton, LoadingPlaceholder } from '@grafana/ui';
 import { EmbeddedScene } from '@grafana/scenes';
 import { BasePage } from './BasePage';
 import { PageHeader } from '../components/PageHeader';
-import { buildLogsScene } from '../scenes/logs';
+import { buildRedSloScene } from '../scenes/redslo';
+import { resolveMetricsUid } from '../common/connections';
+import { resolveProfile } from '../traffic/profiles';
 import { APP_ID, PLUGIN_BASE_URL, ROUTES } from '../constants';
 import { KubegrafDSOptions } from '../types';
 
-export class LogsPage extends BasePage {
+export class ServicesPage extends BasePage {
   state = {
     pageReady: false,
     clusters: [],
     currentClusterId: '',
-    logsUid: undefined as string | undefined,
+    metricsUid: undefined as string | undefined,
+    profileLabel: '',
     scene: undefined as EmbeddedScene | undefined,
   };
 
@@ -27,11 +30,12 @@ export class LogsPage extends BasePage {
         return;
       }
       const jsonData = this.cluster?.instanceSettings.jsonData as KubegrafDSOptions | undefined;
-      const logsUid = jsonData?.logs_uid;
+      const metricsUid = resolveMetricsUid(jsonData);
       this.setState({
         currentClusterId: this.cluster?.instanceSettings.uid,
-        logsUid,
-        scene: logsUid ? buildLogsScene({ logsUid }) : undefined,
+        metricsUid,
+        profileLabel: resolveProfile(jsonData?.traffic).label,
+        scene: metricsUid ? buildRedSloScene({ metricsUid, traffic: jsonData?.traffic }) : undefined,
         pageReady: true,
       });
     });
@@ -48,12 +52,12 @@ export class LogsPage extends BasePage {
   }
 
   render() {
-    const { scene, logsUid, pageReady } = this.state;
+    const { scene, metricsUid, profileLabel, pageReady } = this.state;
 
     return (
       <PluginPage>
         <PageHeader
-          active="logs"
+          active="services"
           clusters={this.state.clusters}
           currentClusterId={this.state.currentClusterId}
           isAdmin={this.isAdmin}
@@ -69,15 +73,15 @@ export class LogsPage extends BasePage {
             config: `/plugins/${APP_ID}`,
           }}
           onClusterChange={(value) => {
-            window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.Logs}/${value}`;
+            window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.Services}/${value}`;
           }}
         />
 
-        {!pageReady && <LoadingPlaceholder text="Loading logs..." />}
+        {!pageReady && <LoadingPlaceholder text="Loading services..." />}
 
-        {pageReady && !logsUid && (
-          <EmptyState variant="not-found" message="No Loki datasource is linked to this cluster">
-            Link a Loki datasource in the cluster configuration to explore logs here.
+        {pageReady && !metricsUid && (
+          <EmptyState variant="not-found" message="No metrics (Prometheus) datasource is linked to this cluster">
+            Link a Prometheus datasource in the cluster configuration to see RED & SLO here.
             <div style={{ marginTop: 12 }}>
               <LinkButton icon="cog" href={this.generateEditLink()}>
                 Configure cluster
@@ -86,7 +90,12 @@ export class LogsPage extends BasePage {
           </EmptyState>
         )}
 
-        {pageReady && scene && <scene.Component model={scene} />}
+        {pageReady && scene && (
+          <>
+            <h2>RED &amp; SLO — {this.cluster?.instanceSettings.name} · {profileLabel}</h2>
+            <scene.Component model={scene} />
+          </>
+        )}
       </PluginPage>
     );
   }

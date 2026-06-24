@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useMemo } from 'react';
+import React, { ChangeEvent, useMemo, useState } from 'react';
 import { DataSourcePluginOptionsEditorProps, SelectableValue } from '@grafana/data';
-import { FieldSet, InlineField, InlineSwitch, Input, SecretInput, Select } from '@grafana/ui';
+import { Alert, Button, FieldSet, InlineField, InlineSwitch, Input, SecretInput, Select } from '@grafana/ui';
 import { CostSettings, KubegrafDSOptions, SecureJsonData } from '../types';
 import {
   DsOption,
@@ -9,6 +9,8 @@ import {
   listTracesDatasources,
   migrateMetricsUid,
 } from '../common/connections';
+import { PROFILES_BY_ID, TRAFFIC_PROFILES, TrafficConfig, TrafficProfile } from '../traffic/profiles';
+import { detectProfiles } from '../traffic/detect';
 
 type Props = DataSourcePluginOptionsEditorProps<KubegrafDSOptions, SecureJsonData>;
 
@@ -30,6 +32,11 @@ export function ConfigEditor({ options, onOptionsChange }: Props) {
   const { jsonData, secureJsonFields } = options;
   const secureJsonData = (options.secureJsonData ?? {}) as SecureJsonData;
   const cost: CostSettings = jsonData.cost ?? {};
+  const traffic: TrafficConfig = jsonData.traffic ?? { profile: '' };
+  const custom: Partial<TrafficProfile> = traffic.custom ?? {};
+
+  const [detecting, setDetecting] = useState(false);
+  const [detected, setDetected] = useState<string[] | null>(null);
 
   const metricsOptions = useMemo(() => toOptions(listMetricsDatasources()), []);
   const logsOptions = useMemo(() => toOptions(listLogsDatasources()), []);
@@ -48,6 +55,34 @@ export function ConfigEditor({ options, onOptionsChange }: Props) {
   const setCost = (patch: Partial<CostSettings>) => {
     setJsonData({ cost: { ...cost, ...patch } });
   };
+
+  const setTraffic = (patch: Partial<TrafficConfig>) => {
+    setJsonData({ traffic: { ...traffic, ...patch } });
+  };
+
+  const setCustom = (patch: Partial<TrafficProfile>) => {
+    setTraffic({ custom: { ...custom, ...patch } });
+  };
+
+  const runDetect = async () => {
+    setDetecting(true);
+    setDetected(null);
+    try {
+      const ids = await detectProfiles(metricsValue ?? '');
+      setDetected(ids);
+      if (ids.length > 0) {
+        setTraffic({ profile: ids[0] });
+      }
+    } finally {
+      setDetecting(false);
+    }
+  };
+
+  const profileOptions: Array<SelectableValue<string>> = [
+    ...TRAFFIC_PROFILES.map((p) => ({ value: p.id, label: p.label })),
+    { value: 'custom', label: 'Custom…' },
+  ];
+  const activeProfile = traffic.profile !== 'custom' ? PROFILES_BY_ID[traffic.profile] : undefined;
 
   // Keep the standard datasource url and jsonData.cluster_url (used by the proxy
   // route template) in sync so both access modes resolve to the same endpoint.
@@ -189,6 +224,76 @@ export function ConfigEditor({ options, onOptionsChange }: Props) {
                 placeholder="0.004"
                 onChange={(e) => setCost({ mem_hourly: e.currentTarget.value })}
               />
+            </InlineField>
+          </>
+        )}
+      </FieldSet>
+
+      <FieldSet label="Traffic / RED source">
+        <InlineField
+          label="Stack profile"
+          labelWidth={LABEL_WIDTH}
+          tooltip="Which ingress controller / service mesh exposes your request metrics. Drives the RED & SLO page."
+        >
+          <Select
+            width={FIELD_WIDTH}
+            options={profileOptions}
+            value={profileOptions.find((o) => o.value === traffic.profile) ?? null}
+            onChange={(v) => setTraffic({ profile: v?.value ?? '' })}
+            placeholder="Select your stack (or Custom…)"
+          />
+        </InlineField>
+
+        <InlineField label="Auto-detect" labelWidth={LABEL_WIDTH} tooltip="Probe the metrics datasource for known stack metrics">
+          <Button variant="secondary" icon="search" disabled={!metricsValue || detecting} onClick={runDetect}>
+            {detecting ? 'Detecting…' : 'Detect from Prometheus'}
+          </Button>
+        </InlineField>
+
+        {detected && (
+          <Alert
+            severity={detected.length ? 'success' : 'info'}
+            title={detected.length ? `Detected: ${detected.map((id) => PROFILES_BY_ID[id]?.label ?? id).join(', ')}` : 'No known traffic metrics found'}
+          >
+            {detected.length
+              ? 'Selected the first match. Pick another above if you prefer.'
+              : 'None of the known ingress/mesh metrics are present. Some stacks must be enabled (Traefik provider, Kong status/latency metrics, Cilium L7) — or use Custom.'}
+          </Alert>
+        )}
+
+        {activeProfile?.enablementHint && (
+          <Alert severity="info" title="Note">
+            {activeProfile.enablementHint}
+          </Alert>
+        )}
+
+        {traffic.profile === 'custom' && (
+          <>
+            <InlineField label="Request metric" labelWidth={LABEL_WIDTH} tooltip="Counter to rate() for throughput">
+              <Input width={FIELD_WIDTH} value={custom.rateMetric ?? ''} placeholder="http_requests_total" onChange={(e) => setCustom({ rateMetric: e.currentTarget.value, denomMetric: e.currentTarget.value, errorMetric: e.currentTarget.value })} />
+            </InlineField>
+            <InlineField label="Error label" labelWidth={LABEL_WIDTH} tooltip="Label carrying the status (e.g. response_code, code, status)">
+              <Input width={FIELD_WIDTH} value={custom.errorMatch?.label ?? ''} placeholder="code" onChange={(e) => setCustom({ errorMatch: { label: e.currentTarget.value, regex: custom.errorMatch?.regex ?? '5..' } })} />
+            </InlineField>
+            <InlineField label="Error regex" labelWidth={LABEL_WIDTH} tooltip='How errors match (e.g. 5.. or 5xx or 5)'>
+              <Input width={FIELD_WIDTH} value={custom.errorMatch?.regex ?? ''} placeholder="5.." onChange={(e) => setCustom({ errorMatch: { label: custom.errorMatch?.label ?? 'code', regex: e.currentTarget.value } })} />
+            </InlineField>
+            <InlineField label="Latency bucket metric" labelWidth={LABEL_WIDTH} tooltip="Histogram _bucket metric (leave empty if none)">
+              <Input width={FIELD_WIDTH} value={custom.latencyBucket ?? ''} placeholder="http_request_duration_seconds_bucket" onChange={(e) => setCustom({ latencyBucket: e.currentTarget.value || null })} />
+            </InlineField>
+            <InlineField label="Latency unit" labelWidth={LABEL_WIDTH}>
+              <Select
+                width={FIELD_WIDTH}
+                options={[{ value: 's', label: 'seconds' }, { value: 'ms', label: 'milliseconds' }]}
+                value={custom.latencyUnit ?? 's'}
+                onChange={(v) => setCustom({ latencyUnit: (v?.value as 's' | 'ms') ?? 's' })}
+              />
+            </InlineField>
+            <InlineField label="Service label" labelWidth={LABEL_WIDTH}>
+              <Input width={FIELD_WIDTH} value={custom.serviceLabel ?? ''} placeholder="job" onChange={(e) => setCustom({ serviceLabel: e.currentTarget.value })} />
+            </InlineField>
+            <InlineField label="Namespace label" labelWidth={LABEL_WIDTH} tooltip="Leave empty if namespace is embedded in the service name">
+              <Input width={FIELD_WIDTH} value={custom.namespaceLabel ?? ''} placeholder="namespace" onChange={(e) => setCustom({ namespaceLabel: e.currentTarget.value || null })} />
             </InlineField>
           </>
         )}
