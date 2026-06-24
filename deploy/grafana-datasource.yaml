@@ -29,7 +29,14 @@ stringData:
           cluster_url: https://kubernetes.default.svc
           access_via_token: true
           tlsSkipVerify: true
-          prometheus_name: Prometheus
+          # Connections by datasource UID (this cluster). Loki/Tempo UIDs are
+          # specific to this Grafana; metrics uid "prometheus" is the kps default.
+          metrics_uid: prometheus
+          logs_uid: P8E80F9AEF21F6940
+          traces_uid: P214B5B846CF3925F
+          # RED source: this cluster runs Istio.
+          traffic:
+            profile: istio
           refresh_pods_rate: "60"
         secureJsonData:
           access_token: __SA_TOKEN__
