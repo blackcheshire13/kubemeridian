@@ -21,6 +21,7 @@ export enum ROUTES {
   Logs = 'logs',
   Traces = 'traces',
   Services = 'services',
+  Cost = 'cost',
 }
 
 export const PODS_LIMIT = 10;

@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.4.0 — Multi-cloud Cost Explorer
+
+A dedicated **Cost** page (Grafana app tab) that computes Kubernetes cost across
+clouds, client-side, with a 4-tier pricing engine (best available wins):
+
+- **Tier 0 — OpenCost**: uses `node_total_hourly_cost` etc. when present (most accurate).
+- **Tier 1 — instance-type catalog**: bundled on-demand prices for AWS, GCP, Azure
+  and DigitalOcean (auto-detected from the node `provider_id`; instance type from
+  the `kube_node_labels` instance-type label), with optional regional multipliers.
+- **Tier 2 — per-cloud flat** ($/vCPU + $/GiB) when the instance type isn't exposed.
+- **Tier 3 — global flat** estimate (on-prem / unknown).
+
+Views: estimated monthly + hourly, allocated vs **idle** (unrequested capacity),
+breakdown by namespace (top spenders, CPU/mem efficiency), by node (cloud, type,
+tier, $/hr·$/mo) and by cloud. The active pricing tier is shown per node so the
+numbers stay honest. Pure pricing engine is unit-tested.
+
 ## 2.3.0 — Rebrand: KubeMeridian
 
 Renamed the plugin from the revived "KubeGraf" to its own brand, **KubeMeridian**,

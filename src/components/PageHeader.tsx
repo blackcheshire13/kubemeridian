@@ -2,13 +2,13 @@ import React from 'react';
 import { SelectableValue } from '@grafana/data';
 import { InlineField, LinkButton, Select, Stack, Tab, TabsBar } from '@grafana/ui';
 
-export type ActiveTab = 'status' | 'apps' | 'nodes' | 'events' | 'logs' | 'traces' | 'services';
+export type ActiveTab = 'status' | 'apps' | 'nodes' | 'events' | 'logs' | 'traces' | 'services' | 'cost';
 
 interface Props {
   active: ActiveTab;
   clusters: Array<SelectableValue<string>>;
   currentClusterId: string;
-  links: { status: string; apps: string; nodes: string; events: string; logs: string; traces: string; services: string; edit: string; config: string };
+  links: { status: string; apps: string; nodes: string; events: string; logs: string; traces: string; services: string; cost: string; edit: string; config: string };
   isAdmin: boolean;
   onClusterChange: (value: string) => void;
 }
@@ -23,6 +23,7 @@ export function PageHeader({ active, clusters, currentClusterId, links, isAdmin,
           <Tab href={links.nodes} label="Nodes Overview" active={active === 'nodes'} />
           <Tab href={links.events} label="Events" active={active === 'events'} />
           <Tab href={links.services} label="Services (RED)" active={active === 'services'} />
+          <Tab href={links.cost} label="Cost" active={active === 'cost'} />
           <Tab href={links.logs} label="Logs" active={active === 'logs'} />
           <Tab href={links.traces} label="Traces" active={active === 'traces'} />
         </TabsBar>
