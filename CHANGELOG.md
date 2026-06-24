@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.1
+
+- **RED & SLO dashboard now uses Istio service-mesh telemetry**
+  (`istio_requests_total` / `istio_request_duration_milliseconds_bucket`,
+  reporter=destination) instead of assuming app-level `http_*` metrics — it
+  populates for every meshed workload with no instrumentation. Variables are now
+  namespace + workload. Fixes the note that interpolated `$job` to empty.
+- **Networking dashboard** gains an Istio mesh-traffic section (request rate,
+  5xx ratio, p99 latency, top workloads) alongside the ingress-nginx section.
+
 ## 2.0.0 — Observability product
 
 KubeGraf evolves from a Kubernetes topology browser into a turnkey observability app:
