@@ -1,16 +1,26 @@
 # Changelog
 
-## Unreleased — 2.0 (observability product)
+## 2.0.0 — Observability product
 
-KubeGraf is evolving from a Kubernetes topology browser into a turnkey observability
-app: install one plugin, link your connections (metrics, logs, traces, cost), and get
-a curated base monitoring stack.
+KubeGraf evolves from a Kubernetes topology browser into a turnkey observability app:
+install one plugin, link your connections (metrics, logs, traces, cost), and get a
+curated base monitoring stack.
 
 ### Added
-- **Connections model**: each cluster datasource now links a metrics (Prometheus),
-  logs (Loki) and traces (Tempo) datasource by UID, plus FinOps cost settings
-  (OpenCost toggle or an estimation price list). Configurable from both the cluster
-  ConfigEditor and the one-step "Add cluster" modal.
+- **Connections model**: each cluster datasource links a metrics (Prometheus), logs
+  (Loki) and traces (Tempo) datasource by UID, plus FinOps cost settings (OpenCost
+  toggle or an estimation price list). Configurable from the cluster ConfigEditor and
+  the one-step "Add cluster" modal.
+- **Three pillars** inside the plugin (built with `@grafana/scenes`): a **Logs** page +
+  an **inline pod log drawer** (click a pod → Loki logs), and a **Traces** page (Tempo
+  TraceQL search + service graph).
+- **Events** page — live, filterable Kubernetes events feed.
+- **9 new bundled dashboards**: Cluster Overview, Namespace Overview, Workload Health,
+  Storage, Cost & Efficiency, Control Plane, Networking, RED & SLO (plus the existing
+  Node/Pod/Deployment/StatefulSet/DaemonSet).
+- **Alert pack** (`deploy/kubegraf-prometheusrule.yaml`) — 25 curated Prometheus alerts.
+- Datasource gains events / PVC / PV / storageclass / ingress / resourcequota / HPA
+  reads; RBAC extended accordingly.
 
 ### Changed
 - The single `prometheus_name` (datasource NAME) link is superseded by `metrics_uid`
