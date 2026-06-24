@@ -33,6 +33,10 @@
       "role": "Admin",
       "addToNav": true
     },
+    { "type": "dashboard", "name": "Cluster Overview", "path": "dashboards/cluster-overview.json", "addToNav": false },
+    { "type": "dashboard", "name": "Namespace Overview", "path": "dashboards/namespace-overview.json", "addToNav": false },
+    { "type": "dashboard", "name": "Workload Health", "path": "dashboards/workload-health.json", "addToNav": false },
+    { "type": "dashboard", "name": "Storage", "path": "dashboards/storage.json", "addToNav": false },
     { "type": "dashboard", "name": "Node", "path": "dashboards/node.json", "addToNav": false },
     { "type": "dashboard", "name": "Pod resources", "path": "dashboards/pod-resources.json", "addToNav": false },
     { "type": "dashboard", "name": "Deployment", "path": "dashboards/deployment.json", "addToNav": false },
