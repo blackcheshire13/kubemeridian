@@ -26,6 +26,9 @@ rules:
       - services
       - componentstatuses
       - events
+      - persistentvolumeclaims
+      - persistentvolumes
+      - resourcequotas
     verbs: ["get", "list", "watch"]
   - apiGroups: ["apps"]
     resources:
@@ -38,6 +41,18 @@ rules:
     resources:
       - jobs
       - cronjobs
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["storage.k8s.io"]
+    resources:
+      - storageclasses
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["networking.k8s.io"]
+    resources:
+      - ingresses
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["autoscaling"]
+    resources:
+      - horizontalpodautoscalers
     verbs: ["get", "list", "watch"]
   - apiGroups: ["metrics.k8s.io"]
     resources:

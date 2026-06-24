@@ -5,7 +5,11 @@ export const PLUGIN_BASE_URL = `/a/${APP_ID}`;
 
 // Bundled datasource plugin id (see src/datasource/plugin.json)
 export const DS_ID = 'starcrown-kubegraf-datasource';
+
+// Companion datasource plugin types we link a cluster to.
 export const PROMETHEUS_ID = 'prometheus';
+export const LOKI_ID = 'loki';
+export const TEMPO_ID = 'tempo';
 
 // App page routes (path-based, react-router v6)
 export enum ROUTES {
@@ -13,6 +17,10 @@ export enum ROUTES {
   ClusterStatus = 'cluster-status',
   ApplicationsOverview = 'applications-overview',
   NodesOverview = 'nodes-overview',
+  Events = 'events',
+  Logs = 'logs',
+  Traces = 'traces',
+  Services = 'services',
 }
 
 export const PODS_LIMIT = 10;

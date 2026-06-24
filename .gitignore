@@ -48,3 +48,7 @@ ci/
 .eslintcache
 provisioning/datasources/kubegraf-local.yaml
 docker-compose.override.yaml
+
+# Packaged plugin artifact
+*.zip
+build-pkg/

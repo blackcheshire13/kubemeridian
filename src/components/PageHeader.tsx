@@ -2,13 +2,13 @@ import React from 'react';
 import { SelectableValue } from '@grafana/data';
 import { InlineField, LinkButton, Select, Stack, Tab, TabsBar } from '@grafana/ui';
 
-export type ActiveTab = 'status' | 'apps' | 'nodes';
+export type ActiveTab = 'status' | 'apps' | 'nodes' | 'events' | 'logs' | 'traces' | 'services';
 
 interface Props {
   active: ActiveTab;
   clusters: Array<SelectableValue<string>>;
   currentClusterId: string;
-  links: { status: string; apps: string; nodes: string; edit: string; config: string };
+  links: { status: string; apps: string; nodes: string; events: string; logs: string; traces: string; services: string; edit: string; config: string };
   isAdmin: boolean;
   onClusterChange: (value: string) => void;
 }
@@ -21,6 +21,10 @@ export function PageHeader({ active, clusters, currentClusterId, links, isAdmin,
           <Tab href={links.status} label="Cluster status" active={active === 'status'} />
           <Tab href={links.apps} label="Applications Overview" active={active === 'apps'} />
           <Tab href={links.nodes} label="Nodes Overview" active={active === 'nodes'} />
+          <Tab href={links.events} label="Events" active={active === 'events'} />
+          <Tab href={links.services} label="Services (RED)" active={active === 'services'} />
+          <Tab href={links.logs} label="Logs" active={active === 'logs'} />
+          <Tab href={links.traces} label="Traces" active={active === 'traces'} />
         </TabsBar>
 
         <Stack direction="row" gap={1} alignItems="center">

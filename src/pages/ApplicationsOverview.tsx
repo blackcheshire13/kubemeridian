@@ -10,6 +10,9 @@ import { Component } from '../models/Component';
 import { ClusterComponent } from '../components/ClusterComponent';
 import store from '../common/store';
 import { NamespaceCard } from '../components/NamespaceCard';
+import { PodLogsContext } from '../components/PodLogsContext';
+import { PodLogsDrawer } from '../components/PodLogsDrawer';
+import { KubegrafDSOptions } from '../types';
 
 const startPanelsMap = {
   __overview: true,
@@ -25,14 +28,21 @@ export class ApplicationsOverview extends BasePage {
     clusterComponents: [],
     namespacesMap: [],
     openPanels: new Map<string, boolean>(Object.entries(startPanelsMap)),
+    logsUid: undefined as string | undefined,
+    logsTarget: null as { namespace: string; pod: string } | null,
   };
+
+  openLogs = (namespace: string, pod: string) => this.setState({ logsTarget: { namespace, pod } });
+  closeLogs = () => this.setState({ logsTarget: null });
 
   constructor(props: any) {
     super(props);
     this.prepareDs().then(() => {
+      const jsonData = this.cluster?.instanceSettings.jsonData as KubegrafDSOptions | undefined;
       this.setState({
         currentClusterName: this.cluster?.instanceSettings.name,
         currentClusterId: this.cluster?.instanceSettings.uid,
+        logsUid: jsonData?.logs_uid,
       });
       this.getNamespacesMap().then(() => {
         this.setState({ pageReady: true });
@@ -146,6 +156,10 @@ export class ApplicationsOverview extends BasePage {
             status: this.generateCLusterStatusLink(),
             apps: this.generateApplicationsOverviewLink(),
             nodes: this.generateNodesOverviewLink(),
+            events: this.generateEventsLink(),
+            logs: this.generateLogsLink(),
+            traces: this.generateTracesLink(),
+            services: this.generateServicesLink(),
             edit: this.generateEditLink(),
             config: `/plugins/${APP_ID}`,
           }}
@@ -215,19 +229,30 @@ export class ApplicationsOverview extends BasePage {
               )}
             </div>
 
-            {this.state.namespacesMap
-              .filter((namespace: Namespace) => !namespace.is_deleted)
-              .map(
-                (ns: Namespace) =>
-                  ns.open && (
-                    <NamespaceCard
-                      key={ns.name}
-                      namespace={ns}
-                      clusterName={this.cluster?.name}
-                      isPanelOpen={this.isPanelOpen(ns.name)}
-                    />
-                  )
-              )}
+            <PodLogsContext.Provider value={this.state.logsUid ? { show: this.openLogs } : null}>
+              {this.state.namespacesMap
+                .filter((namespace: Namespace) => !namespace.is_deleted)
+                .map(
+                  (ns: Namespace) =>
+                    ns.open && (
+                      <NamespaceCard
+                        key={ns.name}
+                        namespace={ns}
+                        clusterName={this.cluster?.name}
+                        isPanelOpen={this.isPanelOpen(ns.name)}
+                      />
+                    )
+                )}
+            </PodLogsContext.Provider>
+
+            {this.state.logsUid && this.state.logsTarget && (
+              <PodLogsDrawer
+                namespace={this.state.logsTarget.namespace}
+                pod={this.state.logsTarget.pod}
+                logsUid={this.state.logsUid}
+                onClose={this.closeLogs}
+              />
+            )}
           </>
         )}
       </PluginPage>

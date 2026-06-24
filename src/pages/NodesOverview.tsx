@@ -73,6 +73,10 @@ export class NodesOverviewPage extends BasePage {
             status: this.generateCLusterStatusLink(),
             apps: this.generateApplicationsOverviewLink(),
             nodes: this.generateNodesOverviewLink(),
+            events: this.generateEventsLink(),
+            logs: this.generateLogsLink(),
+            traces: this.generateTracesLink(),
+            services: this.generateServicesLink(),
             edit: this.generateEditLink(),
             config: `/plugins/${APP_ID}`,
           }}
