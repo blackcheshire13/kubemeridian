@@ -70,10 +70,10 @@
   "tags": [
     "kubernetes",
     "pod",
-    "KubeGraf"
+    "KubeMeridian"
   ],
   "timezone": "browser",
-  "title": "KubeGraf Pod's Dashboard",
+  "title": "KubeMeridian Pod's Dashboard",
   "templating": {
     "list": [
       {
@@ -1005,7 +1005,7 @@
       "asDropdown": true,
       "icon": "external link",
       "tags": [
-        "KubeGraf"
+        "KubeMeridian"
       ],
       "title": "Dashboards",
       "type": "dashboards"

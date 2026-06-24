@@ -1,4 +1,4 @@
-# Durable, declarative app-enable for KubeGraf.
+# Durable, declarative app-enable for KubeMeridian.
 #
 # The live enable currently persists in Grafana's DB (on the PVC) and survives
 # restarts. This makes it declarative too (survives a DB wipe / fresh install).
@@ -9,22 +9,22 @@
 #
 #   grafana:
 #     extraConfigmapMounts:
-#       - name: kubegraf-app-provisioning
-#         configMap: kubegraf-app-provisioning
-#         mountPath: /etc/grafana/provisioning/plugins/kubegraf-app.yaml
-#         subPath: kubegraf-app.yaml
+#       - name: kubemeridian-app-provisioning
+#         configMap: kubemeridian-app-provisioning
+#         mountPath: /etc/grafana/provisioning/plugins/kubemeridian-app.yaml
+#         subPath: kubemeridian-app.yaml
 #         readOnly: true
 #
 # Then: helm upgrade ... --reuse-values -f deploy/kps-grafana-overlay.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: kubegraf-app-provisioning
+  name: kubemeridian-app-provisioning
   namespace: monitoring
 data:
-  kubegraf-app.yaml: |
+  kubemeridian-app.yaml: |
     apiVersion: 1
     apps:
-      - type: starcrown-kubegraf-app
+      - type: devopstech-kubemeridian-app
         org_id: 1
         disabled: false

@@ -1,4 +1,4 @@
-# KubeGraf alert pack — Prometheus Operator PrometheusRule.
+# KubeMeridian alert pack — Prometheus Operator PrometheusRule.
 #
 # Curated Kubernetes alerting rules covering the common failure modes, evaluated
 # by your own Prometheus / Alertmanager. Works on a vanilla setup with
@@ -7,212 +7,212 @@
 # IMPORTANT — dedupe: the full kube-prometheus-stack already ships most of the
 # canonical kubernetes-mixin alerts (KubeNodeNotReady, KubePodCrashLooping, …).
 # If you run kps with its default rules enabled, install ONLY the rules that are
-# NOT in the mixin (marked "KubeGraf addition" below) to avoid duplicate alerts.
+# NOT in the mixin (marked "KubeMeridian addition" below) to avoid duplicate alerts.
 # For raw Prometheus + KSM (no mixin), install the whole file.
 #
-# Apply:  kubectl apply -f deploy/kubegraf-prometheusrule.yaml
+# Apply:  kubectl apply -f deploy/kubemeridian-prometheusrule.yaml
 # The `release: <kps-release>` label must match your Prometheus Operator
 # ruleSelector (kube-prometheus-stack default is the Helm release name).
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: kubegraf-alerts
+  name: kubemeridian-alerts
   namespace: monitoring
   labels:
-    app.kubernetes.io/part-of: kubegraf
+    app.kubernetes.io/part-of: kubemeridian
     # release: kps   # uncomment & set to match your Prometheus Operator ruleSelector
 spec:
   groups:
-    - name: kubegraf-nodes
+    - name: kubemeridian-nodes
       rules:
-        - alert: KubeGrafNodeNotReady
+        - alert: KubeMeridianNodeNotReady
           expr: kube_node_status_condition{condition="Ready",status="true"} == 0
           for: 15m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "Node {{ $labels.node }} is not ready"
             description: "Node {{ $labels.node }} has been NotReady for more than 15 minutes."
-        - alert: KubeGrafNodeMemoryPressure
+        - alert: KubeMeridianNodeMemoryPressure
           expr: kube_node_status_condition{condition="MemoryPressure",status="true"} == 1
           for: 5m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "Node {{ $labels.node }} under memory pressure"
-        - alert: KubeGrafNodeDiskPressure
+        - alert: KubeMeridianNodeDiskPressure
           expr: kube_node_status_condition{condition="DiskPressure",status="true"} == 1
           for: 5m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "Node {{ $labels.node }} under disk pressure"
-        - alert: KubeGrafNodePIDPressure
+        - alert: KubeMeridianNodePIDPressure
           expr: kube_node_status_condition{condition="PIDPressure",status="true"} == 1
           for: 5m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "Node {{ $labels.node }} under PID pressure"
-        - alert: KubeGrafNodeFilesystemAlmostFull
+        - alert: KubeMeridianNodeFilesystemAlmostFull
           expr: |
             (node_filesystem_avail_bytes{fstype!="",mountpoint!=""} / node_filesystem_size_bytes{fstype!="",mountpoint!=""}) * 100 < 10
             and node_filesystem_readonly{fstype!="",mountpoint!=""} == 0
           for: 1h
-          labels: { severity: critical, kubegraf: "true" }
+          labels: { severity: critical, kubemeridian: "true" }
           annotations:
             summary: "Filesystem {{ $labels.mountpoint }} on {{ $labels.instance }} is almost full"
             description: "Less than 10% space left and predicted to fill soon."
 
-    - name: kubegraf-workloads
+    - name: kubemeridian-workloads
       rules:
-        - alert: KubeGrafPodCrashLooping
+        - alert: KubeMeridianPodCrashLooping
           expr: max_over_time(kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"}[5m]) >= 1
           for: 15m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "{{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is crash-looping"
-        - alert: KubeGrafContainerOOMKilled
-          # KubeGraf addition (not in the standard mixin). Misses child-process OOMs.
+        - alert: KubeMeridianContainerOOMKilled
+          # KubeMeridian addition (not in the standard mixin). Misses child-process OOMs.
           expr: increase(kube_pod_container_status_last_terminated_reason{reason="OOMKilled"}[10m]) > 0
           for: 0m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "{{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) was OOMKilled"
-        - alert: KubeGrafContainerHighRestartRate
-          # KubeGraf addition: complements CrashLooping for slow restart storms.
+        - alert: KubeMeridianContainerHighRestartRate
+          # KubeMeridian addition: complements CrashLooping for slow restart storms.
           expr: rate(kube_pod_container_status_restarts_total[15m]) * 60 * 15 > 3
           for: 15m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "{{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) restarting frequently"
             description: "More than 3 restarts in the last 15 minutes."
-        - alert: KubeGrafContainerWaiting
+        - alert: KubeMeridianContainerWaiting
           expr: kube_pod_container_status_waiting_reason{reason!="CrashLoopBackOff"} > 0
           for: 1h
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "{{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) waiting: {{ $labels.reason }}"
-        - alert: KubeGrafPodPending
-          # KubeGraf addition: pods stuck Pending (usually unschedulable).
+        - alert: KubeMeridianPodPending
+          # KubeMeridian addition: pods stuck Pending (usually unschedulable).
           expr: sum by (namespace, pod) (kube_pod_status_phase{phase="Pending"}) > 0
           for: 15m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "{{ $labels.namespace }}/{{ $labels.pod }} stuck Pending for >15m"
-        - alert: KubeGrafPodFailed
-          # KubeGraf addition.
+        - alert: KubeMeridianPodFailed
+          # KubeMeridian addition.
           expr: sum by (namespace, pod) (kube_pod_status_phase{phase="Failed"}) > 0
           for: 15m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "{{ $labels.namespace }}/{{ $labels.pod }} is in Failed phase"
-        - alert: KubeGrafDeploymentReplicasMismatch
+        - alert: KubeMeridianDeploymentReplicasMismatch
           expr: |
             (kube_deployment_spec_replicas > kube_deployment_status_replicas_available)
             and (changes(kube_deployment_status_replicas_updated[10m]) == 0)
           for: 15m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has a replica mismatch"
-        - alert: KubeGrafStatefulSetReplicasMismatch
+        - alert: KubeMeridianStatefulSetReplicasMismatch
           expr: |
             (kube_statefulset_status_replicas_ready != kube_statefulset_replicas)
             and (changes(kube_statefulset_status_replicas_updated[10m]) == 0)
           for: 15m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} has a replica mismatch"
-        - alert: KubeGrafDaemonSetNotScheduled
+        - alert: KubeMeridianDaemonSetNotScheduled
           expr: kube_daemonset_status_desired_number_scheduled - kube_daemonset_status_current_number_scheduled > 0
           for: 10m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} has unscheduled pods"
-        - alert: KubeGrafJobFailed
+        - alert: KubeMeridianJobFailed
           expr: kube_job_failed > 0
           for: 15m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "Job {{ $labels.namespace }}/{{ $labels.job_name }} failed"
-        - alert: KubeGrafHpaMaxedOut
+        - alert: KubeMeridianHpaMaxedOut
           expr: |
             (kube_horizontalpodautoscaler_status_current_replicas == kube_horizontalpodautoscaler_spec_max_replicas)
             and on(namespace, horizontalpodautoscaler)
             (kube_horizontalpodautoscaler_spec_max_replicas != kube_horizontalpodautoscaler_spec_min_replicas)
           for: 15m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "HPA {{ $labels.namespace }}/{{ $labels.horizontalpodautoscaler }} is maxed out"
 
-    - name: kubegraf-resources
+    - name: kubemeridian-resources
       rules:
-        - alert: KubeGrafCPUThrottlingHigh
+        - alert: KubeMeridianCPUThrottlingHigh
           expr: |
             sum(increase(container_cpu_cfs_throttled_periods_total{container!=""}[5m])) by (namespace, pod, container)
             / sum(increase(container_cpu_cfs_periods_total[5m])) by (namespace, pod, container) > 0.25
           for: 15m
-          labels: { severity: info, kubegraf: "true" }
+          labels: { severity: info, kubemeridian: "true" }
           annotations:
             summary: "{{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is CPU-throttled >25%"
-        - alert: KubeGrafQuotaAlmostFull
+        - alert: KubeMeridianQuotaAlmostFull
           expr: |
             kube_resourcequota{type="used"} / ignoring(instance, job, type) (kube_resourcequota{type="hard"} > 0) > 0.9
           for: 15m
-          labels: { severity: info, kubegraf: "true" }
+          labels: { severity: info, kubemeridian: "true" }
           annotations:
             summary: "Quota {{ $labels.resource }} in {{ $labels.namespace }} is >90% used"
 
-    - name: kubegraf-storage
+    - name: kubemeridian-storage
       rules:
-        - alert: KubeGrafPVCFillingUpCritical
+        - alert: KubeMeridianPVCFillingUpCritical
           expr: |
             (kubelet_volume_stats_available_bytes / kubelet_volume_stats_capacity_bytes) < 0.03
             and kubelet_volume_stats_used_bytes > 0
           for: 1m
-          labels: { severity: critical, kubegraf: "true" }
+          labels: { severity: critical, kubemeridian: "true" }
           annotations:
             summary: "PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} has <3% free"
-        - alert: KubeGrafPVCFillingUpWarning
+        - alert: KubeMeridianPVCFillingUpWarning
           expr: |
             (kubelet_volume_stats_available_bytes / kubelet_volume_stats_capacity_bytes) < 0.15
             and kubelet_volume_stats_used_bytes > 0
             and predict_linear(kubelet_volume_stats_available_bytes[6h], 4 * 24 * 3600) < 0
           for: 1h
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} predicted full within 4 days"
-        - alert: KubeGrafPVCInodesFillingUp
+        - alert: KubeMeridianPVCInodesFillingUp
           expr: |
             (kubelet_volume_stats_inodes_free / kubelet_volume_stats_inodes) < 0.03
             and kubelet_volume_stats_inodes_used > 0
           for: 1m
-          labels: { severity: critical, kubegraf: "true" }
+          labels: { severity: critical, kubemeridian: "true" }
           annotations:
             summary: "PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} has <3% inodes free"
-        - alert: KubeGrafPersistentVolumeErrors
+        - alert: KubeMeridianPersistentVolumeErrors
           expr: kube_persistentvolume_status_phase{phase=~"Failed|Pending"} > 0
           for: 5m
-          labels: { severity: critical, kubegraf: "true" }
+          labels: { severity: critical, kubemeridian: "true" }
           annotations:
             summary: "PersistentVolume {{ $labels.persistentvolume }} is in {{ $labels.phase }}"
 
-    - name: kubegraf-monitoring-meta
+    - name: kubemeridian-monitoring-meta
       rules:
-        - alert: KubeGrafKubeStateMetricsDown
-          # Highest-value meta alert: when KSM is down almost every KubeGraf
+        - alert: KubeMeridianKubeStateMetricsDown
+          # Highest-value meta alert: when KSM is down almost every KubeMeridian
           # dashboard and workload alert goes blind.
           expr: absent(up{job=~".*kube-state-metrics.*"} == 1)
           for: 5m
-          labels: { severity: critical, kubegraf: "true" }
+          labels: { severity: critical, kubemeridian: "true" }
           annotations:
-            summary: "kube-state-metrics is down — KubeGraf dashboards and alerts are blind"
-        - alert: KubeGrafNodeExporterDown
+            summary: "kube-state-metrics is down — KubeMeridian dashboards and alerts are blind"
+        - alert: KubeMeridianNodeExporterDown
           expr: absent(up{job=~".*node-exporter.*"} == 1)
           for: 5m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "node-exporter scrape target is down"
-        - alert: KubeGrafTargetDown
+        - alert: KubeMeridianTargetDown
           expr: 100 * (count by (job, namespace) (up == 0) / count by (job, namespace) (up)) > 10
           for: 10m
-          labels: { severity: warning, kubegraf: "true" }
+          labels: { severity: warning, kubemeridian: "true" }
           annotations:
             summary: "More than 10% of {{ $labels.job }} targets are down"

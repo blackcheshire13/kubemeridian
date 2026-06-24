@@ -641,7 +641,7 @@
   "schemaVersion": 39,
   "tags": [
     "kubernetes",
-    "KubeGraf",
+    "KubeMeridian",
     "control-plane",
     "apiserver"
   ],
@@ -717,7 +717,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "KubeGraf \u2014 Control Plane",
-  "uid": "kubegraf-control-plane",
+  "title": "KubeMeridian \u2014 Control Plane",
+  "uid": "kubemeridian-control-plane",
   "weekStart": ""
 }

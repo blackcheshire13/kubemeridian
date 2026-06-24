@@ -100,7 +100,7 @@ export class NodesOverviewPage extends BasePage {
                 reqCpu={s.reqCpu}
                 reqMem={s.reqMem}
                 clusterName={this.cluster?.name}
-                dashboardUid="kubegraf-node"
+                dashboardUid="kubemeridian-node"
               />
             ))}
           </>

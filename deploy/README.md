@@ -1,4 +1,4 @@
-# Deploying KubeGraf to the in-cluster Grafana
+# Deploying KubeMeridian to the in-cluster Grafana
 
 Target: the kube-prometheus-stack release `kps` Grafana on
 `do-fra1-starcrown-internal`, namespace `monitoring`, Grafana 13.x
@@ -11,14 +11,14 @@ the datasource proxies to the live API and returns nodes/namespaces).
 
 ```bash
 npm ci && npm run build
-bash scripts/package.sh          # -> starcrown-kubegraf-app.zip
-aws s3 cp starcrown-kubegraf-app.zip \
-  s3://sc-platform-static/kubegraf/starcrown-kubegraf-app.zip \
+bash scripts/package.sh          # -> devopstech-kubemeridian-app.zip
+aws s3 cp devopstech-kubemeridian-app.zip \
+  s3://sc-platform-static/kubemeridian/devopstech-kubemeridian-app.zip \
   --endpoint-url https://fra1.digitaloceanspaces.com --acl public-read
 ```
 
 URL referenced by the overlay:
-`https://sc-platform-static.fra1.digitaloceanspaces.com/kubegraf/starcrown-kubegraf-app.zip`
+`https://sc-platform-static.fra1.digitaloceanspaces.com/kubemeridian/devopstech-kubemeridian-app.zip`
 
 ## 2. Read-only ServiceAccount + token
 
@@ -42,7 +42,7 @@ The overlay (see `kps-grafana-overlay.yaml`) only touches `grafana.*`:
 - **`deploymentStrategy: Recreate`** — the Grafana PVC is ReadWriteOnce; a
   RollingUpdate deadlocks on Multi-Attach. Recreate rolls cleanly (brief
   downtime of the monitoring Grafana).
-- **`allow_loading_unsigned_plugins: starcrown-kubegraf-app,starcrown-kubegraf-datasource`**
+- **`allow_loading_unsigned_plugins: devopstech-kubemeridian-app,devopstech-kubemeridian-datasource`**
   — both ids are required; in Grafana 13 the bundled datasource does **not**
   inherit the app's unsigned permission.
 
@@ -53,7 +53,7 @@ Inject the SA token (not committed) and apply:
 
 ```bash
 TOKEN=$(kubectl --context do-fra1-starcrown-internal -n monitoring \
-          get secret kubegraf-readonly-token -o jsonpath='{.data.token}' | base64 -d)
+          get secret kubemeridian-readonly-token -o jsonpath='{.data.token}' | base64 -d)
 sed "s|__SA_TOKEN__|$TOKEN|" deploy/grafana-datasource.yaml | \
   kubectl --context do-fra1-starcrown-internal apply -f -
 ```
@@ -64,7 +64,7 @@ sed "s|__SA_TOKEN__|$TOKEN|" deploy/grafana-datasource.yaml | \
 # admin password: kubectl -n monitoring get secret kps-grafana -o jsonpath='{.data.admin-password}' | base64 -d
 curl -s -u admin:PASS -X POST -H 'Content-Type: application/json' \
   -d '{"enabled":true,"pinned":true}' \
-  https://mon.starcrown.team/api/plugins/starcrown-kubegraf-app/settings
+  https://mon.starcrown.team/api/plugins/devopstech-kubemeridian-app/settings
 ```
 
 The enabled state persists in the Grafana DB (on the PVC), surviving restarts.
@@ -77,5 +77,5 @@ curl -s -u admin:PASS \
   https://mon.starcrown.team/api/datasources/proxy/uid/<DS_UID>/__proxy/api/v1/nodes
 ```
 
-In the UI: Apps → **KubeGraf** → Clusters → `KubeGraf — internal` → Applications /
+In the UI: Apps → **KubeMeridian** → Clusters → `KubeMeridian — internal` → Applications /
 Nodes overview.

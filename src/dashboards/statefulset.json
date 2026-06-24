@@ -76,10 +76,10 @@
   "tags": [
     "kubernetes",
     "statefulset",
-    "KubeGraf"
+    "KubeMeridian"
   ],
   "timezone": "browser",
-  "title": "KubeGraf Statefulset's Dashboard",
+  "title": "KubeMeridian Statefulset's Dashboard",
   "templating": {
     "list": [
       {
@@ -1122,7 +1122,7 @@
       "asDropdown": true,
       "icon": "external link",
       "tags": [
-        "KubeGraf"
+        "KubeMeridian"
       ],
       "title": "Dashboards",
       "type": "dashboards"

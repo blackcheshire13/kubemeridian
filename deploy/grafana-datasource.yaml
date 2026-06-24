@@ -1,10 +1,10 @@
-# KubeGraf datasource, provisioned via the Grafana datasources sidecar
+# KubeMeridian datasource, provisioned via the Grafana datasources sidecar
 # (kiwigrid k8s-sidecar watches Secrets/ConfigMaps labelled grafana_datasource=1).
 #
 # The access_token placeholder is filled at apply time from the read-only SA token
 # Secret (deploy/rbac.yaml) — the real token is NOT committed:
 #
-#   TOKEN=$(kubectl -n monitoring get secret kubegraf-readonly-token \
+#   TOKEN=$(kubectl -n monitoring get secret kubemeridian-readonly-token \
 #             -o jsonpath='{.data.token}' | base64 -d)
 #   sed "s|__SA_TOKEN__|$TOKEN|" deploy/grafana-datasource.yaml | \
 #     kubectl --context do-fra1-starcrown-internal apply -f -
@@ -13,16 +13,16 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: kubegraf-datasource
+  name: kubemeridian-datasource
   namespace: monitoring
   labels:
     grafana_datasource: "1"
 stringData:
-  kubegraf-datasource.yaml: |
+  kubemeridian-datasource.yaml: |
     apiVersion: 1
     datasources:
-      - name: KubeGraf — internal
-        type: starcrown-kubegraf-datasource
+      - name: KubeMeridian — internal
+        type: devopstech-kubemeridian-datasource
         access: proxy
         isDefault: false
         jsonData:

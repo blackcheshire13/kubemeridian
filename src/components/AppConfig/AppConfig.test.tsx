@@ -8,8 +8,8 @@ const makeProps = (enabled: boolean): AppConfigProps =>
   ({
     plugin: {
       meta: {
-        id: 'starcrown-kubegraf-app',
-        name: 'KubeGraf',
+        id: 'devopstech-kubemeridian-app',
+        name: 'KubeMeridian',
         type: PluginType.app,
         enabled,
         jsonData: {},

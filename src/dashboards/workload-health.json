@@ -560,7 +560,7 @@
   "schemaVersion": 39,
   "tags": [
     "kubernetes",
-    "KubeGraf",
+    "KubeMeridian",
     "health",
     "troubleshooting"
   ],
@@ -645,7 +645,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "KubeGraf \u2014 Workload Health",
-  "uid": "kubegraf-workload-health",
+  "title": "KubeMeridian \u2014 Workload Health",
+  "uid": "kubemeridian-workload-health",
   "weekStart": ""
 }

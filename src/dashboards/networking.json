@@ -767,7 +767,7 @@
   "schemaVersion": 39,
   "tags": [
     "kubernetes",
-    "KubeGraf",
+    "KubeMeridian",
     "network",
     "ingress"
   ],
@@ -852,7 +852,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "KubeGraf \u2014 Networking",
-  "uid": "kubegraf-networking",
+  "title": "KubeMeridian \u2014 Networking",
+  "uid": "kubemeridian-networking",
   "weekStart": ""
 }

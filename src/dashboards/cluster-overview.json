@@ -1122,7 +1122,7 @@
   "schemaVersion": 39,
   "tags": [
     "kubernetes",
-    "KubeGraf",
+    "KubeMeridian",
     "cluster",
     "overview"
   ],
@@ -1179,7 +1179,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "KubeGraf \u2014 Cluster Overview",
-  "uid": "kubegraf-cluster-overview",
+  "title": "KubeMeridian \u2014 Cluster Overview",
+  "uid": "kubemeridian-cluster-overview",
   "weekStart": ""
 }

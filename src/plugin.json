@@ -1,13 +1,13 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "app",
-  "name": "KubeGraf",
-  "id": "starcrown-kubegraf-app",
+  "name": "KubeMeridian",
+  "id": "devopstech-kubemeridian-app",
   "info": {
     "keywords": ["app", "kubernetes", "k8s"],
-    "description": "Kubernetes cluster monitoring — revived KubeGraf for modern Grafana",
+    "description": "Kubernetes cluster monitoring — revived KubeMeridian for modern Grafana",
     "author": {
-      "name": "Starcrown"
+      "name": "devopstech"
     },
     "logos": {
       "small": "img/logo.svg",
@@ -33,6 +33,7 @@
       "role": "Admin",
       "addToNav": true
     },
+    { "type": "datasource", "name": "KubeMeridian Kubernetes", "path": "datasource/plugin.json" },
     { "type": "dashboard", "name": "Cluster Overview", "path": "dashboards/cluster-overview.json", "addToNav": false },
     { "type": "dashboard", "name": "Namespace Overview", "path": "dashboards/namespace-overview.json", "addToNav": false },
     { "type": "dashboard", "name": "Workload Health", "path": "dashboards/workload-health.json", "addToNav": false },

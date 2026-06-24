@@ -911,7 +911,7 @@
   "schemaVersion": 39,
   "tags": [
     "kubernetes",
-    "KubeGraf",
+    "KubeMeridian",
     "namespace"
   ],
   "templating": {
@@ -990,7 +990,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "KubeGraf \u2014 Namespace Overview",
-  "uid": "kubegraf-namespace-overview",
+  "title": "KubeMeridian \u2014 Namespace Overview",
+  "uid": "kubemeridian-namespace-overview",
   "weekStart": ""
 }

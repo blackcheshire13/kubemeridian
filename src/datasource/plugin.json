@@ -1,19 +1,19 @@
 {
-  "name": "KubeGraf Kubernetes",
-  "id": "starcrown-kubegraf-datasource",
+  "name": "KubeMeridian Kubernetes",
+  "id": "devopstech-kubemeridian-datasource",
   "type": "datasource",
   "metrics": true,
   "info": {
-    "description": "KubeGraf datasource — thin proxy to the Kubernetes API server",
+    "description": "KubeMeridian datasource — thin proxy to the Kubernetes API server",
     "author": {
-      "name": "Starcrown"
+      "name": "devopstech"
     },
     "logos": {
-      "small": "img/grafanaLogo.png",
-      "large": "img/grafanaLogo.png"
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
     },
     "links": [
-      { "name": "GitHub", "url": "https://github.com/blackcheshire13/kubegraf" }
+      { "name": "GitHub", "url": "https://github.com/blackcheshire13/kubemeridian" }
     ],
     "version": "%VERSION%",
     "updated": "%TODAY%"

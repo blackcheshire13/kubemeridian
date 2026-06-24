@@ -1,6 +1,6 @@
 import {PureComponent, SyntheticEvent} from "react";
 import {getBackendSrv, getDataSourceSrv} from "@grafana/runtime";
-import {KubeGrafDatasource} from "../datasource/datasource";
+import {KubeMeridianDatasource} from "../datasource/datasource";
 import store from "../common/store";
 import {Node} from "../models/Node";
 import {DS_ID, PLUGIN_BASE_URL, ROUTES} from "../constants";
@@ -29,7 +29,7 @@ export class BasePage extends PureComponent<Props>{
     pageReady = false;
 
     cluster_id: string;
-    cluster: KubeGrafDatasource | undefined = undefined;
+    cluster: KubeMeridianDatasource | undefined = undefined;
     promDs: any;
     refreshRate: number = 60 * 1000;
 
@@ -134,7 +134,7 @@ export class BasePage extends PureComponent<Props>{
     }
 
      getCluster = async () => {
-        this.cluster = ( await getDataSourceSrv().get(this.cluster_id).catch(e => undefined) ) as KubeGrafDatasource | undefined;
+        this.cluster = ( await getDataSourceSrv().get(this.cluster_id).catch(e => undefined) ) as KubeMeridianDatasource | undefined;
         if(
             this.cluster !== undefined
             &&

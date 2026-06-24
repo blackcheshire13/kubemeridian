@@ -61,7 +61,7 @@ export class ClustersListPage extends PureComponent<{}, State> {
 
         {visible && listMetricsDatasources().length === 0 && (
           <Alert severity="info" title="No Prometheus datasource found">
-            KubeGraf dashboards and the Services (RED) page need a Prometheus-compatible datasource. Add one, then
+            KubeMeridian dashboards and the Services (RED) page need a Prometheus-compatible datasource. Add one, then
             link it per cluster.{' '}
             <LinkButton size="sm" fill="text" href="/connections/datasources/new">
               Add datasource

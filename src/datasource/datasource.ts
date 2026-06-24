@@ -15,7 +15,7 @@ function alertError(message: string) {
   getAppEvents().publish({ type: AppEvents.alertError.name, payload: [message] });
 }
 
-export class KubeGrafDatasource extends DataSourceApi<KubegrafDSQuery, KubegrafDSOptions> {
+export class KubeMeridianDatasource extends DataSourceApi<KubegrafDSQuery, KubegrafDSOptions> {
   constructor(public instanceSettings: DataSourceInstanceSettings<KubegrafDSOptions>) {
     super(instanceSettings);
   }

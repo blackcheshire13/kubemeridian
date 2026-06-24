@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Build and package the unsigned plugin as a zip for in-cluster install.
-# Output: starcrown-kubegraf-app.zip (dist/ renamed to the plugin id inside the zip).
+# Output: devopstech-kubemeridian-app.zip (dist/ renamed to the plugin id inside the zip).
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-PLUGIN_ID="starcrown-kubegraf-app"
+PLUGIN_ID="devopstech-kubemeridian-app"
 OUT="${PLUGIN_ID}.zip"
 
 npm ci

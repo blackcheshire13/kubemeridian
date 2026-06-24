@@ -1,6 +1,6 @@
-# KubeGraf — Kubernetes observability app for Grafana
+# KubeMeridian — Kubernetes observability app for Grafana
 
-**KubeGraf** turns Grafana into a turnkey Kubernetes observability product: install one
+**KubeMeridian** turns Grafana into a turnkey Kubernetes observability product: install one
 app plugin, link your connections (metrics, logs, traces, cost), and get a curated base
 monitoring stack — topology, dashboards, logs, traces, cost/efficiency and an alert pack.
 
@@ -38,11 +38,11 @@ by UID, plus FinOps cost settings (OpenCost toggle or an estimation price list).
 in the cluster ConfigEditor or the one-step *Add cluster* modal.
 
 ### Alert pack
-`deploy/kubegraf-prometheusrule.yaml` — 25 curated Prometheus Operator alerts (nodes, workloads,
+`deploy/kubemeridian-prometheusrule.yaml` — 25 curated Prometheus Operator alerts (nodes, workloads,
 resources, storage, monitoring-meta) for environments without the kube-prometheus-stack mixin.
 
 ### Datasource
-`starcrown-kubegraf-datasource` — a thin proxy to the Kubernetes API. Frontend-only: it proxies
+`devopstech-kubemeridian-datasource` — a thin proxy to the Kubernetes API. Frontend-only: it proxies
 read-only `GET` calls through Grafana with a ServiceAccount **bearer token** injected server-side
 (`secureJsonData`, never exposed to the browser), and implements `metricFindQuery` for dashboard
 template variables.
@@ -58,17 +58,17 @@ npm run typecheck
 npm run build        # production build
 ```
 
-The dev Grafana sets `GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=starcrown-kubegraf-app`.
+The dev Grafana sets `GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=devopstech-kubemeridian-app`.
 
 ## Deploy (in-cluster Grafana)
 
 See [`deploy/`](./deploy): a read-only ServiceAccount + RBAC (`rbac.yaml`), a kube-prometheus-stack
 Grafana overlay (`kps-grafana-overlay.yaml`), the datasource provisioning Secret
-(`grafana-datasource.yaml`) and the alert pack (`kubegraf-prometheusrule.yaml`).
+(`grafana-datasource.yaml`) and the alert pack (`kubemeridian-prometheusrule.yaml`).
 
 ## Configure a cluster
 
-Create a `KubeGraf Kubernetes` datasource (or use *Add cluster*) and set:
+Create a `KubeMeridian Kubernetes` datasource (or use *Add cluster*) and set:
 
 - **API server URL** — e.g. `https://kubernetes.default.svc` (when Grafana runs in-cluster).
 - **Access via bearer token** — on; paste a read-only ServiceAccount token.

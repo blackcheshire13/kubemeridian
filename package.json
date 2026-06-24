@@ -1,8 +1,8 @@
 {
-  "name": "kubegraf",
-  "version": "2.2.0",
+  "name": "kubemeridian",
+  "version": "2.3.0",
   "scripts": {
-    "build": "webpack -c ./.config/webpack/webpack.config.ts --env production",
+    "build": "webpack -c ./.config/webpack/webpack.config.ts --env production && node scripts/copy-datasource-logo.mjs",
     "dev": "webpack -w -c ./.config/webpack/webpack.config.ts --env development",
     "test": "jest --watch --onlyChanged",
     "test:ci": "jest --passWithNoTests --maxWorkers 4",
@@ -13,7 +13,7 @@
     "server": "docker compose up --build",
     "sign": "sign-plugin"
   },
-  "author": "Starcrown",
+  "author": "devopstech",
   "license": "Apache-2.0",
   "devDependencies": {
     "@grafana/eslint-config": "^9.0.0",

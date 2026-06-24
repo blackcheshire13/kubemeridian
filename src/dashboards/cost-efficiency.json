@@ -653,7 +653,7 @@
   "schemaVersion": 39,
   "tags": [
     "kubernetes",
-    "KubeGraf",
+    "KubeMeridian",
     "cost",
     "finops"
   ],
@@ -776,7 +776,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "KubeGraf \u2014 Cost & Efficiency",
-  "uid": "kubegraf-cost-efficiency",
+  "title": "KubeMeridian \u2014 Cost & Efficiency",
+  "uid": "kubemeridian-cost-efficiency",
   "weekStart": ""
 }
