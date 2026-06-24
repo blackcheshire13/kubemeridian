@@ -3,7 +3,7 @@ import { css } from '@emotion/css';
 import { GrafanaTheme2 } from '@grafana/data';
 import { getDataSourceSrv } from '@grafana/runtime';
 import { Badge, Icon, Tooltip, useStyles2 } from '@grafana/ui';
-import { KubeGrafDatasource } from '../datasource/datasource';
+import { KubeMeridianDatasource } from '../datasource/datasource';
 import { Node } from '../models/Node';
 import { KubegrafDSOptions } from '../types';
 import { resolveMetricsUid } from '../common/connections';
@@ -43,7 +43,7 @@ export function ClusterMeta({ uid }: { uid: string }) {
     let mounted = true;
     (async () => {
       try {
-        const ds = (await getDataSourceSrv().get(uid)) as KubeGrafDatasource;
+        const ds = (await getDataSourceSrv().get(uid)) as KubeMeridianDatasource;
         const jsonData = (ds.instanceSettings.jsonData ?? {}) as KubegrafDSOptions;
         const profile = resolveProfile(jsonData.traffic);
         if (mounted) {

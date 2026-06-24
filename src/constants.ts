@@ -4,7 +4,7 @@ export const APP_ID = pluginJson.id;
 export const PLUGIN_BASE_URL = `/a/${APP_ID}`;
 
 // Bundled datasource plugin id (see src/datasource/plugin.json)
-export const DS_ID = 'starcrown-kubegraf-datasource';
+export const DS_ID = 'devopstech-kubemeridian-datasource';
 
 // Companion datasource plugin types we link a cluster to.
 export const PROMETHEUS_ID = 'prometheus';

@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.3.0 — Rebrand: KubeMeridian
+
+Renamed the plugin from the revived "KubeGraf" to its own brand, **KubeMeridian**,
+ahead of a Grafana catalog submission.
+
+- Plugin ids: `starcrown-kubegraf-app` → `devopstech-kubemeridian-app`,
+  `starcrown-kubegraf-datasource` → `devopstech-kubemeridian-datasource`.
+- New logo (Hex Meridian in Kubernetes blue), display name, author (devopstech),
+  dashboard titles/UIDs (`kubemeridian-*`), alert group names and deploy artifacts.
+- No functional change — same features as 2.2.0.
+
+> Note: the plugin id change is a new plugin identity. A fresh install/provision
+> is required; the old `starcrown-kubegraf-*` install is superseded.
+
 ## 2.2.0 — Fleet overview & onboarding
 
 - The Clusters page is now a **fleet overview**: each cluster card shows live
@@ -67,7 +81,7 @@ Bug fixes from a full dashboard-vs-live-Prometheus + code audit:
 
 ## 2.0.0 — Observability product
 
-KubeGraf evolves from a Kubernetes topology browser into a turnkey observability app:
+KubeMeridian evolves from a Kubernetes topology browser into a turnkey observability app:
 install one plugin, link your connections (metrics, logs, traces, cost), and get a
 curated base monitoring stack.
 
@@ -83,7 +97,7 @@ curated base monitoring stack.
 - **9 new bundled dashboards**: Cluster Overview, Namespace Overview, Workload Health,
   Storage, Cost & Efficiency, Control Plane, Networking, RED & SLO (plus the existing
   Node/Pod/Deployment/StatefulSet/DaemonSet).
-- **Alert pack** (`deploy/kubegraf-prometheusrule.yaml`) — 25 curated Prometheus alerts.
+- **Alert pack** (`deploy/kubemeridian-prometheusrule.yaml`) — 25 curated Prometheus alerts.
 - Datasource gains events / PVC / PV / storageclass / ingress / resourcequota / HPA
   reads; RBAC extended accordingly.
 
@@ -94,9 +108,9 @@ curated base monitoring stack.
 
 ## 1.0.x — Revival
 
-Revived the abandoned DevOpsProdigy KubeGraf plugin for modern Grafana (>= 12.3):
-React 18 + `@grafana/create-plugin`, an app plugin (`starcrown-kubegraf-app`) bundling
-a Kubernetes API proxy datasource (`starcrown-kubegraf-datasource`).
+Revived the abandoned DevOpsProdigy KubeMeridian plugin for modern Grafana (>= 12.3):
+React 18 + `@grafana/create-plugin`, an app plugin (`devopstech-kubemeridian-app`) bundling
+a Kubernetes API proxy datasource (`devopstech-kubemeridian-datasource`).
 
 - Cluster Status (topology), Applications Overview (namespace → workload → pod) and
   Nodes Overview pages; multi-cluster management via the Clusters page.

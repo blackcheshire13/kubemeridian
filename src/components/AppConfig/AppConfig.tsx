@@ -27,7 +27,7 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
 
   return (
     <div data-testid={testIds.appConfig.container} className={s.wrap}>
-      <h3>KubeGraf — Kubernetes monitoring</h3>
+      <h3>KubeMeridian — Kubernetes monitoring</h3>
       <p className={s.desc}>
         Visualize and analyze your Kubernetes clusters: an applications map (namespaces → workloads → pods), a
         nodes overview with resource usage, and bundled Prometheus dashboards. Each cluster is a datasource

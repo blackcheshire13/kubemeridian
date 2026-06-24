@@ -76,10 +76,10 @@
   "tags": [
     "kubernetes",
     "deployment",
-    "KubeGraf"
+    "KubeMeridian"
   ],
   "timezone": "browser",
-  "title": "KubeGraf Deployment's Dashboard",
+  "title": "KubeMeridian Deployment's Dashboard",
   "templating": {
     "list": [
       {
@@ -1116,7 +1116,7 @@
       "asDropdown": true,
       "icon": "external link",
       "tags": [
-        "KubeGraf"
+        "KubeMeridian"
       ],
       "title": "Dashboards",
       "type": "dashboards"

@@ -47,7 +47,7 @@
   "tags": [
     "kubernetes",
     "daemonset",
-    "KubeGraf"
+    "KubeMeridian"
   ],
   "time": {
     "from": "now-30m",
@@ -79,7 +79,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "KubeGraf Daemonset's Dashboard",
+  "title": "KubeMeridian Daemonset's Dashboard",
   "templating": {
     "list": [
       {
@@ -1111,7 +1111,7 @@
       "asDropdown": true,
       "icon": "external link",
       "tags": [
-        "KubeGraf"
+        "KubeMeridian"
       ],
       "title": "Dashboards",
       "type": "dashboards"

@@ -29,7 +29,7 @@ export class StatefulsetCard extends PureComponent<Props>{
     }
 
     getStatefulsetDashboardLink(){
-        return `d/rXZAJ9Dnz/kubegraf-statefulsets-dashboard?orgId=${this.orgId}&var-cluster=${this.clusterName}&var-namespace=${this.statefulset.data.metadata.namespace}&var-statefulset=${this.statefulset.name}`;
+        return `d/rXZAJ9Dnz/kubemeridian-statefulsets-dashboard?orgId=${this.orgId}&var-cluster=${this.clusterName}&var-namespace=${this.statefulset.data.metadata.namespace}&var-statefulset=${this.statefulset.name}`;
     }
 
     getPodsArray(){

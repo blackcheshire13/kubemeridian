@@ -70,10 +70,10 @@
   "tags": [
     "kubernetes",
     "node",
-    "KubeGraf"
+    "KubeMeridian"
   ],
   "timezone": "browser",
-  "title": "KubeGraf Node's Dashboard",
+  "title": "KubeMeridian Node's Dashboard",
   "templating": {
     "list": [
       {
@@ -13693,12 +13693,12 @@
       "asDropdown": true,
       "icon": "external link",
       "tags": [
-        "KubeGraf"
+        "KubeMeridian"
       ],
       "title": "Dashboards",
       "type": "dashboards"
     }
   ],
-  "uid": "kubegraf-node",
+  "uid": "kubemeridian-node",
   "revision": 8
 }

@@ -1,9 +1,9 @@
 apiVersion: 1
 
 apps:
-  - type: 'starcrown-kubegraf-app'
+  - type: 'devopstech-kubemeridian-app'
     org_id: 1
-    org_name: 'starcrown'
+    org_name: 'devopstech'
     disabled: false
     jsonData:
       apiUrl: http://default-url.com

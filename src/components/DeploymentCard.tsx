@@ -30,7 +30,7 @@ export class DeploymentCard extends PureComponent<Props>{
     }
 
     getDeploymentDashboardLink(){
-        return `d/B_WA19v7z/kubegraf-deployments-dashboard?orgId=${this.orgId}&var-cluster=${this.clusterName}&var-namespace=${this.deployment.data.metadata.namespace}&var-deployment=${this.deployment.name}`;
+        return `d/B_WA19v7z/kubemeridian-deployments-dashboard?orgId=${this.orgId}&var-cluster=${this.clusterName}&var-namespace=${this.deployment.data.metadata.namespace}&var-deployment=${this.deployment.name}`;
     }
 
     getPodsArray(){
