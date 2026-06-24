@@ -24,6 +24,7 @@
       { "name": "Cluster Overview", "path": "img/screenshots/cluster-overview.png" },
       { "name": "Applications topology", "path": "img/screenshots/applications.png" },
       { "name": "Workload Health", "path": "img/screenshots/workload-health.png" },
+      { "name": "Cost Explorer (multi-cloud)", "path": "img/screenshots/cost.png" },
       { "name": "Cost & Efficiency", "path": "img/screenshots/cost-efficiency.png" },
       { "name": "Inline logs (Loki)", "path": "img/screenshots/logs.png" }
     ],
