@@ -146,6 +146,7 @@ export class ApplicationsOverview extends BasePage {
             status: this.generateCLusterStatusLink(),
             apps: this.generateApplicationsOverviewLink(),
             nodes: this.generateNodesOverviewLink(),
+            events: this.generateEventsLink(),
             edit: this.generateEditLink(),
             config: `/plugins/${APP_ID}`,
           }}

@@ -17,6 +17,7 @@ export enum ROUTES {
   ClusterStatus = 'cluster-status',
   ApplicationsOverview = 'applications-overview',
   NodesOverview = 'nodes-overview',
+  Events = 'events',
 }
 
 export const PODS_LIMIT = 10;

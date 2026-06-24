@@ -120,6 +120,37 @@ export class KubeGrafDatasource extends DataSourceApi<KubegrafDSQuery, KubegrafD
     return this.__list('/api/v1/' + this.__addNamespace(namespace) + 'pods', 'Pods');
   }
 
+  getEvents(namespace: string | null = null) {
+    return this.__list('/api/v1/' + this.__addNamespace(namespace) + 'events', 'Events');
+  }
+
+  getResourceQuotas(namespace: string | null = null) {
+    return this.__list('/api/v1/' + this.__addNamespace(namespace) + 'resourcequotas', 'Resource quotas');
+  }
+
+  getPersistentVolumeClaims(namespace: string | null = null) {
+    return this.__list('/api/v1/' + this.__addNamespace(namespace) + 'persistentvolumeclaims', 'Persistent volume claims');
+  }
+
+  getPersistentVolumes() {
+    return this.__list('/api/v1/persistentvolumes', 'Persistent volumes');
+  }
+
+  getStorageClasses() {
+    return this.__list('/apis/storage.k8s.io/v1/storageclasses', 'Storage classes');
+  }
+
+  getIngresses(namespace: string | null = null) {
+    return this.__list('/apis/networking.k8s.io/v1/' + this.__addNamespace(namespace) + 'ingresses', 'Ingresses');
+  }
+
+  getHorizontalPodAutoscalers(namespace: string | null = null) {
+    return this.__list(
+      '/apis/autoscaling/v2/' + this.__addNamespace(namespace) + 'horizontalpodautoscalers',
+      'Horizontal pod autoscalers'
+    );
+  }
+
   __addNamespace(namespace: string | undefined | null) {
     return namespace ? `namespaces/${namespace}/` : '';
   }
