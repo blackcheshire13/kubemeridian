@@ -12,6 +12,7 @@ import { LogsPage } from '../../pages/Logs';
 import { TracesPage } from '../../pages/Traces';
 import { ServicesPage } from '../../pages/Services';
 import { CostPage } from '../../pages/Cost';
+import { organizeDashboardsIntoFolder } from '../../common/dashboards';
 
 function NodesRoute() {
   const { clusterId = '' } = useParams();
@@ -54,6 +55,11 @@ function ClusterStatusRoute() {
 }
 
 function App(_props: AppRootProps) {
+  // Group the bundled dashboards under a "KubeMeridian" folder (best-effort, idempotent).
+  React.useEffect(() => {
+    organizeDashboardsIntoFolder();
+  }, []);
+
   return (
     <ErrorBoundaryAlert style="page" title="KubeMeridian ran into an unexpected error">
       <Routes>

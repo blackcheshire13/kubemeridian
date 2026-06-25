@@ -19,6 +19,13 @@ Pre-publication review pass — no feature changes, all fixes:
 - **Packaging**: the catalog README is now the real project README; the
   Services (RED) screenshot is included; the datasource links to docs; the
   package script emits a `{plugin-id}-{version}.zip` with its SHA1.
+- **Consistent dashboard nav**: every bundled dashboard now carries the
+  "Dashboards" dropdown (cross-links the KubeMeridian set) — 7 of them were
+  missing it.
+- **Dashboards grouped in a folder**: the app now creates a "KubeMeridian"
+  folder and moves its bundled dashboards into it (best-effort, idempotent, on
+  app open) instead of leaving them in General. Grafana has no plugin.json
+  option for this, so the app organizes them via the API.
 - **Pod deep-links fixed**: the pod-status squares on Cluster Status now open
   the Pod dashboard for that specific pod (they used to go to Applications
   Overview); the pod card's dashboard link no longer passes the datasource name
