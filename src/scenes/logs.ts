@@ -81,10 +81,10 @@ export function buildLogsScene(opts: LogsSceneOpts): EmbeddedScene {
   // Backtick-delimited LogQL so a search with quotes/backslashes doesn't break it.
   const sf = pageMode ? ' |~ `(?i)$search`' : '';
 
-  const range = (ds2: typeof ds, expr: string) =>
-    new SceneQueryRunner({ datasource: ds2, queries: [{ refId: 'A', expr }] });
-  const instant = (ds2: typeof ds, expr: string) =>
-    new SceneQueryRunner({ datasource: ds2, queries: [{ refId: 'A', expr, queryType: 'instant' }] });
+  const range = (ds2: typeof ds, expr: string, legendFormat?: string) =>
+    new SceneQueryRunner({ datasource: ds2, queries: [{ refId: 'A', expr, legendFormat }] });
+  const instant = (ds2: typeof ds, expr: string, legendFormat?: string) =>
+    new SceneQueryRunner({ datasource: ds2, queries: [{ refId: 'A', expr, queryType: 'instant', legendFormat }] });
 
   // ---- Logs viewer (both modes) ----
   const logsPanel = PanelBuilders.logs()
@@ -149,12 +149,14 @@ export function buildLogsScene(opts: LogsSceneOpts): EmbeddedScene {
     .setOption('graphMode', 'none' as any)
     .build();
 
+  // Loki has no $__rate_interval (Prometheus-only macro) — use $__range as an
+  // instant query so the tile reads 0 (via `or vector(0)`) when there are no errors.
   const statErrRate = PanelBuilders.stat()
     .setTitle('Error rate')
     .setUnit('logs/s' as any)
     .setThresholds(thresholds([[-Infinity, 'green'], [0.1, 'orange'], [1, 'red']]))
-    .setData(range(ds, `sum(rate(${sel}${sf} |~ \`${ERR_RE}\` [$__rate_interval])) or vector(0)`))
-    .setOption('graphMode', 'area' as any)
+    .setData(instant(ds, `sum(rate(${sel}${sf} |~ \`${ERR_RE}\` [$__range])) or vector(0)`))
+    .setOption('graphMode', 'none' as any)
     .build();
 
   const statErrPct = PanelBuilders.stat()
@@ -179,7 +181,7 @@ export function buildLogsScene(opts: LogsSceneOpts): EmbeddedScene {
   // ---- Row B: stacked log-volume-by-level histogram ----
   const volumePanel = PanelBuilders.timeseries()
     .setTitle('Log volume by level')
-    .setData(range(ds, levelVolume(sel, sf, '$__auto')))
+    .setData(range(ds, levelVolume(sel, sf, '$__auto'), '{{level}}'))
     .setCustomFieldConfig('drawStyle', GraphDrawStyle.Bars)
     .setCustomFieldConfig('fillOpacity', 70)
     .setCustomFieldConfig('lineWidth', 0)
@@ -190,7 +192,7 @@ export function buildLogsScene(opts: LogsSceneOpts): EmbeddedScene {
   // ---- Row C: level pie + top pods ----
   const levelPie = PanelBuilders.piechart()
     .setTitle('Levels')
-    .setData(instant(ds, levelVolume(sel, sf, '$__range')))
+    .setData(instant(ds, levelVolume(sel, sf, '$__range'), '{{level}}'))
     .setOverrides(levelColors)
     .build();
 
