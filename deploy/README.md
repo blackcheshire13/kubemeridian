@@ -1,36 +1,34 @@
-# Deploying KubeMeridian to the in-cluster Grafana
+# Deploying KubeMeridian to an in-cluster Grafana
 
-Target: the kube-prometheus-stack release `kps` Grafana on
-`do-fra1-starcrown-internal`, namespace `monitoring`, Grafana 13.x
-(https://mon.starcrown.team). The plugin is **unsigned**.
-
-This is the procedure that was actually used to deploy (verified end-to-end:
-the datasource proxies to the live API and returns nodes/namespaces).
+These are example manifests for installing KubeMeridian into a Grafana running
+inside your Kubernetes cluster (here: a kube-prometheus-stack release named
+`kps` in the `monitoring` namespace, Grafana 13.x). Replace the placeholders
+(`<your-kube-context>`, `https://grafana.example.com`, the object-storage URL)
+with your own values. Until the plugin is signed by Grafana it is **unsigned**,
+so it must be allow-listed (see step 3).
 
 ## 1. Build & publish the plugin zip
 
 ```bash
 npm ci && npm run build
-bash scripts/package.sh          # -> devopstech-kubemeridian-app.zip
-aws s3 cp devopstech-kubemeridian-app.zip \
-  s3://sc-platform-static/kubemeridian/devopstech-kubemeridian-app.zip \
-  --endpoint-url https://fra1.digitaloceanspaces.com --acl public-read
+bash scripts/package.sh          # -> devopstech-kubemeridian-app-<version>.zip
 ```
 
-URL referenced by the overlay:
-`https://sc-platform-static.fra1.digitaloceanspaces.com/kubemeridian/devopstech-kubemeridian-app.zip`
+Host the zip on any object storage / web server your cluster can reach over
+HTTPS (or use the GitHub Release asset produced by the release workflow), and
+note the public URL — the Helm overlay references it via `GF_INSTALL_PLUGINS`.
 
 ## 2. Read-only ServiceAccount + token
 
 ```bash
-kubectl --context do-fra1-starcrown-internal apply -f deploy/rbac.yaml
+kubectl --context <your-kube-context> apply -f deploy/rbac.yaml
 ```
 
 ## 3. Install the plugin into Grafana (Helm)
 
 ```bash
 helm upgrade kps prometheus-community/kube-prometheus-stack \
-  --version 86.2.3 -n monitoring --kube-context do-fra1-starcrown-internal \
+  --version 86.2.3 -n monitoring --kube-context <your-kube-context> \
   --reuse-values -f deploy/kps-grafana-overlay.yaml
 ```
 
@@ -44,7 +42,7 @@ The overlay (see `kps-grafana-overlay.yaml`) only touches `grafana.*`:
   downtime of the monitoring Grafana).
 - **`allow_loading_unsigned_plugins: devopstech-kubemeridian-app,devopstech-kubemeridian-datasource`**
   — both ids are required; in Grafana 13 the bundled datasource does **not**
-  inherit the app's unsigned permission.
+  inherit the app's unsigned permission. (Drop this once the plugin is signed.)
 
 ## 4. Provision the datasource (sidecar)
 
@@ -52,10 +50,10 @@ The Grafana datasources sidecar watches Secrets labelled `grafana_datasource=1`.
 Inject the SA token (not committed) and apply:
 
 ```bash
-TOKEN=$(kubectl --context do-fra1-starcrown-internal -n monitoring \
+TOKEN=$(kubectl --context <your-kube-context> -n monitoring \
           get secret kubemeridian-readonly-token -o jsonpath='{.data.token}' | base64 -d)
 sed "s|__SA_TOKEN__|$TOKEN|" deploy/grafana-datasource.yaml | \
-  kubectl --context do-fra1-starcrown-internal apply -f -
+  kubectl --context <your-kube-context> apply -f -
 ```
 
 ## 5. Enable the app
@@ -64,7 +62,7 @@ sed "s|__SA_TOKEN__|$TOKEN|" deploy/grafana-datasource.yaml | \
 # admin password: kubectl -n monitoring get secret kps-grafana -o jsonpath='{.data.admin-password}' | base64 -d
 curl -s -u admin:PASS -X POST -H 'Content-Type: application/json' \
   -d '{"enabled":true,"pinned":true}' \
-  https://mon.starcrown.team/api/plugins/devopstech-kubemeridian-app/settings
+  https://grafana.example.com/api/plugins/devopstech-kubemeridian-app/settings
 ```
 
 The enabled state persists in the Grafana DB (on the PVC), surviving restarts.
@@ -74,8 +72,8 @@ The enabled state persists in the Grafana DB (on the PVC), surviving restarts.
 ```bash
 # via the datasource proxy (admin):
 curl -s -u admin:PASS \
-  https://mon.starcrown.team/api/datasources/proxy/uid/<DS_UID>/__proxy/api/v1/nodes
+  https://grafana.example.com/api/datasources/proxy/uid/<DS_UID>/__proxy/api/v1/nodes
 ```
 
-In the UI: Apps → **KubeMeridian** → Clusters → `KubeMeridian — internal` → Applications /
+In the UI: Apps → **KubeMeridian** → Clusters → your cluster → Applications /
 Nodes overview.

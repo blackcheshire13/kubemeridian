@@ -13,6 +13,8 @@
       "large": "img/logo.svg"
     },
     "links": [
+      { "name": "Website", "url": "https://devopstech.net" },
+      { "name": "Documentation", "url": "https://devopstech.net/guide/topology" },
       { "name": "GitHub", "url": "https://github.com/blackcheshire13/kubemeridian" }
     ],
     "version": "%VERSION%",

@@ -14,35 +14,35 @@ plugin catalog. Submission is a **web form in Grafana Cloud** (not a PR).
 3. **Access Policy token** — My Account → Security → Access Policies → realm = your
    org, scope = **`plugins:write`**. Keep it secret.
 
-## Build, sign, package
+## Build, sign, package & host — via GitHub Releases (recommended)
+
+The release workflow (`.github/workflows/release.yml`) builds, **signs** and
+attaches a `{plugin-id}-{version}.zip` to a GitHub Release when you push a tag.
+One-time: add the repo secret **`GRAFANA_ACCESS_POLICY_TOKEN`** (Settings →
+Secrets and variables → Actions) with your `plugins:write` token.
 
 ```bash
-npm ci && npm run build                      # -> dist/  (validator-clean)
-npx @grafana/plugin-validator@latest <zip>   # sanity check (see below to make the zip)
-
-# package the zip (dist/ renamed to the plugin id inside the archive)
-bash scripts/package.sh                       # -> devopstech-kubemeridian-app.zip
+# bump version in package.json + CHANGELOG.md, then:
+git tag v2.4.1 && git push origin v2.4.1
 ```
 
-**Sign** (community signature; run with your token — the token never leaves your machine):
-```bash
-GRAFANA_ACCESS_POLICY_TOKEN=<token> npm run sign
-# re-package after signing so MANIFEST.txt is inside the zip
-```
-> A community signature is granted through the review; you sign with your
-> `plugins:write` token once the plugin is registered/approved.
+The Release asset URL is your **public ZIP URL**; the workflow also prints the
+zip's checksum (use it as the SHA1 in the form). Grafana grants the community
+signature on approval; signing with your token registers the build.
 
-## Host the archive + hash
+## Build, sign, package & host — manual fallback
 
 ```bash
-# upload to any public URL (we use DO Spaces)
-aws s3 cp devopstech-kubemeridian-app.zip \
-  s3://sc-platform-static/kubemeridian/devopstech-kubemeridian-app.zip \
-  --endpoint-url https://fra1.digitaloceanspaces.com --acl public-read
+npm ci && npm run build                       # -> dist/
+bash scripts/package.sh                        # -> devopstech-kubemeridian-app-<version>.zip (+ prints SHA1)
+npx @grafana/plugin-validator@latest devopstech-kubemeridian-app-*.zip   # sanity check
 
-# the form needs the SHA1 of the hosted zip
-sha1sum devopstech-kubemeridian-app.zip
+GRAFANA_ACCESS_POLICY_TOKEN=<token> npm run sign   # community signature
+bash scripts/package.sh                            # re-package so MANIFEST.txt is inside
 ```
+
+Host the zip on any public HTTPS URL (object storage / web server) and take its
+`sha1sum` for the submission form.
 
 ## Submit
 

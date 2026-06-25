@@ -266,7 +266,7 @@ export function ConfigEditor({ options, onOptionsChange }: Props) {
 
         {traffic.profile === 'custom' && (
           <>
-            <InlineField label="Request metric" labelWidth={LABEL_WIDTH} tooltip="Counter to rate() for throughput">
+            <InlineField label="Request metric" labelWidth={LABEL_WIDTH} tooltip="Counter to rate() for throughput. Most stacks expose throughput and errors on the same counter (errors selected via the error label below), so this value also seeds the denominator and error metric — override them only if your errors live on a separate metric.">
               <Input width={FIELD_WIDTH} value={custom.rateMetric ?? ''} placeholder="http_requests_total" onChange={(e) => setCustom({ rateMetric: e.currentTarget.value, denomMetric: e.currentTarget.value, errorMetric: e.currentTarget.value })} />
             </InlineField>
             <InlineField label="Error label" labelWidth={LABEL_WIDTH} tooltip="Label carrying the status (e.g. response_code, code, status)">

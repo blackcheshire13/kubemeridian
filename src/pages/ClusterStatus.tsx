@@ -20,32 +20,52 @@ export class ClusterStatus extends BasePage {
     nodes: [] as Node[],
   };
 
+  private mounted = true;
+  private componentsTimer?: ReturnType<typeof setTimeout>;
+
   constructor(props: any) {
     super(props);
 
     this.prepareDs().then(() => {
+      if (!this.mounted) {
+        return;
+      }
       this.setState({ currentClusterId: this.cluster?.instanceSettings.uid });
       this.loadAll();
       this.getClusterComponents();
     });
 
     this.getAvailableClusters().then((res) => {
-      this.setState({ clusters: res });
+      if (this.mounted) {
+        this.setState({ clusters: res });
+      }
     });
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
+    if (this.componentsTimer) {
+      clearTimeout(this.componentsTimer);
+    }
   }
 
   loadAll = async () => {
     await Promise.all([this.getNodes(), this.getPods()]);
-    this.setState({ nodes: this.nodesMap, pageReady: true });
+    if (this.mounted) {
+      this.setState({ nodes: this.nodesMap, pageReady: true });
+    }
   };
 
   getClusterComponents() {
     this.cluster?.getComponents().then((components: any) => {
+      if (!this.mounted) {
+        return;
+      }
       if (components instanceof Array) {
         this.storeComponents = components.map((c: any) => new Component(c));
       }
       this.setState({ clusterComponents: this.storeComponents });
-      setTimeout(() => this.getClusterComponents(), this.refreshRate);
+      this.componentsTimer = setTimeout(() => this.getClusterComponents(), this.refreshRate);
     });
   }
 

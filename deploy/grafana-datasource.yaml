@@ -7,7 +7,7 @@
 #   TOKEN=$(kubectl -n monitoring get secret kubemeridian-readonly-token \
 #             -o jsonpath='{.data.token}' | base64 -d)
 #   sed "s|__SA_TOKEN__|$TOKEN|" deploy/grafana-datasource.yaml | \
-#     kubectl --context do-fra1-starcrown-internal apply -f -
+#     kubectl --context <your-kube-context> apply -f -
 #
 # Apply AFTER the plugin is installed (the datasource type must exist first).
 apiVersion: v1
@@ -29,12 +29,14 @@ stringData:
           cluster_url: https://kubernetes.default.svc
           access_via_token: true
           tlsSkipVerify: true
-          # Connections by datasource UID (this cluster). Loki/Tempo UIDs are
-          # specific to this Grafana; metrics uid "prometheus" is the kps default.
+          # Connections by datasource UID. metrics uid "prometheus" is the kps
+          # default; set logs_uid/traces_uid to your Loki/Tempo datasource UIDs
+          # (find them in Grafana under Connections → Data sources), or omit them.
           metrics_uid: prometheus
-          logs_uid: P8E80F9AEF21F6940
-          traces_uid: P214B5B846CF3925F
-          # RED source: this cluster runs Istio.
+          logs_uid: <your-loki-datasource-uid>
+          traces_uid: <your-tempo-datasource-uid>
+          # RED source: set to the ingress/mesh stack your cluster runs (istio,
+          # linkerd, nginx, traefik, …) — see the Services (RED) page / docs.
           traffic:
             profile: istio
           refresh_pods_rate: "60"

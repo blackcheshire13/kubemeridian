@@ -1,5 +1,5 @@
 # Minimal additive overlay for the existing kube-prometheus-stack release `kps`
-# on do-fra1-starcrown-internal (namespace monitoring), applied with:
+# in the `monitoring` namespace, applied with:
 #
 #   helm upgrade kps prometheus-community/kube-prometheus-stack \
 #     --version 86.2.3 -n monitoring --reuse-values -f deploy/kps-grafana-overlay.yaml
@@ -20,7 +20,9 @@ grafana:
     type: Recreate
   plugins: []
   env:
-    GF_INSTALL_PLUGINS: "https://sc-platform-static.fra1.digitaloceanspaces.com/kubemeridian/devopstech-kubemeridian-app.zip;devopstech-kubemeridian-app"
+    # Point this at wherever you host the packaged zip (object storage or the
+    # GitHub Release asset), e.g. https://<your-host>/devopstech-kubemeridian-app-<version>.zip
+    GF_INSTALL_PLUGINS: "https://<your-host>/devopstech-kubemeridian-app.zip;devopstech-kubemeridian-app"
   grafana.ini:
     plugins:
       # Both ids must be listed: in Grafana 13 the bundled datasource does NOT

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Routes, useParams } from 'react-router-dom';
+import { ErrorBoundaryAlert } from '@grafana/ui';
 import { AppRootProps } from '@grafana/data';
 import { ROUTES } from '../../constants';
 import { ClustersListPage } from '../../pages/ClustersList';
@@ -54,19 +55,21 @@ function ClusterStatusRoute() {
 
 function App(_props: AppRootProps) {
   return (
-    <Routes>
-      <Route path={`${ROUTES.NodesOverview}/:clusterId`} element={<NodesRoute />} />
-      <Route path={`${ROUTES.Events}/:clusterId`} element={<EventsRoute />} />
-      <Route path={`${ROUTES.Logs}/:clusterId`} element={<LogsRoute />} />
-      <Route path={`${ROUTES.Traces}/:clusterId`} element={<TracesRoute />} />
-      <Route path={`${ROUTES.Services}/:clusterId`} element={<ServicesRoute />} />
-      <Route path={`${ROUTES.Cost}/:clusterId`} element={<CostRoute />} />
-      <Route path={`${ROUTES.ApplicationsOverview}/:clusterId`} element={<ApplicationsRoute />} />
-      <Route path={`${ROUTES.ClusterStatus}/:clusterId`} element={<ClusterStatusRoute />} />
-      <Route path={ROUTES.Clusters} element={<ClustersListPage />} />
-      {/* Default page */}
-      <Route path="*" element={<ClustersListPage />} />
-    </Routes>
+    <ErrorBoundaryAlert style="page" title="KubeMeridian ran into an unexpected error">
+      <Routes>
+        <Route path={`${ROUTES.NodesOverview}/:clusterId`} element={<NodesRoute />} />
+        <Route path={`${ROUTES.Events}/:clusterId`} element={<EventsRoute />} />
+        <Route path={`${ROUTES.Logs}/:clusterId`} element={<LogsRoute />} />
+        <Route path={`${ROUTES.Traces}/:clusterId`} element={<TracesRoute />} />
+        <Route path={`${ROUTES.Services}/:clusterId`} element={<ServicesRoute />} />
+        <Route path={`${ROUTES.Cost}/:clusterId`} element={<CostRoute />} />
+        <Route path={`${ROUTES.ApplicationsOverview}/:clusterId`} element={<ApplicationsRoute />} />
+        <Route path={`${ROUTES.ClusterStatus}/:clusterId`} element={<ClusterStatusRoute />} />
+        <Route path={ROUTES.Clusters} element={<ClustersListPage />} />
+        {/* Default page */}
+        <Route path="*" element={<ClustersListPage />} />
+      </Routes>
+    </ErrorBoundaryAlert>
   );
 }
 

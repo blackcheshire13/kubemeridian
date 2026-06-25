@@ -133,15 +133,13 @@ export class ApplicationsOverview extends BasePage {
   }
 
   togglePanel = (name: string) => (_e: any) => {
-    let panels = this.state.openPanels;
+    const panels = new Map(this.state.openPanels);
     if (panels.get(name) === undefined || panels.get(name) === true) {
       panels.set(name, false);
     } else {
       panels.set(name, true);
     }
-    this.setState({ openPanels: new Map<string, boolean>(Object.entries({ foo: false })) }, () =>
-      this.setState({ openPanels: panels })
-    );
+    this.setState({ openPanels: panels });
   };
 
   render() {

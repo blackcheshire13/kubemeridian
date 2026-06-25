@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.4.1 — Review & catalog hardening
+
+Pre-publication review pass — no feature changes, all fixes:
+
+- **Lifecycle fix**: the Cluster Status page now cancels its component-refresh
+  timer and guards async `setState` on unmount (no more `setState` on an
+  unmounted component / leaked polling after navigating away).
+- **Robustness**: optional chaining when matching pods to workloads in
+  `BasePage` (a workload with no `spec.selector` no longer risks a throw); the
+  panel toggle in Applications Overview uses a single clean state update.
+- **Error boundary**: app pages are wrapped in an `ErrorBoundaryAlert`, so a
+  render error shows an inline alert instead of a blank page.
+- **Config clarity**: the custom traffic "Request metric" field documents that it
+  also seeds the denominator/error metric.
+- **Tests**: unit tests for traffic auto-detection and the Node model; e2e smoke
+  tests that every app page mounts and renders.
+- **Packaging**: the catalog README is now the real project README; the
+  Services (RED) screenshot is included; the datasource links to docs; the
+  package script emits a `{plugin-id}-{version}.zip` with its SHA1.
+
 ## 2.4.0 — Multi-cloud Cost Explorer
 
 A dedicated **Cost** page (Grafana app tab) that computes Kubernetes cost across

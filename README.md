@@ -9,8 +9,8 @@ Built for **Grafana 13.x** on `@grafana/create-plugin` (`@grafana/*` 13.x, React
 
 📖 Docs: **[devopstech.net](https://devopstech.net)**
 
-![KubeMeridian — fleet & connections](src/img/screenshots/clusters.png)
-![KubeMeridian — Cluster Overview](src/img/screenshots/cluster-overview.png)
+![KubeMeridian — fleet & connections](https://raw.githubusercontent.com/blackcheshire13/kubemeridian/main/src/img/screenshots/clusters.png)
+![KubeMeridian — Cluster Overview](https://raw.githubusercontent.com/blackcheshire13/kubemeridian/main/src/img/screenshots/cluster-overview.png)
 
 ## What it provides
 
@@ -67,7 +67,7 @@ The dev Grafana sets `GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=devopstech-kubem
 
 ## Deploy (in-cluster Grafana)
 
-See [`deploy/`](./deploy): a read-only ServiceAccount + RBAC (`rbac.yaml`), a kube-prometheus-stack
+See [`deploy/`](https://github.com/blackcheshire13/kubemeridian/tree/main/deploy): a read-only ServiceAccount + RBAC (`rbac.yaml`), a kube-prometheus-stack
 Grafana overlay (`kps-grafana-overlay.yaml`), the datasource provisioning Secret
 (`grafana-datasource.yaml`) and the alert pack (`kubemeridian-prometheusrule.yaml`).
 
@@ -82,4 +82,4 @@ Create a `KubeMeridian Kubernetes` datasource (or use *Add cluster*) and set:
 
 ## License
 
-Distributed under Apache-2.0. See [LICENSE](./LICENSE).
+Distributed under Apache-2.0. See [LICENSE](https://github.com/blackcheshire13/kubemeridian/blob/main/LICENSE).

@@ -72,8 +72,7 @@ export class KubeMeridianDatasource extends DataSourceApi<KubegrafDSQuery, Kubeg
         return [];
       }
       return res.data.items;
-    } catch (e) {
-      console.error(e);
+    } catch {
       alertError(`${label} not received`);
       return [];
     }
