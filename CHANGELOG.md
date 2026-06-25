@@ -19,6 +19,9 @@ Pre-publication review pass — no feature changes, all fixes:
 - **Packaging**: the catalog README is now the real project README; the
   Services (RED) screenshot is included; the datasource links to docs; the
   package script emits a `{plugin-id}-{version}.zip` with its SHA1.
+- **Clusters landing page**: added a "What's inside" capabilities grid and a
+  Resources row (website, docs, source, issues) so the page is informative even
+  with a single cluster.
 - **Dashboard QA** (verified live against a 29-node cluster): the Node
   dashboard's **SWAP Used** gauge no longer renders `NaN` on swapless nodes
   (`clamp_min` guards the 0/0 division → shows 0%). The Namespace Overview
