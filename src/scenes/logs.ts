@@ -13,6 +13,7 @@ import {
   TextBoxVariable,
   VariableValueSelectors,
 } from '@grafana/scenes';
+import { GraphDrawStyle, StackingMode, ThresholdsMode } from '@grafana/schema';
 import { LOKI_ID } from '../constants';
 
 export interface LogsSceneOpts {
@@ -24,7 +25,14 @@ export interface LogsSceneOpts {
   pod?: string;
 }
 
-const ERROR_RE = '(?i)(error|warn|fail|exception|panic|fatal)';
+// Level detection is done at query time on the raw line so it works on plain
+// stdout logs AND structured logs, on any Loki version (no detected_level needed).
+const ERRWARN_RE = '(?i)(error|warn|fail|fatal|panic|exception|critical)';
+const ERR_RE = '(?i)(error|fail|fatal|panic|exception|critical)';
+const LEVEL_REGEXP = '(?i)(?P<lvl>error|warn|info|debug|trace|fatal|panic|critical)';
+// Fold fatal/panic/critical into "error"; lines with no level word become "unknown".
+const LEVEL_FOLD =
+  '{{ $x := .lvl | lower }}{{ if or (eq $x "fatal") (eq $x "panic") (eq $x "critical") }}error{{ else if $x }}{{ $x }}{{ else }}unknown{{ end }}';
 
 function selector(o: LogsSceneOpts): string {
   if (o.namespace) {
@@ -34,79 +42,187 @@ function selector(o: LogsSceneOpts): string {
   return '{namespace="$namespace", pod=~"$pod"}';
 }
 
+// `sum by (level)` volume query — single query, one series per level.
+function levelVolume(sel: string, sf: string, range: string): string {
+  return `sum by (level)(count_over_time(${sel}${sf} | regexp \`${LEVEL_REGEXP}\` | label_format level=\`${LEVEL_FOLD}\` | __error__="" [${range}]))`;
+}
+
+// Apply semantic colours to the per-level series (works on timeseries + piechart).
+function levelColors(b: any) {
+  const map: Record<string, string> = {
+    error: 'red',
+    warn: 'orange',
+    info: 'green',
+    debug: 'blue',
+    trace: 'purple',
+    unknown: 'gray',
+  };
+  for (const [name, color] of Object.entries(map)) {
+    b.matchFieldsWithName(name).overrideColor({ mode: 'fixed', fixedColor: color });
+  }
+}
+
+const thresholds = (steps: Array<[number, string]>) => ({
+  mode: ThresholdsMode.Absolute,
+  steps: steps.map(([value, color]) => ({ value, color })),
+});
+
 /**
  * Build a Loki logs scene. In page mode (no fixed namespace) it renders
- * namespace/pod selectors + a free-text filter; in drawer mode it is scoped to
- * one pod. The same factory backs both the Logs page and the inline pod drawer.
+ * namespace/pod selectors + free-text filter, a stat row (total / errors+warns /
+ * error rate / error %), a stacked log-volume-by-level histogram, a level pie +
+ * top-pods table, and the logs viewer. In drawer mode it is scoped to one pod
+ * and shows only the viewer. The same factory backs both.
  */
 export function buildLogsScene(opts: LogsSceneOpts): EmbeddedScene {
   const ds = { uid: opts.logsUid, type: LOKI_ID };
   const pageMode = !opts.namespace;
   const sel = selector(opts);
-  // Backtick-delimited LogQL string so a search containing quotes/backslashes
-  // does not break the query (only a literal backtick would, which is rare).
-  const bt = '`';
-  const logExpr = pageMode ? `${sel} |~ ${bt}(?i)$search${bt}` : sel;
+  // Backtick-delimited LogQL so a search with quotes/backslashes doesn't break it.
+  const sf = pageMode ? ' |~ `(?i)$search`' : '';
 
-  const variables = pageMode
-    ? new SceneVariableSet({
-        variables: [
-          new QueryVariable({
-            name: 'namespace',
-            label: 'Namespace',
-            datasource: ds,
-            query: 'label_values(namespace)',
-            includeAll: false,
-          }),
-          new QueryVariable({
-            name: 'pod',
-            label: 'Pod',
-            datasource: ds,
-            query: 'label_values({namespace="$namespace"}, pod)',
-            includeAll: true,
-            defaultToAll: true,
-            allValue: '.+',
-            isMulti: true,
-          }),
-          new TextBoxVariable({ name: 'search', label: 'Search', value: '' }),
-        ],
-      })
-    : undefined;
+  const range = (ds2: typeof ds, expr: string) =>
+    new SceneQueryRunner({ datasource: ds2, queries: [{ refId: 'A', expr }] });
+  const instant = (ds2: typeof ds, expr: string) =>
+    new SceneQueryRunner({ datasource: ds2, queries: [{ refId: 'A', expr, queryType: 'instant' }] });
 
+  // ---- Logs viewer (both modes) ----
   const logsPanel = PanelBuilders.logs()
     .setTitle(opts.pod ? `Logs — ${opts.pod}` : 'Logs')
-    .setData(new SceneQueryRunner({ datasource: ds, queries: [{ refId: 'A', expr: logExpr }] }))
+    .setData(
+      new SceneQueryRunner({ datasource: ds, queries: [{ refId: 'A', expr: `${sel}${sf}`, maxLines: 1000 } as any] })
+    )
     .setOption('showTime', true)
     .setOption('wrapLogMessage', true)
     .setOption('enableLogDetails', true)
+    .setOption('prettifyLogMessage', true)
+    .setOption('dedupStrategy', 'signature' as any)
     .setOption('sortOrder', 'Descending' as any)
+    .setOption('fontSize', 'small' as any)
     .build();
 
-  const errorRatePanel = PanelBuilders.timeseries()
-    .setTitle('Error/warn log rate')
-    .setData(
-      new SceneQueryRunner({
+  if (!pageMode) {
+    return new EmbeddedScene({
+      $timeRange: new SceneTimeRange({ from: 'now-1h', to: 'now' }),
+      controls: [new SceneControlsSpacer(), new SceneTimePicker({}), new SceneRefreshPicker({})],
+      body: new SceneFlexLayout({ direction: 'column', children: [new SceneFlexItem({ minHeight: 400, body: logsPanel })] }),
+    });
+  }
+
+  // ---- Page mode: variables ----
+  const variables = new SceneVariableSet({
+    variables: [
+      new QueryVariable({
+        name: 'namespace',
+        label: 'Namespace',
         datasource: ds,
-        queries: [{ refId: 'A', expr: `sum(rate(${sel} |~ "${ERROR_RE}" [$__auto]))` }],
-      })
-    )
-    .setUnit('logs/s' as any)
-    .setCustomFieldConfig('fillOpacity', 20)
+        query: 'label_values(namespace)',
+        includeAll: false,
+      }),
+      new QueryVariable({
+        name: 'pod',
+        label: 'Pod',
+        datasource: ds,
+        query: 'label_values({namespace="$namespace"}, pod)',
+        includeAll: true,
+        defaultToAll: true,
+        allValue: '.+',
+        isMulti: true,
+      }),
+      new TextBoxVariable({ name: 'search', label: 'Search', value: '' }),
+    ],
+  });
+
+  // ---- Row A: stat tiles ----
+  const statTotal = PanelBuilders.stat()
+    .setTitle('Log lines')
+    .setUnit('short')
+    .setData(instant(ds, `sum(count_over_time(${sel}${sf} [$__range])) or vector(0)`))
+    .setOption('graphMode', 'none' as any)
     .build();
 
-  const controls = pageMode
-    ? [new VariableValueSelectors({}), new SceneControlsSpacer(), new SceneTimePicker({}), new SceneRefreshPicker({})]
-    : [new SceneControlsSpacer(), new SceneTimePicker({}), new SceneRefreshPicker({})];
+  const statErrWarn = PanelBuilders.stat()
+    .setTitle('Errors + warnings')
+    .setUnit('short')
+    .setThresholds(thresholds([[-Infinity, 'green'], [1, 'orange'], [50, 'red']]))
+    .setData(instant(ds, `sum(count_over_time(${sel}${sf} |~ \`${ERRWARN_RE}\` [$__range])) or vector(0)`))
+    .setOption('graphMode', 'none' as any)
+    .build();
+
+  const statErrRate = PanelBuilders.stat()
+    .setTitle('Error rate')
+    .setUnit('logs/s' as any)
+    .setThresholds(thresholds([[-Infinity, 'green'], [0.1, 'orange'], [1, 'red']]))
+    .setData(range(ds, `sum(rate(${sel}${sf} |~ \`${ERR_RE}\` [$__rate_interval])) or vector(0)`))
+    .setOption('graphMode', 'area' as any)
+    .build();
+
+  const statErrPct = PanelBuilders.stat()
+    .setTitle('Error %')
+    .setUnit('percent')
+    .setDecimals(1)
+    .setThresholds(thresholds([[-Infinity, 'green'], [5, 'orange'], [20, 'red']]))
+    .setData(
+      instant(
+        ds,
+        `100 * (sum(count_over_time(${sel}${sf} |~ \`${ERR_RE}\` [$__range])) or vector(0)) / sum(count_over_time(${sel}${sf} [$__range]))`
+      )
+    )
+    .setOption('graphMode', 'none' as any)
+    .build();
+
+  const statRow = new SceneFlexLayout({
+    direction: 'row',
+    children: [statTotal, statErrWarn, statErrRate, statErrPct].map((p) => new SceneFlexItem({ body: p })),
+  });
+
+  // ---- Row B: stacked log-volume-by-level histogram ----
+  const volumePanel = PanelBuilders.timeseries()
+    .setTitle('Log volume by level')
+    .setData(range(ds, levelVolume(sel, sf, '$__auto')))
+    .setCustomFieldConfig('drawStyle', GraphDrawStyle.Bars)
+    .setCustomFieldConfig('fillOpacity', 70)
+    .setCustomFieldConfig('lineWidth', 0)
+    .setCustomFieldConfig('stacking', { mode: StackingMode.Normal, group: 'A' })
+    .setOverrides(levelColors)
+    .build();
+
+  // ---- Row C: level pie + top pods ----
+  const levelPie = PanelBuilders.piechart()
+    .setTitle('Levels')
+    .setData(instant(ds, levelVolume(sel, sf, '$__range')))
+    .setOverrides(levelColors)
+    .build();
+
+  const topPods = PanelBuilders.table()
+    .setTitle('Top pods by volume')
+    .setData(instant(ds, `topk(15, sum by (pod)(count_over_time(${sel}${sf} [$__range])))`))
+    .build();
+
+  const distRow = new SceneFlexLayout({
+    direction: 'row',
+    children: [
+      new SceneFlexItem({ width: '34%', body: levelPie }),
+      new SceneFlexItem({ body: topPods }),
+    ],
+  });
 
   return new EmbeddedScene({
     $variables: variables,
     $timeRange: new SceneTimeRange({ from: 'now-1h', to: 'now' }),
-    controls,
+    controls: [
+      new VariableValueSelectors({}),
+      new SceneControlsSpacer(),
+      new SceneTimePicker({}),
+      new SceneRefreshPicker({}),
+    ],
     body: new SceneFlexLayout({
       direction: 'column',
       children: [
-        new SceneFlexItem({ ySizing: 'content', minHeight: 160, body: errorRatePanel }),
-        new SceneFlexItem({ minHeight: 400, body: logsPanel }),
+        new SceneFlexItem({ ySizing: 'content', minHeight: 110, body: statRow }),
+        new SceneFlexItem({ ySizing: 'content', minHeight: 200, body: volumePanel }),
+        new SceneFlexItem({ ySizing: 'content', minHeight: 280, body: distRow }),
+        new SceneFlexItem({ minHeight: 420, body: logsPanel }),
       ],
     }),
   });

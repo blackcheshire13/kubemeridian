@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.5.0 — Richer Logs view
+
+The **Logs** page is now a proper log-analytics view (Grafana Scenes + Loki),
+researched against the best community/Grafana log dashboards:
+
+- **Stat row**: log lines, errors+warnings, error rate, error % (all show `0`
+  rather than "No data" when clean).
+- **Log volume by level** — a stacked histogram (error/warn/info/debug/unknown),
+  semantically coloured.
+- **Levels pie + Top pods by volume** table.
+- Level detection is done at query time on the raw line (regex + `label_format`),
+  so it works on plain stdout logs and any Loki version — no `detected_level`
+  dependency.
+- Logs viewer gains dedup (`signature`), pretty-printed JSON and a compact font.
+- The inline pod-log **drawer** stays minimal (just the scoped viewer).
+
 ## 2.4.1 — Review & catalog hardening
 
 Pre-publication review pass — no feature changes, all fixes:

@@ -1,6 +1,6 @@
 {
   "name": "kubemeridian",
-  "version": "2.4.1",
+  "version": "2.5.0",
   "scripts": {
     "build": "webpack -c ./.config/webpack/webpack.config.ts --env production && node scripts/copy-datasource-logo.mjs",
     "dev": "webpack -w -c ./.config/webpack/webpack.config.ts --env development",
