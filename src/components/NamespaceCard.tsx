@@ -180,7 +180,7 @@ export class NamespaceCard extends PureComponent<Props>{
                                                         (
                                                             this.namespace.deployments.length === 0 && (
                                                                 <div className={'column_cell'}>
-                                                                    <h4 className={'column_cell_header'}>No data</h4>
+                                                                    <h4 className={'column_cell_header'}>None</h4>
                                                                 </div>
                                                             )
                                                         )
@@ -195,7 +195,7 @@ export class NamespaceCard extends PureComponent<Props>{
                                                         (
                                                             this.namespace.statefulsets.length === 0 && (
                                                                 <div className={'column_cell'}>
-                                                                    <h4 className={'column_cell_header'}>No data</h4>
+                                                                    <h4 className={'column_cell_header'}>None</h4>
                                                                 </div>
                                                             )
                                                         )
@@ -210,7 +210,7 @@ export class NamespaceCard extends PureComponent<Props>{
                                                         (
                                                             this.namespace.daemonsets.length === 0 && (
                                                                 <div className={'column_cell'}>
-                                                                    <h4 className={'column_cell_header'}>No data</h4>
+                                                                    <h4 className={'column_cell_header'}>None</h4>
                                                                 </div>
                                                             )
                                                         )
@@ -225,7 +225,7 @@ export class NamespaceCard extends PureComponent<Props>{
                                                         (
                                                             this.namespace.cronjobs.length === 0 && (
                                                                 <div className={'column_cell'}>
-                                                                    <h4 className={'column_cell_header'}>No data</h4>
+                                                                    <h4 className={'column_cell_header'}>None</h4>
                                                                 </div>
                                                             )
                                                         )
@@ -240,7 +240,7 @@ export class NamespaceCard extends PureComponent<Props>{
                                                         (
                                                             this.namespace.jobs.length === 0 && (
                                                                 <div className={'column_cell'}>
-                                                                    <h4 className={'column_cell_header'}>No data</h4>
+                                                                    <h4 className={'column_cell_header'}>None</h4>
                                                                 </div>
                                                             )
                                                         )
@@ -264,7 +264,7 @@ export class NamespaceCard extends PureComponent<Props>{
                                                         &&
                                                         (
                                                             <div className={'column_cell'}>
-                                                                <h4 className={'column_cell_header'}>No data</h4>
+                                                                <h4 className={'column_cell_header'}>None</h4>
                                                             </div>
                                                         )
                                                     )

@@ -19,6 +19,13 @@ Pre-publication review pass — no feature changes, all fixes:
 - **Packaging**: the catalog README is now the real project README; the
   Services (RED) screenshot is included; the datasource links to docs; the
   package script emits a `{plugin-id}-{version}.zip` with its SHA1.
+- **Dashboard QA** (verified live against a 29-node cluster): the Node
+  dashboard's **SWAP Used** gauge no longer renders `NaN` on swapless nodes
+  (`clamp_min` guards the 0/0 division → shows 0%). The Namespace Overview
+  workload-count stats (Deployments / StatefulSets / DaemonSets / Jobs /
+  CronJobs / Pods) now show **0** instead of "No data" for namespaces that have
+  none of that workload type (`or vector(0)`). Applications Overview shows
+  **"None"** instead of "No data" for empty workload columns.
 
 ## 2.4.0 — Multi-cloud Cost Explorer
 

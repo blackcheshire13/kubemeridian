@@ -59,7 +59,7 @@
             "uid": "${PromDs}"
           },
           "editorMode": "code",
-          "expr": "count(kube_deployment_created{cluster=~\"$cluster\",namespace=\"$namespace\"})",
+          "expr": "count(kube_deployment_created{cluster=~\"$cluster\",namespace=\"$namespace\"}) or vector(0)",
           "legendFormat": "deployments",
           "refId": "A",
           "range": true,
@@ -111,7 +111,7 @@
             "uid": "${PromDs}"
           },
           "editorMode": "code",
-          "expr": "count(kube_statefulset_created{cluster=~\"$cluster\",namespace=\"$namespace\"})",
+          "expr": "count(kube_statefulset_created{cluster=~\"$cluster\",namespace=\"$namespace\"}) or vector(0)",
           "legendFormat": "statefulsets",
           "refId": "A",
           "range": true,
@@ -163,7 +163,7 @@
             "uid": "${PromDs}"
           },
           "editorMode": "code",
-          "expr": "count(kube_daemonset_created{cluster=~\"$cluster\",namespace=\"$namespace\"})",
+          "expr": "count(kube_daemonset_created{cluster=~\"$cluster\",namespace=\"$namespace\"}) or vector(0)",
           "legendFormat": "daemonsets",
           "refId": "A",
           "range": true,
@@ -215,7 +215,7 @@
             "uid": "${PromDs}"
           },
           "editorMode": "code",
-          "expr": "count(kube_job_created{cluster=~\"$cluster\",namespace=\"$namespace\"})",
+          "expr": "count(kube_job_created{cluster=~\"$cluster\",namespace=\"$namespace\"}) or vector(0)",
           "legendFormat": "jobs",
           "refId": "A",
           "range": true,
@@ -267,7 +267,7 @@
             "uid": "${PromDs}"
           },
           "editorMode": "code",
-          "expr": "count(kube_cronjob_created{cluster=~\"$cluster\",namespace=\"$namespace\"})",
+          "expr": "count(kube_cronjob_created{cluster=~\"$cluster\",namespace=\"$namespace\"}) or vector(0)",
           "legendFormat": "cronjobs",
           "refId": "A",
           "range": true,
@@ -319,7 +319,7 @@
             "uid": "${PromDs}"
           },
           "editorMode": "code",
-          "expr": "count(kube_pod_info{cluster=~\"$cluster\",namespace=\"$namespace\"})",
+          "expr": "count(kube_pod_info{cluster=~\"$cluster\",namespace=\"$namespace\"}) or vector(0)",
           "legendFormat": "pods",
           "refId": "A",
           "range": true,
