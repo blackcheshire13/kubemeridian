@@ -26,6 +26,7 @@
       { "name": "Workload Health", "path": "img/screenshots/workload-health.png" },
       { "name": "Cost Explorer (multi-cloud)", "path": "img/screenshots/cost.png" },
       { "name": "Cost & Efficiency", "path": "img/screenshots/cost-efficiency.png" },
+      { "name": "Services RED & SLO", "path": "img/screenshots/services-red.png" },
       { "name": "Inline logs (Loki)", "path": "img/screenshots/logs.png" }
     ],
     "version": "%VERSION%",

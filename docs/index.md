@@ -18,6 +18,9 @@ hero:
     - theme: alt
       text: View on GitHub
       link: https://github.com/blackcheshire13/kubemeridian
+    - theme: alt
+      text: About me
+      link: /about
 
 features:
   - icon: 🧭

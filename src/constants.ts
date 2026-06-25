@@ -6,6 +6,10 @@ export const PLUGIN_BASE_URL = `/a/${APP_ID}`;
 // Bundled datasource plugin id (see src/datasource/plugin.json)
 export const DS_ID = 'devopstech-kubemeridian-datasource';
 
+// Bundled dashboard UIDs used for deep-links from the app pages.
+export const POD_DASHBOARD_UID = 'zlWA1rDnk';
+export const NODE_DASHBOARD_UID = 'kubemeridian-node';
+
 // Companion datasource plugin types we link a cluster to.
 export const PROMETHEUS_ID = 'prometheus';
 export const LOKI_ID = 'loki';
@@ -35,3 +39,11 @@ export const SUCCEEDED = 4;
 export const COLOR_YELLOW = '#ffff0096';
 export const COLOR_RED = '#a52a2a';
 export const COLOR_GREEN = '#299c46';
+
+// Project links (also mirrored in plugin.json info.links).
+export const LINKS = {
+  website: 'https://devopstech.net',
+  docs: 'https://devopstech.net/guide/introduction',
+  github: 'https://github.com/blackcheshire13/kubemeridian',
+  issues: 'https://github.com/blackcheshire13/kubemeridian/issues',
+};

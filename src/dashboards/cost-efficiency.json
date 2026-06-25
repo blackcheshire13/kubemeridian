@@ -22,7 +22,17 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "links": [],
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "tags": [
+        "KubeMeridian"
+      ],
+      "title": "Dashboards",
+      "type": "dashboards"
+    }
+  ],
   "liveNow": false,
   "panels": [
     {
@@ -649,7 +659,7 @@
     }
   ],
   "refresh": "1m",
-  "revision": 1,
+  "revision": 2,
   "schemaVersion": 39,
   "tags": [
     "kubernetes",

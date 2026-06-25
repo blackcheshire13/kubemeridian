@@ -13,7 +13,14 @@ import {
   TextBoxVariable,
   VariableValueSelectors,
 } from '@grafana/scenes';
+import { ThresholdsMode } from '@grafana/data';
 import { PROMETHEUS_ID } from '../constants';
+
+// Absolute-threshold helper: pass [value, color] steps (use -Infinity for the base).
+const thr = (steps: Array<[number, string]>) => ({
+  mode: ThresholdsMode.Absolute,
+  steps: steps.map(([value, color]) => ({ value, color })),
+});
 import {
   TrafficConfig,
   errorRatioExpr,
@@ -64,13 +71,28 @@ export function buildRedSloScene(opts: { metricsUid: string; traffic?: TrafficCo
     direction: 'row',
     children: [
       new SceneFlexItem({
-        body: PanelBuilders.stat().setTitle('Request rate').setUnit('reqps').setData(q(ds, rateExpr(p))).build(),
+        body: PanelBuilders.stat()
+          .setTitle('Request rate')
+          .setUnit('reqps')
+          .setThresholds(thr([[-Infinity, 'green']]))
+          .setData(q(ds, rateExpr(p)))
+          .build(),
       }),
       new SceneFlexItem({
-        body: PanelBuilders.stat().setTitle('Error %').setUnit('percent').setData(q(ds, `(${errRatio}) * 100`)).build(),
+        body: PanelBuilders.stat()
+          .setTitle('Error %')
+          .setUnit('percent')
+          .setThresholds(thr([[-Infinity, 'green'], [1, 'orange'], [5, 'red']]))
+          .setData(q(ds, `(${errRatio}) * 100`))
+          .build(),
       }),
       new SceneFlexItem({
-        body: PanelBuilders.stat().setTitle('Availability (SLI)').setUnit('percent').setData(q(ds, `(1 - (${errRatio})) * 100`)).build(),
+        body: PanelBuilders.stat()
+          .setTitle('Availability (SLI)')
+          .setUnit('percent')
+          .setThresholds(thr([[-Infinity, 'red'], [99, 'orange'], [99.9, 'green']]))
+          .setData(q(ds, `(1 - (${errRatio})) * 100`))
+          .build(),
       }),
       new SceneFlexItem({
         body: PanelBuilders.gauge()
@@ -78,6 +100,7 @@ export function buildRedSloScene(opts: { metricsUid: string; traffic?: TrafficCo
           .setUnit('percent')
           .setMin(0)
           .setMax(100)
+          .setThresholds(thr([[-Infinity, 'red'], [20, 'orange'], [50, 'green']]))
           .setData(q(ds, `(1 - ((${errorRatioExpr(p, '30d')}) / (1 - $slo_target))) * 100`))
           .build(),
       }),

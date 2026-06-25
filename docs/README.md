@@ -37,7 +37,7 @@ Manual redeploy (direct upload, no git integration needed):
 
 ```bash
 cd docs && npm ci && npm run docs:build
-CLOUDFLARE_API_TOKEN=*** CLOUDFLARE_ACCOUNT_ID=0693bc7c634a68a6d5b824ec16668133 \
+CLOUDFLARE_API_TOKEN=<your-token> CLOUDFLARE_ACCOUNT_ID=<your-account-id> \
   npx wrangler@latest pages deploy .vitepress/dist \
     --project-name=kubemeridian-docs --branch=main --commit-dirty=true
 ```

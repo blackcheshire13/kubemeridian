@@ -20,6 +20,7 @@ export default defineConfig({
       { text: 'Guide', link: '/guide/introduction' },
       { text: 'Dashboards', link: '/guide/dashboards' },
       { text: 'Alerts', link: '/guide/alerts' },
+      { text: 'About', link: '/about' },
       {
         text: 'v2.3',
         items: [

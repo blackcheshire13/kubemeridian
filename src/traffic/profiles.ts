@@ -328,7 +328,9 @@ export function errorRatioExpr(p: TrafficProfile, window = RI): string {
   }
   const m = matchers(p);
   const errSel = m ? `${m}, ${p.errorMatch.label}=~"${p.errorMatch.regex}"` : `${p.errorMatch.label}=~"${p.errorMatch.regex}"`;
-  return `sum(rate(${p.errorMetric}{${errSel}}[${window}])) / sum(rate(${p.denomMetric}{${m}}[${window}]))`;
+  // `or vector(0)` so a service with traffic but no errors reads 0% (and 100%
+  // availability) instead of "No data" when the error series simply don't exist.
+  return `(sum(rate(${p.errorMetric}{${errSel}}[${window}])) or vector(0)) / sum(rate(${p.denomMetric}{${m}}[${window}]))`;
 }
 
 export function latencyQuantileExpr(p: TrafficProfile, q: number, window = RI): string | null {

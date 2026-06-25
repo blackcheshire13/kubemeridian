@@ -340,27 +340,27 @@ export class BasePage extends PureComponent<Props>{
     attachPodsToMap(){
         this.namespacesMap.forEach((ns: Namespace) => {
             ns.deployments.forEach((dep: Deployment) => {
-                dep.pods = this.__findPodsBySelector(dep.data.spec.selector.matchLabels, ns.name);
+                dep.pods = this.__findPodsBySelector(dep.data.spec?.selector?.matchLabels, ns.name);
                 dep.services = this.__findServices(dep);
             });
 
             ns.statefulsets.forEach((sts: Statefulset) => {
-                sts.pods = this.__findPodsBySelector(sts.data.spec.selector.matchLabels, ns.name);
+                sts.pods = this.__findPodsBySelector(sts.data.spec?.selector?.matchLabels, ns.name);
                 sts.services = this.__findServices(sts);
             });
 
             ns.daemonsets.forEach((ds: Daemonset) => {
-                ds.pods = this.__findPodsBySelector(ds.data.spec.selector.matchLabels, ns.name);
+                ds.pods = this.__findPodsBySelector(ds.data.spec?.selector?.matchLabels, ns.name);
                 ds.services = this.__findServices(ds);
             });
 
             ns.jobs.forEach((job: Job) => {
-                job.pods = this.__findPodsBySelector(job.data.metadata.labels, ns.name);
+                job.pods = this.__findPodsBySelector(job.data.metadata?.labels, ns.name);
             });
 
             ns.cronjobs.forEach((cron: CronJob) => {
                cron.jobs.map((job: Job) => {
-                   job.pods = this.__findPodsBySelector(job.data.metadata.labels, ns.name);
+                   job.pods = this.__findPodsBySelector(job.data.metadata?.labels, ns.name);
                })
             });
 

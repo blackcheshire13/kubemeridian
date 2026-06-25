@@ -1,5 +1,56 @@
 # Changelog
 
+## 2.4.1 — Review & catalog hardening
+
+Pre-publication review pass — no feature changes, all fixes:
+
+- **Lifecycle fix**: the Cluster Status page now cancels its component-refresh
+  timer and guards async `setState` on unmount (no more `setState` on an
+  unmounted component / leaked polling after navigating away).
+- **Robustness**: optional chaining when matching pods to workloads in
+  `BasePage` (a workload with no `spec.selector` no longer risks a throw); the
+  panel toggle in Applications Overview uses a single clean state update.
+- **Error boundary**: app pages are wrapped in an `ErrorBoundaryAlert`, so a
+  render error shows an inline alert instead of a blank page.
+- **Config clarity**: the custom traffic "Request metric" field documents that it
+  also seeds the denominator/error metric.
+- **Tests**: unit tests for traffic auto-detection and the Node model; e2e smoke
+  tests that every app page mounts and renders.
+- **Packaging**: the catalog README is now the real project README; the
+  Services (RED) screenshot is included; the datasource links to docs; the
+  package script emits a `{plugin-id}-{version}.zip` with its SHA1.
+- **Consistent dashboard nav**: every bundled dashboard now carries the
+  "Dashboards" dropdown (cross-links the KubeMeridian set) — 7 of them were
+  missing it.
+- **Dashboards grouped in a folder**: the app now creates a "KubeMeridian"
+  folder and moves its bundled dashboards into it (best-effort, idempotent, on
+  app open) instead of leaving them in General. Grafana has no plugin.json
+  option for this, so the app organizes them via the API.
+- **Pod deep-links fixed**: the pod-status squares on Cluster Status now open
+  the Pod dashboard for that specific pod (they used to go to Applications
+  Overview); the pod card's dashboard link no longer passes the datasource name
+  as `var-cluster` (which blanked the dashboard).
+- **Services (RED) no longer shows "No data" for healthy services**: the error
+  ratio is wrapped in `or vector(0)`, so a service with traffic but no errors
+  reads 0% error / 100% availability instead of "No data" (also fixes the
+  error-budget and burn-rate panels).
+- **Node dashboard deep-link fixed**: the Node dashboard is now keyed on the
+  **node name** (deriving the node-exporter `instance` via a hidden variable),
+  so the "Node dashboard" link from Nodes Overview lands on a fully-populated
+  dashboard. Previously the link passed the node name into an instance-typed
+  variable (and the datasource name into the `cluster` label), leaving every
+  panel empty.
+- **Clusters landing page**: added a "What's inside" capabilities grid and a
+  Resources row (website, docs, source, issues) so the page is informative even
+  with a single cluster.
+- **Dashboard QA** (verified live against a 29-node cluster): the Node
+  dashboard's **SWAP Used** gauge no longer renders `NaN` on swapless nodes
+  (`clamp_min` guards the 0/0 division → shows 0%). The Namespace Overview
+  workload-count stats (Deployments / StatefulSets / DaemonSets / Jobs /
+  CronJobs / Pods) now show **0** instead of "No data" for namespaces that have
+  none of that workload type (`or vector(0)`). Applications Overview shows
+  **"None"** instead of "No data" for empty workload columns.
+
 ## 2.4.0 — Multi-cloud Cost Explorer
 
 A dedicated **Cost** page (Grafana app tab) that computes Kubernetes cost across
