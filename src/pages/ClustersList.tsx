@@ -6,6 +6,7 @@ import { listMetricsDatasources } from '../common/connections';
 import { K8sCluster } from '../types';
 import { ClusterCard } from '../components/ClusterCard';
 import { AddClusterModal } from '../components/AddClusterModal';
+import { HomeInfo } from '../components/HomeInfo';
 
 interface State {
   visible: boolean;
@@ -93,6 +94,8 @@ export class ClustersListPage extends PureComponent<{}, State> {
             ))}
           </Stack>
         )}
+
+        {visible && <HomeInfo />}
 
         <AddClusterModal
           isOpen={addOpen}

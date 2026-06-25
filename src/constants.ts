@@ -35,3 +35,11 @@ export const SUCCEEDED = 4;
 export const COLOR_YELLOW = '#ffff0096';
 export const COLOR_RED = '#a52a2a';
 export const COLOR_GREEN = '#299c46';
+
+// Project links (also mirrored in plugin.json info.links).
+export const LINKS = {
+  website: 'https://devopstech.net',
+  docs: 'https://devopstech.net/guide/introduction',
+  github: 'https://github.com/blackcheshire13/kubemeridian',
+  issues: 'https://github.com/blackcheshire13/kubemeridian/issues',
+};
