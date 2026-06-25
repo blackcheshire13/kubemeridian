@@ -19,6 +19,14 @@ Pre-publication review pass — no feature changes, all fixes:
 - **Packaging**: the catalog README is now the real project README; the
   Services (RED) screenshot is included; the datasource links to docs; the
   package script emits a `{plugin-id}-{version}.zip` with its SHA1.
+- **Pod deep-links fixed**: the pod-status squares on Cluster Status now open
+  the Pod dashboard for that specific pod (they used to go to Applications
+  Overview); the pod card's dashboard link no longer passes the datasource name
+  as `var-cluster` (which blanked the dashboard).
+- **Services (RED) no longer shows "No data" for healthy services**: the error
+  ratio is wrapped in `or vector(0)`, so a service with traffic but no errors
+  reads 0% error / 100% availability instead of "No data" (also fixes the
+  error-budget and burn-rate panels).
 - **Node dashboard deep-link fixed**: the Node dashboard is now keyed on the
   **node name** (deriving the node-exporter `instance` via a hidden variable),
   so the "Node dashboard" link from Nodes Overview lands on a fully-populated
