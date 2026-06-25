@@ -6,6 +6,7 @@ import {isLight} from "../common/utils";
 import {cx} from "@emotion/css";
 import {Icon, Tooltip} from "@grafana/ui";
 import {PodLogsContext} from "./PodLogsContext";
+import {POD_DASHBOARD_UID} from "../constants";
 
 interface Props{
     pod: Pod;
@@ -18,19 +19,21 @@ export class PodCard extends PureComponent<Props>{
 
     private pod;
     private orgId;
-    private clusterName;
     styles;
 
     constructor(props: Props) {
         super(props);
         this.pod = props.pod;
         this.orgId = config.bootData.user.orgId;
-        this.clusterName = props.clusterName;
         this.styles = Styles(isLight());
     }
 
     getPodDashboardLink(){
-        return `d/zlWA1rDnk/kubemeridian-pods-dashboard?orgId=${this.orgId}&var-cluster=${this.clusterName}&var-namespace=${this.pod.data.metadata.namespace}&var-pod=${this.pod.name}`;
+        // Pod dashboard keyed on namespace + pod; cluster defaults to All (its
+        // $cluster is a Prometheus label, unrelated to this datasource's name).
+        const ns = encodeURIComponent(this.pod.data.metadata.namespace);
+        const pod = encodeURIComponent(this.pod.name);
+        return `/d/${POD_DASHBOARD_UID}/pod?orgId=${this.orgId}&var-namespace=${ns}&var-pod=${pod}`;
     }
 
     render(){

@@ -5,12 +5,11 @@ import { css } from '@emotion/css';
 import { Node } from '../models/Node';
 import { Pod } from '../models/Pod';
 import { parseCpu, parseMemory, formatCpu, formatMemory, percent } from '../common/resources';
-import { PLUGIN_BASE_URL, ROUTES } from '../constants';
+import { POD_DASHBOARD_UID } from '../constants';
 
 interface Props {
   node: Node;
   pods: Pod[];
-  clusterUid?: string;
 }
 
 function statusColor(theme: GrafanaTheme2, color: string): string {
@@ -57,7 +56,7 @@ function Bar({ label, used, total, text }: { label: string; used: number; total:
   );
 }
 
-export function NodeStatusCard({ node, pods, clusterUid }: Props) {
+export function NodeStatusCard({ node, pods }: Props) {
   const s = useStyles2(getStyles);
   const theme = useTheme2();
   const alloc = node.allocatable;
@@ -118,9 +117,10 @@ export function NodeStatusCard({ node, pods, clusterUid }: Props) {
 
       <div className={s.podGrid}>
         {pods.map((p) => {
-          const href = clusterUid
-            ? `${PLUGIN_BASE_URL}/${ROUTES.ApplicationsOverview}/${clusterUid}`
-            : undefined;
+          // Deep-link to the Pod dashboard for this specific pod (cluster defaults to All).
+          const href = `/d/${POD_DASHBOARD_UID}/pod?var-namespace=${encodeURIComponent(
+            p.data.metadata.namespace
+          )}&var-pod=${encodeURIComponent(p.name)}`;
           const sq = (
             <span
               className={s.pod}
@@ -130,11 +130,7 @@ export function NodeStatusCard({ node, pods, clusterUid }: Props) {
           );
           return (
             <Tooltip key={p.data.metadata.namespace + '/' + p.name} content={`${p.data.metadata.namespace}/${p.name} — ${p.message}`}>
-              {href ? (
-                <a href={href}>{sq}</a>
-              ) : (
-                sq
-              )}
+              <a href={href} title="Open pod dashboard">{sq}</a>
             </Tooltip>
           );
         })}

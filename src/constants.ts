@@ -6,6 +6,10 @@ export const PLUGIN_BASE_URL = `/a/${APP_ID}`;
 // Bundled datasource plugin id (see src/datasource/plugin.json)
 export const DS_ID = 'devopstech-kubemeridian-datasource';
 
+// Bundled dashboard UIDs used for deep-links from the app pages.
+export const POD_DASHBOARD_UID = 'zlWA1rDnk';
+export const NODE_DASHBOARD_UID = 'kubemeridian-node';
+
 // Companion datasource plugin types we link a cluster to.
 export const PROMETHEUS_ID = 'prometheus';
 export const LOKI_ID = 'loki';

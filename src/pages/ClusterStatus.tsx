@@ -76,7 +76,6 @@ export class ClusterStatus extends BasePage {
   render() {
     const { pageReady, nodes, clusterComponents } = this.state;
     const readyCount = nodes.filter((n) => n.ready).length;
-    const clusterUid = this.cluster?.instanceSettings.uid;
 
     return (
       <PluginPage>
@@ -130,7 +129,7 @@ export class ClusterStatus extends BasePage {
               }}
             >
               {nodes.map((node) => (
-                <NodeStatusCard key={node.name} node={node} pods={this.podsForNode(node)} clusterUid={clusterUid} />
+                <NodeStatusCard key={node.name} node={node} pods={this.podsForNode(node)} />
               ))}
             </div>
           </>
