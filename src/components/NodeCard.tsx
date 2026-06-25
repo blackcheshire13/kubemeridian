@@ -10,7 +10,6 @@ interface Props {
   podCount: number;
   reqCpu: number; // millicores
   reqMem: number; // bytes
-  clusterName?: string;
   dashboardUid?: string;
 }
 
@@ -43,16 +42,15 @@ function ResourceBar({ label, used, total, text }: { label: string; used: number
   );
 }
 
-export function NodeCard({ node, podCount, reqCpu, reqMem, clusterName, dashboardUid }: Props) {
+export function NodeCard({ node, podCount, reqCpu, reqMem, dashboardUid }: Props) {
   const styles = useStyles2(getStyles);
   const alloc = node.allocatable;
   const info = node.info;
   const pressures = node.pressures;
 
-  const dashLink =
-    dashboardUid &&
-    `/d/${dashboardUid}/node?var-node=${encodeURIComponent(node.name)}` +
-      (clusterName ? `&var-cluster=${encodeURIComponent(clusterName)}` : '');
+  // The node dashboard is keyed on the node name; cluster defaults to All
+  // (its $cluster is a Prometheus label, unrelated to this datasource's name).
+  const dashLink = dashboardUid && `/d/${dashboardUid}/node?var-node=${encodeURIComponent(node.name)}`;
 
   return (
     <div className={styles.card}>

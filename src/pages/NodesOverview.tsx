@@ -100,7 +100,6 @@ export class NodesOverviewPage extends BasePage {
                 podCount={s.podCount}
                 reqCpu={s.reqCpu}
                 reqMem={s.reqMem}
-                clusterName={this.cluster?.name}
                 dashboardUid="kubemeridian-node"
               />
             ))}

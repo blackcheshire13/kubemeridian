@@ -19,6 +19,12 @@ Pre-publication review pass — no feature changes, all fixes:
 - **Packaging**: the catalog README is now the real project README; the
   Services (RED) screenshot is included; the datasource links to docs; the
   package script emits a `{plugin-id}-{version}.zip` with its SHA1.
+- **Node dashboard deep-link fixed**: the Node dashboard is now keyed on the
+  **node name** (deriving the node-exporter `instance` via a hidden variable),
+  so the "Node dashboard" link from Nodes Overview lands on a fully-populated
+  dashboard. Previously the link passed the node name into an instance-typed
+  variable (and the datasource name into the `cluster` label), leaving every
+  panel empty.
 - **Clusters landing page**: added a "What's inside" capabilities grid and a
   Resources row (website, docs, source, issues) so the page is informative even
   with a single cluster.
