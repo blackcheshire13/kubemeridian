@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.5.1 — Log level filter
+
+- **Logs** page: a segmented **All / Errors / Errors + warnings** control in the
+  toolbar. One click on _Errors_ filters the log viewer to error lines
+  (`error|fail|fatal|panic|exception|critical`); _Errors + warnings_ adds `warn`.
+  It only narrows the log viewer — the stat tiles, level histogram and pie keep
+  showing every level so the distribution stays visible. The filter ANDs with the
+  free-text Search box.
+
 ## 2.5.0 — Richer Logs view
 
 The **Logs** page is now a proper log-analytics view (Grafana Scenes + Loki),

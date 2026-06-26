@@ -15,6 +15,7 @@ import {
 } from '@grafana/scenes';
 import { GraphDrawStyle, StackingMode, ThresholdsMode } from '@grafana/schema';
 import { LOKI_ID } from '../constants';
+import { LogLevelFilter } from './LogLevelFilter';
 
 export interface LogsSceneOpts {
   /** Loki datasource UID linked to the cluster. */
@@ -87,11 +88,17 @@ export function buildLogsScene(opts: LogsSceneOpts): EmbeddedScene {
     new SceneQueryRunner({ datasource: ds2, queries: [{ refId: 'A', expr, queryType: 'instant', legendFormat }] });
 
   // ---- Logs viewer (both modes) ----
+  // Hoisted so the page-mode level filter can re-run it. `logsExpr` keeps the
+  // `$namespace`/`$pod`/`$search` tokens so the runner re-interpolates them on every run.
+  const LOGS_MAX_LINES = 1000;
+  const logsExpr = `${sel}${sf}`;
+  const logsQR = new SceneQueryRunner({
+    datasource: ds,
+    queries: [{ refId: 'A', expr: logsExpr, maxLines: LOGS_MAX_LINES } as any],
+  });
   const logsPanel = PanelBuilders.logs()
     .setTitle(opts.pod ? `Logs — ${opts.pod}` : 'Logs')
-    .setData(
-      new SceneQueryRunner({ datasource: ds, queries: [{ refId: 'A', expr: `${sel}${sf}`, maxLines: 1000 } as any] })
-    )
+    .setData(logsQR)
     .setOption('showTime', true)
     .setOption('wrapLogMessage', true)
     .setOption('enableLogDetails', true)
@@ -209,11 +216,26 @@ export function buildLogsScene(opts: LogsSceneOpts): EmbeddedScene {
     ],
   });
 
+  // Level filter for the log viewer only — reuses the same line regexes as the
+  // stat tiles. Appended as an extra `|~` so it ANDs with the free-text $search.
+  const levelFilter = new LogLevelFilter({
+    value: '',
+    baseExpr: logsExpr,
+    maxLines: LOGS_MAX_LINES,
+    queryRunner: logsQR,
+    options: [
+      { label: 'All', value: '' },
+      { label: 'Errors', value: ` |~ \`${ERR_RE}\`` },
+      { label: 'Errors + warnings', value: ` |~ \`${ERRWARN_RE}\`` },
+    ],
+  });
+
   return new EmbeddedScene({
     $variables: variables,
     $timeRange: new SceneTimeRange({ from: 'now-1h', to: 'now' }),
     controls: [
       new VariableValueSelectors({}),
+      levelFilter,
       new SceneControlsSpacer(),
       new SceneTimePicker({}),
       new SceneRefreshPicker({}),
