@@ -20,6 +20,7 @@ export default defineConfig({
       { text: 'Guide', link: '/guide/introduction' },
       { text: 'Dashboards', link: '/guide/dashboards' },
       { text: 'Alerts', link: '/guide/alerts' },
+      { text: 'Blog', link: '/blog/' },
       { text: 'About', link: '/about' },
       {
         text: 'v2.3',
@@ -56,6 +57,16 @@ export default defineConfig({
             { text: 'Alert pack', link: '/guide/alerts' },
             { text: 'Traffic stack profiles', link: '/guide/traffic-profiles' },
             { text: 'Deploy in-cluster', link: '/guide/deploy' },
+          ],
+        },
+      ],
+      '/blog/': [
+        {
+          text: 'Blog',
+          items: [
+            { text: 'All posts', link: '/blog/' },
+            { text: 'Clusters → hub-and-spoke ArgoCD', link: '/blog/consolidating-kubernetes-clusters' },
+            { text: 'Vault HA on Kubernetes', link: '/blog/vault-ha-on-kubernetes' },
           ],
         },
       ],
