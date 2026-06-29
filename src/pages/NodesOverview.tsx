@@ -1,6 +1,6 @@
 import React from 'react';
 import { BasePage } from './BasePage';
-import { PluginPage } from '@grafana/runtime';
+import { PluginPage, locationService } from '@grafana/runtime';
 import { LoadingPlaceholder } from '@grafana/ui';
 import { PageHeader } from '../components/PageHeader';
 import { NodeCard } from '../components/NodeCard';
@@ -82,7 +82,7 @@ export class NodesOverviewPage extends BasePage {
             config: `/plugins/${APP_ID}`,
           }}
           onClusterChange={(value) => {
-            window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.NodesOverview}/${value}`;
+            locationService.push(`${PLUGIN_BASE_URL}/${ROUTES.NodesOverview}/${value}`);
           }}
         />
 

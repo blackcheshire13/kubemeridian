@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.5.2 — Catalog review fixes
+
+- Replace direct `window.location` navigation with `locationService` from
+  `@grafana/runtime` on all app pages (Grafana plugin code rule
+  `code-rules-direct-window-location-access`). Cluster switching now uses in-app
+  SPA navigation; routed pages remount on cluster change (via a `key` on the
+  route element) so per-cluster data reloads exactly as before — without a full
+  page reload.
+
 ## 2.5.1 — Log level filter
 
 - **Logs** page: a segmented **All / Errors / Errors + warnings** control in the

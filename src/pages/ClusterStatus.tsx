@@ -1,6 +1,6 @@
 import React from 'react';
 import { BasePage } from './BasePage';
-import { PluginPage } from '@grafana/runtime';
+import { PluginPage, locationService } from '@grafana/runtime';
 import { LoadingPlaceholder } from '@grafana/ui';
 import { cx } from '@emotion/css';
 import { PageHeader } from '../components/PageHeader';
@@ -97,7 +97,7 @@ export class ClusterStatus extends BasePage {
             config: `/plugins/${APP_ID}`,
           }}
           onClusterChange={(value) => {
-            window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.ClusterStatus}/${value}`;
+            locationService.push(`${PLUGIN_BASE_URL}/${ROUTES.ClusterStatus}/${value}`);
           }}
         />
 

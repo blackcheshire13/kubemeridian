@@ -1,5 +1,5 @@
 import React from 'react';
-import { PluginPage } from '@grafana/runtime';
+import { PluginPage, locationService } from '@grafana/runtime';
 import { EmptyState, LinkButton, LoadingPlaceholder } from '@grafana/ui';
 import { BasePage } from './BasePage';
 import { PageHeader } from '../components/PageHeader';
@@ -81,7 +81,7 @@ export class CostPage extends BasePage {
             config: `/plugins/${APP_ID}`,
           }}
           onClusterChange={(value) => {
-            window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.Cost}/${value}`;
+            locationService.push(`${PLUGIN_BASE_URL}/${ROUTES.Cost}/${value}`);
           }}
         />
 

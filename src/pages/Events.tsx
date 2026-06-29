@@ -1,5 +1,5 @@
 import React from 'react';
-import { PluginPage } from '@grafana/runtime';
+import { PluginPage, locationService } from '@grafana/runtime';
 import { LoadingPlaceholder } from '@grafana/ui';
 import { BasePage } from './BasePage';
 import { PageHeader } from '../components/PageHeader';
@@ -92,7 +92,7 @@ export class EventsPage extends BasePage {
             config: `/plugins/${APP_ID}`,
           }}
           onClusterChange={(value) => {
-            window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.Events}/${value}`;
+            locationService.push(`${PLUGIN_BASE_URL}/${ROUTES.Events}/${value}`);
           }}
         />
 

@@ -16,42 +16,42 @@ import { organizeDashboardsIntoFolder } from '../../common/dashboards';
 
 function NodesRoute() {
   const { clusterId = '' } = useParams();
-  return <NodesOverviewPage cluster_id={clusterId} />;
+  return <NodesOverviewPage key={clusterId} cluster_id={clusterId} />;
 }
 
 function EventsRoute() {
   const { clusterId = '' } = useParams();
-  return <EventsPage cluster_id={clusterId} />;
+  return <EventsPage key={clusterId} cluster_id={clusterId} />;
 }
 
 function LogsRoute() {
   const { clusterId = '' } = useParams();
-  return <LogsPage cluster_id={clusterId} />;
+  return <LogsPage key={clusterId} cluster_id={clusterId} />;
 }
 
 function TracesRoute() {
   const { clusterId = '' } = useParams();
-  return <TracesPage cluster_id={clusterId} />;
+  return <TracesPage key={clusterId} cluster_id={clusterId} />;
 }
 
 function ServicesRoute() {
   const { clusterId = '' } = useParams();
-  return <ServicesPage cluster_id={clusterId} />;
+  return <ServicesPage key={clusterId} cluster_id={clusterId} />;
 }
 
 function CostRoute() {
   const { clusterId = '' } = useParams();
-  return <CostPage cluster_id={clusterId} />;
+  return <CostPage key={clusterId} cluster_id={clusterId} />;
 }
 
 function ApplicationsRoute() {
   const { clusterId = '' } = useParams();
-  return <ApplicationsOverview cluster_id={clusterId} />;
+  return <ApplicationsOverview key={clusterId} cluster_id={clusterId} />;
 }
 
 function ClusterStatusRoute() {
   const { clusterId = '' } = useParams();
-  return <ClusterStatus cluster_id={clusterId} />;
+  return <ClusterStatus key={clusterId} cluster_id={clusterId} />;
 }
 
 function App(_props: AppRootProps) {

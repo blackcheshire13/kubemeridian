@@ -1,7 +1,7 @@
 import React from 'react';
 import { BasePage } from './BasePage';
 import { Icon, ToolbarButton, ToolbarButtonRow } from '@grafana/ui';
-import { PluginPage } from '@grafana/runtime';
+import { PluginPage, locationService } from '@grafana/runtime';
 import { cx } from '@emotion/css';
 import { PageHeader } from '../components/PageHeader';
 import { APP_ID, PLUGIN_BASE_URL, ROUTES } from '../constants';
@@ -163,7 +163,7 @@ export class ApplicationsOverview extends BasePage {
             config: `/plugins/${APP_ID}`,
           }}
           onClusterChange={(value) => {
-            window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.ApplicationsOverview}/${value}`;
+            locationService.push(`${PLUGIN_BASE_URL}/${ROUTES.ApplicationsOverview}/${value}`);
           }}
         />
 

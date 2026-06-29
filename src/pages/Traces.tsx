@@ -1,5 +1,5 @@
 import React from 'react';
-import { PluginPage } from '@grafana/runtime';
+import { PluginPage, locationService } from '@grafana/runtime';
 import { EmptyState, LinkButton, LoadingPlaceholder } from '@grafana/ui';
 import { EmbeddedScene } from '@grafana/scenes';
 import { BasePage } from './BasePage';
@@ -70,7 +70,7 @@ export class TracesPage extends BasePage {
             config: `/plugins/${APP_ID}`,
           }}
           onClusterChange={(value) => {
-            window.location.href = `${PLUGIN_BASE_URL}/${ROUTES.Traces}/${value}`;
+            locationService.push(`${PLUGIN_BASE_URL}/${ROUTES.Traces}/${value}`);
           }}
         />
 
