@@ -3,50 +3,34 @@ updates:
   - package-ecosystem: npm
     directory: '/'
     schedule:
-      interval: 'weekly'
+      interval: 'monthly'
     # Wait 5 days before updating to help circumvent supply chain attacks
     cooldown:
       default-days: 5
       # Exclude plugin-e2e to prevent false positives with canary e2e tests
       exclude:
         - '@grafana/plugin-e2e'
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
     commit-message:
       prefix: 'chore'
       include: 'scope'
+    # Collapse every npm update into at most two PRs (production + development)
+    # so dependency bumps don't sprawl into one PR per package.
     groups:
-      unit-test:
-        patterns:
-          - '@testing-library/*'
-          - 'jest*'
-          - '@types/jest'
-      eslint:
-        patterns:
-          - '@grafana/eslint-config'
-          - 'eslint*'
-          - '@typescript-eslint/*'
-          - '@stylistic/*'
-      grafana:
-        patterns:
-          - '@grafana/*'
+      npm-production:
         dependency-type: 'production'
-        update-types:
-          - 'minor'
-          - 'patch'
-      react:
-        patterns:
-          - 'react'
-          - 'react-dom'
-          - '@types/react'
-          - '@types/react-dom'
-        update-types:
-          - 'minor'
-          - 'patch'
+      npm-development:
+        dependency-type: 'development'
 
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
-      interval: 'weekly'
+      interval: 'monthly'
     commit-message:
       prefix: 'chore(ci)'
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
+    # Single grouped PR for all GitHub Actions bumps.
+    groups:
+      github-actions:
+        patterns:
+          - '*'
