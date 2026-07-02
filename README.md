@@ -52,6 +52,30 @@ read-only `GET` calls through Grafana with a ServiceAccount **bearer token** inj
 (`secureJsonData`, never exposed to the browser), and implements `metricFindQuery` for dashboard
 template variables.
 
+## Install
+
+KubeMeridian is distributed as an **unsigned** app plugin via
+[GitHub Releases](https://github.com/blackcheshire13/kubemeridian/releases) — it is not
+listed in the Grafana plugin catalog. Grafana loads unsigned plugins only when they are
+explicitly allow-listed, and **both ids are required** (the bundled datasource does not
+inherit the app's allow-list entry):
+
+```bash
+# 1. allow the unsigned plugin (app + bundled datasource)
+GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=devopstech-kubemeridian-app,devopstech-kubemeridian-datasource
+
+# 2. install from the release zip (Grafana's classic installer)
+GF_INSTALL_PLUGINS=https://github.com/blackcheshire13/kubemeridian/releases/download/v2.5.2/devopstech-kubemeridian-app-2.5.2.zip;devopstech-kubemeridian-app
+```
+
+Set both as environment variables on the Grafana instance (or the equivalents in
+`grafana.ini`: `[plugins] allow_loading_unsigned_plugins` and `[plugins] preinstall_sync`),
+then restart Grafana. Alternatively, unzip the release archive into the Grafana plugins
+directory (`/var/lib/grafana/plugins`) and restart.
+
+📖 Full guide: [devopstech.net/guide/install](https://devopstech.net/guide/install) ·
+in-cluster deploy: [devopstech.net/guide/deploy](https://devopstech.net/guide/deploy).
+
 ## Develop
 
 ```bash

@@ -20,9 +20,6 @@ jobs:
           persist-credentials: false
 
       - uses: grafana/plugin-actions/build-plugin@build-plugin/v1.0.2
-        # Signs the plugin (community signature) and attaches the packaged zip to
-        # the GitHub Release for this tag. Add the token under
-        # Settings → Secrets and variables → Actions → GRAFANA_ACCESS_POLICY_TOKEN.
-        # (How to generate it: https://grafana.com/developers/plugin-tools/publish-a-plugin/sign-a-plugin#generate-an-access-policy-token)
-        with:
-          policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
+        # Builds and attaches the packaged (unsigned) zip to the GitHub Release for
+        # this tag. The plugin is distributed outside the Grafana catalog, so there
+        # is no signing step: without a policy_token the action skips signing.

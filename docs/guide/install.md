@@ -1,7 +1,8 @@
 # Install
 
-KubeMeridian is a standard Grafana app plugin. Until it lands in the Grafana
-catalog you install it as an unsigned plugin from a release archive.
+KubeMeridian is a standard Grafana app plugin, distributed as an **unsigned**
+plugin via [GitHub Releases](https://github.com/blackcheshire13/kubemeridian/releases)
+— it is not listed in the Grafana plugin catalog.
 
 ## Requirements
 
@@ -10,22 +11,23 @@ catalog you install it as an unsigned plugin from a release archive.
   e.g. kube-prometheus-stack) for the dashboards.
 - Optional: Loki (logs), Tempo (traces), OpenCost (real cost).
 
-## Option A — Grafana catalog
+## Install from a GitHub Release
 
-Once published, install it from **Administration → Plugins** like any other app.
-*(Submission in progress.)*
-
-## Option B — unsigned, from a release archive
+Every tagged version publishes a plugin zip as a
+[GitHub Release](https://github.com/blackcheshire13/kubemeridian/releases) asset.
 
 ```bash
 # 1. allow the unsigned plugin (both ids — the bundled datasource needs it too)
 GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=devopstech-kubemeridian-app,devopstech-kubemeridian-datasource
 
-# 2. install from a hosted zip (Grafana's classic installer)
-GF_INSTALL_PLUGINS=https://<your-host>/devopstech-kubemeridian-app.zip;devopstech-kubemeridian-app
+# 2. install from the release zip (Grafana's classic installer)
+GF_INSTALL_PLUGINS=https://github.com/blackcheshire13/kubemeridian/releases/download/v2.5.2/devopstech-kubemeridian-app-2.5.2.zip;devopstech-kubemeridian-app
 ```
 
-Set both as environment variables on the Grafana instance, then restart Grafana.
+Set both as environment variables on the Grafana instance (or the equivalents in
+`grafana.ini`: `[plugins] allow_loading_unsigned_plugins` and `[plugins] preinstall_sync`),
+then restart Grafana. Alternatively, unzip the release archive into the Grafana
+plugins directory (`/var/lib/grafana/plugins`) and restart.
 For an in-cluster (kube-prometheus-stack) Grafana, see [Deploy in-cluster](/guide/deploy)
 — it covers the Helm overlay, the read-only RBAC and datasource provisioning.
 
