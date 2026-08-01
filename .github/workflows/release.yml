@@ -15,11 +15,11 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
 
-      - uses: grafana/plugin-actions/build-plugin@build-plugin/v1.0.2
+      - uses: grafana/plugin-actions/build-plugin@build-plugin/v1.2.0
         # Signs the plugin (community signature) and attaches the packaged zip to
         # the GitHub Release for this tag. Add the token under
         # Settings → Secrets and variables → Actions → GRAFANA_ACCESS_POLICY_TOKEN.
