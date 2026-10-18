@@ -2,7 +2,7 @@
 layout: page
 title: devopstech — production engineering, closed loop
 titleTemplate: false
-description: ICE (active defence for Kubernetes), deusex (an autonomous development loop) and KubeMeridian (open-source Kubernetes observability for Grafana).
+description: ICE (active defence for Kubernetes), deusex (an autonomous development loop) and KubeMeridian (Kubernetes observability for Grafana, archived).
 head:
   - - link
     - rel: canonical

@@ -13,8 +13,8 @@ const latest = posts.slice(0, 4);
       <h1>Production engineering,<br /><span class="turn">closed loop.</span></h1>
       <p class="lede">
         I build the tools I want next to production: a defence system for Kubernetes that only
-        calls a problem fixed once the cluster proves it, a development loop that ships code
-        while I sleep, and an observability plugin that works the moment you install it.
+        calls a problem fixed once the cluster proves it, and a development loop that ships code
+        while I sleep.
       </p>
     </header>
 
@@ -57,14 +57,15 @@ const latest = posts.slice(0, 4);
       </article>
 
       <article class="project km">
-        <p class="meta"><span class="idx">03</span><span class="dot" aria-hidden="true"></span>Open source · Apache-2.0 · install today</p>
+        <p class="meta"><span class="idx">03</span><span class="dot" aria-hidden="true"></span>Archived · Apache-2.0 · last release v2.5.2</p>
         <div class="km-row">
           <h2><a href="/kubemeridian">KubeMeridian</a></h2>
           <p class="pitch">
-            Kubernetes observability for Grafana in one app plugin: topology, curated dashboards,
-            logs and traces inline, cost and right-sizing, RED and SLOs for any mesh or ingress.
+            Kubernetes observability for Grafana in one app plugin. Grafana Labs declined to list it
+            in its plugin catalog because it overlaps with Grafana Cloud Kubernetes Monitoring, so
+            development has stopped; v2.5.2 stays available as an unsigned plugin.
           </p>
-          <p class="go"><a href="/guide/install">Install</a><a href="/guide/introduction">Read the guide</a><a href="https://github.com/blackcheshire13/kubemeridian">GitHub</a></p>
+          <p class="go"><a href="/kubemeridian">Project page</a><a href="/guide/introduction">Read the guide</a><a href="https://github.com/blackcheshire13/kubemeridian">GitHub</a></p>
         </div>
       </article>
     </section>
@@ -178,7 +179,7 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .ice { --accent: var(--dt-ice); }
 .deusex { --accent: var(--dt-deusex); }
-.km { --accent: var(--dt-km); }
+.km { --accent: var(--vp-c-text-2); }
 .project h2 {
   font-size: clamp(34px, 4.6vw, 52px);
   line-height: 1;

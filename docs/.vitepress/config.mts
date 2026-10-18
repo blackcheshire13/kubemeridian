@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress';
 import { SITE_DESCRIPTION, blogSidebar, checkOgCards, socialHead, writeFeed } from './site-meta';
 
-// devopstech.net — engineering hub: ICE, deusex, KubeMeridian (docs), blog
+// devopstech.net — engineering hub: ICE, deusex, blog, and the archived KubeMeridian docs
 export default defineConfig({
   lang: 'en-US',
   title: 'devopstech',
@@ -34,8 +34,9 @@ export default defineConfig({
     nav: [
       { text: 'ICE', link: '/ice/', activeMatch: '^/ice/' },
       { text: 'deusex', link: '/deusex/', activeMatch: '^/deusex/' },
+      { text: 'Blog', link: '/blog/', activeMatch: '^/blog/' },
       {
-        text: 'KubeMeridian',
+        text: 'KubeMeridian (archived)',
         activeMatch: '^/(kubemeridian|guide/)',
         items: [
           { text: 'Overview', link: '/kubemeridian' },
@@ -45,7 +46,6 @@ export default defineConfig({
           { text: 'Changelog', link: 'https://github.com/blackcheshire13/kubemeridian/blob/main/CHANGELOG.md' },
         ],
       },
-      { text: 'Blog', link: '/blog/', activeMatch: '^/blog/' },
       { text: 'About', link: '/about' },
     ],
     sidebar: {
@@ -104,7 +104,7 @@ export default defineConfig({
     },
     socialLinks: [{ icon: 'github', link: 'https://github.com/blackcheshire13' }],
     footer: {
-      message: 'KubeMeridian is Apache-2.0 licensed. ICE and deusex are in active development.',
+      message: 'ICE and deusex are in active development. KubeMeridian is archived and Apache-2.0 licensed.',
       copyright: '© 2026 devopstech · devopstech.net',
     },
     search: { provider: 'local' },

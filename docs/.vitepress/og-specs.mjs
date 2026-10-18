@@ -28,7 +28,7 @@ export function cardSpecs() {
     fromPage('ice-how-it-works', 'ice/how-it-works.md', 'devopstech · ICE', ACCENT.ice, 'Operator, agent, trust path, posture and responses'),
     fromPage('deusex', 'deusex/index.md', 'devopstech · deusex', ACCENT.deusex),
     fromPage('deusex-method', 'deusex/method.md', 'devopstech · deusex', ACCENT.deusex),
-    { slug: 'kubemeridian', kicker: 'devopstech · open source', accent: ACCENT.km, title: 'KubeMeridian', sub: 'Kubernetes observability for Grafana in one app plugin' },
+    { slug: 'kubemeridian', kicker: 'devopstech · archived', accent: ACCENT.km, title: 'KubeMeridian', sub: 'Kubernetes observability for Grafana in one app plugin — archived' },
     { slug: 'blog', kicker: 'devopstech', accent: ACCENT.hub, title: 'Blog', sub: 'Kubernetes, security, autonomous development and observability' },
     { slug: 'about', kicker: 'devopstech', accent: ACCENT.hub, title: 'About me', sub: 'The engineer behind ICE, deusex and KubeMeridian' },
     ...blogPosts().map((p) =>

@@ -1,7 +1,8 @@
 # Install
 
-KubeMeridian is a standard Grafana app plugin. Until it lands in the Grafana
-catalog you install it as an unsigned plugin from a release archive.
+KubeMeridian is a standard Grafana app plugin. It is archived and not listed in the
+Grafana catalog, so you install it as an unsigned plugin from a release archive — the last
+one is [v2.5.2](https://github.com/blackcheshire13/kubemeridian/releases/tag/v2.5.2).
 
 ## Requirements
 
@@ -10,12 +11,7 @@ catalog you install it as an unsigned plugin from a release archive.
   e.g. kube-prometheus-stack) for the dashboards.
 - Optional: Loki (logs), Tempo (traces), OpenCost (real cost).
 
-## Option A — Grafana catalog
-
-Once published, install it from **Administration → Plugins** like any other app.
-*(Submission in progress.)*
-
-## Option B — unsigned, from a release archive
+## Unsigned, from a release archive
 
 ```bash
 # 1. allow the unsigned plugin (both ids — the bundled datasource needs it too)
