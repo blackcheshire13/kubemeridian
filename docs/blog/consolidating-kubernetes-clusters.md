@@ -1,4 +1,5 @@
 ---
+date: 2026-06-27
 title: "From 10+ Kubernetes clusters to 4: a hub-and-spoke ArgoCD story"
 description: How we consolidated 10+ Kubernetes clusters across four clouds into four, under one hub-and-spoke ArgoCD control plane — topology, GitOps layout and the gotchas.
 head:
@@ -78,7 +79,7 @@ deliberately boring.
 - **Lower operational overhead** and faster triage with federated logs and metrics.
 - **Clear separation** of control plane vs workloads — spokes became replaceable.
 
-This federated view is exactly the kind of thing [KubeMeridian](/) is built to
+This federated view is exactly the kind of thing [KubeMeridian](/kubemeridian) is built to
 surface — cluster topology and health across a fleet, from one Grafana app.
 
 ## What I'd do differently
@@ -90,5 +91,5 @@ surface — cluster topology and health across a fleet, from one Grafana app.
 
 ---
 
-*Written by the engineer behind [KubeMeridian](/) · [About](/about) ·
+*Written by the engineer behind [KubeMeridian](/kubemeridian) · [About](/about) ·
 [GitHub](https://github.com/blackcheshire13)*

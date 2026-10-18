@@ -1,4 +1,5 @@
 ---
+date: 2026-06-27
 title: "Vault HA on Kubernetes: auto-unseal, dynamic secrets, and a DR runbook"
 description: A production-minded HashiCorp Vault setup on Kubernetes — HA storage, auto-unseal via cloud KMS, Kubernetes auth, dynamic secrets and a disaster-recovery runbook.
 head:
@@ -69,5 +70,5 @@ The unseal key never leaves the KMS. Vault holds only a reference.
 
 ---
 
-*Written by the engineer behind [KubeMeridian](/) · [About](/about) ·
+*Written by the engineer behind [KubeMeridian](/kubemeridian) · [About](/about) ·
 [GitHub](https://github.com/blackcheshire13)*

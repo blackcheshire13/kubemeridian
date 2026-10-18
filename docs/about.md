@@ -1,24 +1,32 @@
 ---
 title: About me
-description: The engineer behind devopstech and KubeMeridian — DevOps, development, and a love of good tooling.
+description: The engineer behind devopstech — ICE, deusex and KubeMeridian. DevOps, platform engineering, security and the tools that keep production calm.
 ---
 
 # About me
 
-Hi — I'm the engineer behind **devopstech** and the author of [KubeMeridian](/).
+Hi — I'm the engineer behind **devopstech**.
 
-I'm a **DevOps engineer and developer** who genuinely loves technology — Kubernetes,
-observability, infrastructure-as-code, and building tools that make day-2 operations
-calmer. KubeMeridian grew out of that itch: turning a pile of drifting dashboards and
-half-wired datasources into one coherent Grafana app.
+I'm a **DevOps and platform engineer who also writes the tools**. Thirteen-plus years of
+Kubernetes, observability, infrastructure-as-code, secrets and CI/CD taught me one habit:
+when something in production annoys me twice, I build the fix — and, where I can, open-source it.
 
-When something annoys me in my own clusters, I tend to build the fix — and open-source it.
+## What I'm building
+
+- **[ICE](/ice/)** — active defence for Kubernetes. It finds problems, answers through GitOps
+  and keeps a finding open until the running cluster proves it is fixed. In development;
+  looking for design partners.
+- **[deusex](/deusex/)** — an autonomous development loop that plans, builds, reviews and
+  merges code on a schedule and stops only at the decisions people have not handed over.
+  It has been developing ICE since day one.
+- **[KubeMeridian](/kubemeridian)** — open-source Kubernetes observability for Grafana in one
+  app plugin. Apache-2.0, install it today.
 
 ## Open to collaboration
 
-I'm **open to collaboration**: freelance and contract work, open-source contributions, or
-just comparing notes on observability and platform engineering. If you're building
-something interesting — or want a hand with Grafana, Kubernetes, cost or SLOs — reach out.
+I'm **open to collaboration**: design-partner pilots for ICE, conversations about
+autonomous development with deusex, contract work on Kubernetes, Grafana, cost and SLOs, or
+just comparing notes on platform engineering.
 
 - 📧 **Email:** [qdrrag@gmail.com](mailto:qdrrag@gmail.com)
 - 💻 **GitHub:** [blackcheshire13](https://github.com/blackcheshire13)
