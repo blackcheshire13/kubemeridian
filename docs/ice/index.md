@@ -58,6 +58,26 @@ explicit states, and the last two are earned, not declared:
 Before a change is applied, ICE renders it again. If the digest no longer matches what the
 person approved, the action fails instead of shipping something nobody reviewed.
 
+## What it looks like
+
+<p class="dt-shots-note">The real ICE console, running against <strong>synthetic demo data</strong> for a fictional
+company, acme-corp — not a production estate.</p>
+
+<figure class="dt-shot">
+  <a href="/screenshots/ice/action-approval.png"><img src="/screenshots/ice/action-approval.png" width="1440" height="900" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request."></a>
+  <figcaption><strong>Approve a change, not a description.</strong> The rendered manifest and what merging it does; approving opens a pull request — ICE has no direct write path to the cluster.</figcaption>
+</figure>
+
+<figure class="dt-shot">
+  <a href="/screenshots/ice/cases.png"><img src="/screenshots/ice/cases.png" width="1440" height="900" loading="lazy" alt="ICE console, Cases: one case verified after a re-check, one merged and deployed but not verified because the requirement has not been measured since the merge."></a>
+  <figcaption><strong>Merged is not fixed.</strong> A case reaches <em>verified</em> only after a re-check; the second one stays <em>deployed, not verified</em> until the requirement is measured again.</figcaption>
+</figure>
+
+<figure class="dt-shot">
+  <a href="/screenshots/ice/posture.png"><img src="/screenshots/ice/posture.png" width="1440" height="900" loading="lazy" alt="ICE console, Posture: compliance score with met, unmet, not checked and not applicable requirements per environment."></a>
+  <figcaption><strong>Posture as requirements.</strong> Not checked counts against the score; not applicable is left out of it.</figcaption>
+</figure>
+
 ## Principles enforced by code, not by discipline
 
 - **Writes go through pull requests — because there is nothing else.** Outside its own
