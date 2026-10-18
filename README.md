@@ -70,7 +70,7 @@ npm run typecheck
 npm run build        # production build
 ```
 
-The dev Grafana sets `GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=devopstech-kubemeridian-app`.
+The dev Grafana sets `GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=devopstech-kubemeridian-app,devopstech-kubemeridian-datasource`.
 
 ## Deploy (in-cluster Grafana)
 
