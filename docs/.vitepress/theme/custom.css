@@ -352,3 +352,7 @@
   color: var(--vp-c-text-2);
 }
 .vp-doc .dt-shot figcaption strong { color: var(--vp-c-text-1); }
+.vp-doc .dt-person-name { line-height: 1.2; }
+@media (max-width: 520px) {
+  .vp-doc .dt-person { flex-direction: column; align-items: flex-start; gap: 14px; }
+}

@@ -6,6 +6,7 @@ description: Artur Stepanchenko, the DevOps and platform engineer behind devopst
 # About
 
 <div class="dt-person">
+  <img src="/about/artur.jpg" width="96" height="96" alt="Artur Stepanchenko">
   <div>
     <p class="dt-person-name">Artur Stepanchenko</p>
     <p class="dt-person-role">Senior DevOps / SRE / platform engineer · the engineer behind devopstech</p>
