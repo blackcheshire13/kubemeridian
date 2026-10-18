@@ -57,10 +57,10 @@
   },
   "about": {
     "slug": "about",
-    "kicker": "devopstech",
+    "kicker": "devopstech · about",
     "accent": "oklch(0.74 0.135 78)",
-    "title": "About me",
-    "sub": "The engineer behind ICE, deusex and KubeMeridian"
+    "title": "Artur Stepanchenko",
+    "sub": "The engineer behind ICE and deusex"
   },
   "blog-live-needs-evidence": {
     "slug": "blog-live-needs-evidence",

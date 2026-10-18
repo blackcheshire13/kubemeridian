@@ -40,8 +40,13 @@ function ogImage(relativePath: string): string {
 }
 
 const PUBLISHER = { '@type': 'Organization', name: SITE_TITLE, url: `${SITE}/`, logo: `${SITE}/devopstech.svg` };
-// The posts are first-person writing by one engineer, published under the devopstech name.
-const AUTHOR = { '@type': 'Person', name: SITE_TITLE, url: `${SITE}/about`, sameAs: 'https://github.com/blackcheshire13' };
+// The posts are first-person writing by the engineer behind devopstech.
+const AUTHOR = {
+  '@type': 'Person',
+  name: 'Artur Stepanchenko',
+  url: `${SITE}/about`,
+  sameAs: ['https://www.linkedin.com/in/black-cmd-devops', 'https://github.com/blackcheshire13'],
+};
 
 // What a product page is about. ICE and deusex are not released, so they are described as the
 // subject of a WebPage rather than as SoftwareApplication (which expects offers / ratings).
