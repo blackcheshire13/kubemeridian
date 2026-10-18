@@ -107,14 +107,14 @@ numbers stay honest. Pure pricing engine is unit-tested.
 Renamed the plugin from the revived "KubeGraf" to its own brand, **KubeMeridian**,
 ahead of a Grafana catalog submission.
 
-- Plugin ids: `starcrown-kubegraf-app` → `devopstech-kubemeridian-app`,
-  `starcrown-kubegraf-datasource` → `devopstech-kubemeridian-datasource`.
+- Plugin ids: the pre-2.3 `*-kubegraf-app` / `*-kubegraf-datasource` ids →
+  `devopstech-kubemeridian-app`, `devopstech-kubemeridian-datasource`.
 - New logo (Hex Meridian in Kubernetes blue), display name, author (devopstech),
   dashboard titles/UIDs (`kubemeridian-*`), alert group names and deploy artifacts.
 - No functional change — same features as 2.2.0.
 
 > Note: the plugin id change is a new plugin identity. A fresh install/provision
-> is required; the old `starcrown-kubegraf-*` install is superseded.
+> is required; the old `*-kubegraf-*` install is superseded.
 
 ## 2.2.0 — Fleet overview & onboarding
 
