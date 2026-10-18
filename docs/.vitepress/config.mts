@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitepress';
-import { SITE_DESCRIPTION, blogSidebar, checkOgCards, socialHead, writeFeed } from './site-meta';
+import { SITE_DESCRIPTION, blogSidebar, checkOgCards, pageHead, writeFeed } from './site-meta';
 
 // devopstech.net — engineering hub: ICE, deusex, blog, and the archived KubeMeridian docs
 export default defineConfig({
@@ -23,7 +23,7 @@ export default defineConfig({
     ['meta', { property: 'og:site_name', content: 'devopstech' }],
     ['link', { rel: 'alternate', type: 'application/rss+xml', title: 'devopstech — blog', href: '/feed.xml' }],
   ],
-  transformHead: ({ pageData }) => socialHead(pageData),
+  transformHead: ({ pageData }) => pageHead(pageData),
   buildEnd: ({ outDir }) => {
     checkOgCards();
     writeFeed(outDir);
@@ -87,7 +87,7 @@ export default defineConfig({
           text: 'ICE',
           items: [
             { text: 'Overview', link: '/ice/' },
-            { text: 'How ICE is built', link: '/ice/how-it-works' },
+            { text: 'How ICE works', link: '/ice/how-it-works' },
           ],
         },
       ],

@@ -2,9 +2,9 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { HeadConfig, PageData } from 'vitepress';
-import { DOCS, blogPosts } from './blog.mjs';
+import { DOCS, blogPosts, isoDate } from './blog.mjs';
 import { cardSpecs } from './og-specs.mjs';
-import { isKubeMeridianPage } from './kubemeridian.mjs';
+import { KM_LAST_RELEASE, isKubeMeridianPage } from './kubemeridian.mjs';
 
 export const SITE = 'https://devopstech.net';
 export const SITE_TITLE = 'devopstech';
@@ -39,13 +39,73 @@ function ogImage(relativePath: string): string {
   return `${SITE}/devopstech.svg`;
 }
 
-export function socialHead(pageData: PageData): HeadConfig[] {
+const PUBLISHER = { '@type': 'Organization', name: SITE_TITLE, url: `${SITE}/`, logo: `${SITE}/devopstech.svg` };
+
+// Pages that describe a piece of software, for schema.org SoftwareApplication.
+const SOFTWARE: Record<string, Record<string, unknown>> = {
+  'ice/index.md': { name: 'ICE', applicationCategory: 'SecurityApplication', operatingSystem: 'Kubernetes' },
+  'deusex/index.md': { name: 'deusex', applicationCategory: 'DeveloperApplication' },
+  'kubemeridian.md': {
+    name: 'KubeMeridian',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Grafana',
+    softwareVersion: KM_LAST_RELEASE.replace(/^v/, ''),
+    license: 'https://www.apache.org/licenses/LICENSE-2.0',
+    sameAs: 'https://github.com/blackcheshire13/kubemeridian',
+  },
+};
+// Long-form pages that explain one of them.
+const ABOUT: Record<string, string> = { 'ice/how-it-works.md': 'ICE', 'deusex/method.md': 'deusex' };
+
+function structuredData(pageData: PageData, title: string, description: string, url: string, image: string) {
+  const rel = pageData.relativePath;
+  if (rel === 'index.md') {
+    return { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE_TITLE, url: `${SITE}/`, description, publisher: PUBLISHER };
+  }
+  if (SOFTWARE[rel]) {
+    return { '@context': 'https://schema.org', '@type': 'SoftwareApplication', ...SOFTWARE[rel], description, url, image, publisher: PUBLISHER };
+  }
+  if (ABOUT[rel]) {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'TechArticle',
+      headline: title,
+      description,
+      url,
+      image,
+      about: { '@type': 'SoftwareApplication', name: ABOUT[rel] },
+      author: PUBLISHER,
+      publisher: PUBLISHER,
+    };
+  }
+  if (rel.startsWith('blog/') && rel !== 'blog/index.md' && pageData.frontmatter.date) {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: title,
+      description,
+      url,
+      mainEntityOfPage: url,
+      image,
+      datePublished: isoDate(pageData.frontmatter.date),
+      ...(pageData.lastUpdated ? { dateModified: new Date(pageData.lastUpdated).toISOString() } : {}),
+      keywords: Array.isArray(pageData.frontmatter.tags) ? pageData.frontmatter.tags.join(', ') : undefined,
+      author: PUBLISHER,
+      publisher: PUBLISHER,
+    };
+  }
+  return null;
+}
+
+// <head> additions for every page: canonical URL, Open Graph / Twitter cards, JSON-LD.
+export function pageHead(pageData: PageData): HeadConfig[] {
   const title = pageData.frontmatter.title || pageData.title || SITE_TITLE;
   const description = pageData.frontmatter.description || pageData.description || SITE_DESCRIPTION;
   const url = SITE + pagePath(pageData.relativePath);
   const image = ogImage(pageData.relativePath);
   const isPost = pageData.relativePath.startsWith('blog/') && !pageData.relativePath.endsWith('index.md');
-  return [
+  const head: HeadConfig[] = [
+    ['link', { rel: 'canonical', href: url }],
     ['meta', { property: 'og:type', content: isPost ? 'article' : 'website' }],
     ['meta', { property: 'og:title', content: title }],
     ['meta', { property: 'og:description', content: description }],
@@ -58,6 +118,12 @@ export function socialHead(pageData: PageData): HeadConfig[] {
     ['meta', { name: 'twitter:description', content: description }],
     ['meta', { name: 'twitter:image', content: image }],
   ];
+  const data = structuredData(pageData, title, description, url, image);
+  if (data) {
+    // `<` escaped so a title can never close the script element
+    head.push(['script', { type: 'application/ld+json' }, JSON.stringify(data).replace(/</g, '\\u003c')]);
+  }
+  return head;
 }
 
 // The cards are rendered by hand and committed, so the build refuses to ship a page whose

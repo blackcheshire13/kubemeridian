@@ -1,13 +1,9 @@
 ---
-title: ICE — active defence for Kubernetes
-description: ICE turns findings and drift into GitOps pull requests a person approves, and closes a problem only when a measurement taken after the merge proves it is fixed.
-head:
-  - - link
-    - rel: canonical
-      href: https://devopstech.net/ice/
+title: ICE — Kubernetes active defence with GitOps remediation
+description: ICE is active defence for Kubernetes. Findings and drift become GitOps pull requests a person approves, and a case closes only when a fresh measurement proves the fix.
 ---
 
-# ICE
+# ICE: active defence for Kubernetes
 
 <p class="dt-lede">Not a scanner — a loop. ICE turns findings and drift into GitOps pull requests that a
 person approves, and calls a problem fixed only when a measurement taken <em>after</em> the merge says so.</p>
@@ -89,6 +85,24 @@ ICE never reaches out to anything else.
 proving-ground name into the product, and portability is checked against a synthetic
 company profile.
 
+## Works with the stack you already run
+
+ICE does not replace your detection or policy tools — it takes their output and decides
+what to do with it, then proves whether it worked.
+
+| Your tool | What ICE does with it |
+| --- | --- |
+| Falco, Tetragon | receives syscall events as runtime signals |
+| Prometheus, Alertmanager | renders PromQL detectors into `PrometheusRule`; alerts arrive at the agent |
+| Loki | LogQL detectors; a log pack switches itself off if the ruler cannot deliver alerts |
+| Trivy, Grype | image scans from your CI, a delta to the accepted baseline, CycloneDX SBOMs |
+| Kyverno | reads `PolicyReport` objects as posture facts; proposes policies in audit mode only |
+| Istio, Linkerd | posture checks and authorisation-by-service-account responses |
+| Argo CD | a case is `deployed` only when the application is Synced on the merge revision |
+| GitHub, GitLab | remediation pull requests in your GitOps repository |
+| OIDC (Keycloak and others) | console sign-in and the approver role |
+| MCP clients | read-only tools for AI assistants, off by default |
+
 ## Honest status
 
 ICE has its own rule for honesty: a capability can be marked **live** only with dated
@@ -112,10 +126,29 @@ automated walk-through of the console.
 end-to-end on a live cluster; the second proving-ground cluster is not connected; there are
 no tagged releases; one trust domain per installation, no multi-tenancy.
 
+## Questions
+
+**Is ICE a scanner?** No. Scans are one input. ICE runs from detection to a verified fix:
+findings become pull requests a person approves, and a case closes only on a measurement
+taken after the merge.
+
+**Does ICE change my cluster?** Not directly. The operator has no write rights outside its
+own resources; changes reach the cluster as pull requests to your GitOps repository, and
+your pipeline applies them. The one exception is a trap response, and only if you opt in.
+
+**Does it replace Falco or Kyverno?** No — it consumes what they report and turns it into
+decisions, pull requests and verified outcomes.
+
+**Is ICE open source?** It will be released under Apache-2.0. Until then it is developed in
+private, with design partners.
+
+**Where does it run?** On any Kubernetes cluster, with a collector for plain servers. A
+local trial on `kind` takes 15–20 minutes.
+
 ## Want ICE on your cluster?
 
 I'm looking for **design partners**: a team running Kubernetes in production that wants the
 loop on its estate before the public release, and will tell me where it hurts.
 Write to [qdrrag@gmail.com](mailto:qdrrag@gmail.com?subject=ICE%20design%20partner).
 
-Next: [how ICE is built →](/ice/how-it-works)
+Next: [how ICE works →](/ice/how-it-works)

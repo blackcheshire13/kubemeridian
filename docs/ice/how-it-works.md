@@ -1,13 +1,9 @@
 ---
-title: How ICE is built
+title: How ICE works — Kubernetes operator, agent and GitOps remediation
 description: The components of ICE — operator, API, console, agent and scan pipeline — the trust path from a read-only agent to a GitOps pull request, posture states and the response catalogue.
-head:
-  - - link
-    - rel: canonical
-      href: https://devopstech.net/ice/how-it-works
 ---
 
-# How ICE is built
+# How ICE works
 
 ICE is a Kubernetes operator with an API, a console and a small agent. It stores facts,
 proposes changes and checks their outcome — but it never applies a change to your cluster

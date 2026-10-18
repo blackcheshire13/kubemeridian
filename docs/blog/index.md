@@ -1,10 +1,6 @@
 ---
 title: Blog
 description: Field notes on Kubernetes, security, autonomous development and observability — the problems behind ICE, deusex and KubeMeridian.
-head:
-  - - link
-    - rel: canonical
-      href: https://devopstech.net/blog/
 ---
 
 # Blog

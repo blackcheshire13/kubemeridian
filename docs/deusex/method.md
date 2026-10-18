@@ -1,10 +1,6 @@
 ---
 title: The deusex method — roles and invariants
 description: The roles of the deusex loop and what holds each one's rights, the merge policy written as code, and the invariants — each one added after a concrete failure.
-head:
-  - - link
-    - rel: canonical
-      href: https://devopstech.net/deusex/method
 ---
 
 # The method

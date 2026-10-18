@@ -4,10 +4,6 @@ title: "From 10+ Kubernetes clusters to 4: a hub-and-spoke ArgoCD story"
 sidebarTitle: Clusters → hub-and-spoke ArgoCD
 description: How we consolidated 10+ Kubernetes clusters across four clouds into four, under one hub-and-spoke ArgoCD control plane — topology, GitOps layout and the gotchas.
 tags: [kubernetes, argocd, gitops, platform-engineering]
-head:
-  - - link
-    - rel: canonical
-      href: https://devopstech.net/blog/consolidating-kubernetes-clusters
 ---
 
 # From 10+ Kubernetes clusters to 4: a hub-and-spoke ArgoCD story
