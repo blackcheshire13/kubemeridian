@@ -1,10 +1,6 @@
 ---
 title: deusex — an autonomous development loop
 description: deusex turns a vision document into working, merged code. Agents plan, build, review and merge on a schedule; a person decides only the concept.
-head:
-  - - link
-    - rel: canonical
-      href: https://devopstech.net/deusex/
 ---
 
 # deusex
@@ -12,7 +8,9 @@ head:
 <p class="dt-lede">Agents can already write code. deusex teaches them to say no. It is an autonomous
 development loop that turns a vision document into working, merged code — and leaves a person only the concept.</p>
 
-<p class="dt-status"><span class="dt-dot deusex"></span>Running around the clock on two projects since September 2026 · private · <a href="mailto:qdrrag@gmail.com?subject=deusex">talk to me about it</a></p>
+<p class="dt-status"><span class="dt-dot deusex"></span>Running around the clock on two projects since September 2026 · private</p>
+
+<PartnerCta topic="deusex" variant="buttons" :secondary="{ text: 'The method', href: '/deusex/method' }" />
 
 The name is the joke in reverse: *deus ex machina* is the plot device that resolves a story
 without earning it. deusex is built so that nothing reaches `main` that has not earned it.
@@ -57,6 +55,8 @@ Counted from the git history and the forge API on **18 October 2026**, over the 
 from 4 to 18 October. "Autonomous" means a pull request from a loop branch; everything
 else was started by a person — also with AI help, but on human initiative.
 
+<div class="dt-stack numbers">
+
 | Measure | deusex | ICE | Target |
 | --- | ---: | ---: | ---: |
 | Merged pull requests that came from the loop | 57 / 75 · 76% | 66 / 74 · 89% | ≥ 80% |
@@ -65,6 +65,8 @@ else was started by a person — also with AI help, but on human initiative.
 | Lines of autonomous merges still in `main` after 14–45 days | 95.1% | 92.6% | ≥ 90% |
 | New backlog items filed by the loop itself | 20 / 41 · 49% | 29 / 43 · 67% | ≥ 70% |
 | Reverts, whole history | 0 | 1 | — |
+
+</div>
 
 The loop's share of ICE's merges grew from **25%** in the week of 14 September to **83–100%**
 in each week since; deusex itself went from 12% to 74–78% once it became its own project.
@@ -87,7 +89,6 @@ of its own work. A person still files about half of deusex's backlog.
 ## Interested?
 
 deusex is private for now. If you want to see it run on a codebase of yours, or compare
-notes on autonomous development, write to
-[qdrrag@gmail.com](mailto:qdrrag@gmail.com?subject=deusex).
+notes on autonomous development:
 
-Next: [the method — roles and invariants →](/deusex/method)
+<PartnerCta topic="deusex" />

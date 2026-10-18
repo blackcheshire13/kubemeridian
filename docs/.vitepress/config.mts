@@ -1,5 +1,51 @@
-import { defineConfig } from 'vitepress';
-import { SITE_DESCRIPTION, blogSidebar, checkOgCards, socialHead, writeFeed } from './site-meta';
+import { defineConfig, type MarkdownRenderer } from 'vitepress';
+import { SITE_DESCRIPTION, blogSidebar, checkOgCards, pageHead, writeFeed } from './site-meta';
+
+// Tables keep their semantics and their column names when CSS stacks them on phones:
+// explicit ARIA roles, and each cell carries its column header as data-label.
+function tableLabels(md: MarkdownRenderer) {
+  const ROLES: Record<string, string> = {
+    thead_open: 'rowgroup',
+    tbody_open: 'rowgroup',
+    tr_open: 'row',
+    th_open: 'columnheader',
+    td_open: 'cell',
+  };
+  // VitePress renders <table> with its own rule, so the role is added there
+  const tableOpen = md.renderer.rules.table_open;
+  md.renderer.rules.table_open = (tokens, idx, options, env, self) =>
+    (tableOpen ? tableOpen(tokens, idx, options, env, self) : self.renderToken(tokens, idx, options)).replace(
+      '<table',
+      '<table role="table"',
+    );
+  md.core.ruler.push('dt_table_labels', (state) => {
+    let headers: string[] = [];
+    let inHead = false;
+    let col = 0;
+    state.tokens.forEach((token, i) => {
+      const role = ROLES[token.type];
+      if (role) {
+        token.attrSet('role', role);
+      }
+      if (token.type === 'table_open') {
+        headers = [];
+      } else if (token.type === 'thead_open') {
+        inHead = true;
+      } else if (token.type === 'thead_close') {
+        inHead = false;
+      } else if (token.type === 'tr_open') {
+        col = 0;
+      } else if (token.type === 'th_open' && inHead) {
+        headers.push((state.tokens[i + 1]?.content ?? '').replace(/[`*_]/g, ''));
+      } else if (token.type === 'td_open') {
+        const header = headers[col++];
+        if (header) {
+          token.attrSet('data-label', header);
+        }
+      }
+    });
+  });
+}
 
 // devopstech.net — engineering hub: ICE, deusex, blog, and the archived KubeMeridian docs
 export default defineConfig({
@@ -23,29 +69,39 @@ export default defineConfig({
     ['meta', { property: 'og:site_name', content: 'devopstech' }],
     ['link', { rel: 'alternate', type: 'application/rss+xml', title: 'devopstech — blog', href: '/feed.xml' }],
   ],
-  transformHead: ({ pageData }) => socialHead(pageData),
+  markdown: {
+    // high-contrast light theme: github-light comments and operators fall below 4.5:1 on paper
+    theme: { light: 'github-light-high-contrast', dark: 'github-dark' },
+    config: tableLabels,
+  },
+  transformPageData(pageData) {
+    const rel = pageData.relativePath;
+    // "Edit on GitHub" and "Updated" belong to the KubeMeridian guide, not to product pages or posts
+    if (!rel.startsWith('guide/')) {
+      pageData.frontmatter.editLink = false;
+      pageData.frontmatter.lastUpdated = false;
+    }
+    // product pages navigate with their section tabs, the blog index is already a list of posts
+    if (/^(ice|deusex)\//.test(rel) || rel === 'about.md') {
+      pageData.frontmatter.prev = false;
+      pageData.frontmatter.next = false;
+    }
+    if (rel === 'blog/index.md') {
+      pageData.frontmatter.sidebar = false;
+    }
+  },
+  transformHead: ({ pageData }) => pageHead(pageData),
   buildEnd: ({ outDir }) => {
     checkOgCards();
     writeFeed(outDir);
   },
   themeConfig: {
-    logo: '/devopstech.svg',
+    logo: { light: '/devopstech.svg', dark: '/devopstech-dark.svg', alt: '' },
     siteTitle: 'devopstech',
     nav: [
       { text: 'ICE', link: '/ice/', activeMatch: '^/ice/' },
       { text: 'deusex', link: '/deusex/', activeMatch: '^/deusex/' },
       { text: 'Blog', link: '/blog/', activeMatch: '^/blog/' },
-      {
-        text: 'KubeMeridian (archived)',
-        activeMatch: '^/(kubemeridian|guide/)',
-        items: [
-          { text: 'Overview', link: '/kubemeridian' },
-          { text: 'Guide', link: '/guide/introduction' },
-          { text: 'Dashboards', link: '/guide/dashboards' },
-          { text: 'Alert pack', link: '/guide/alerts' },
-          { text: 'Changelog', link: 'https://github.com/blackcheshire13/kubemeridian/blob/main/CHANGELOG.md' },
-        ],
-      },
       { text: 'About', link: '/about' },
     ],
     sidebar: {
@@ -82,32 +138,16 @@ export default defineConfig({
           ],
         },
       ],
-      '/ice/': [
-        {
-          text: 'ICE',
-          items: [
-            { text: 'Overview', link: '/ice/' },
-            { text: 'How ICE is built', link: '/ice/how-it-works' },
-          ],
-        },
-      ],
-      '/deusex/': [
-        {
-          text: 'deusex',
-          items: [
-            { text: 'Overview', link: '/deusex/' },
-            { text: 'The method', link: '/deusex/method' },
-          ],
-        },
-      ],
       '/blog/': blogSidebar(),
     },
     socialLinks: [{ icon: 'github', link: 'https://github.com/blackcheshire13' }],
     footer: {
-      message: 'ICE and deusex are in active development. KubeMeridian is archived and Apache-2.0 licensed.',
+      message:
+        'ICE and deusex are in active development · <a href="/kubemeridian">KubeMeridian</a> is archived (Apache-2.0) · <a href="/feed.xml">RSS</a>',
       copyright: '© 2026 devopstech · devopstech.net',
     },
     search: { provider: 'local' },
+    lastUpdated: { text: 'Updated', formatOptions: { dateStyle: 'long' } },
     editLink: {
       pattern: 'https://github.com/blackcheshire13/kubemeridian/edit/main/docs/:path',
       text: 'Edit this page on GitHub',

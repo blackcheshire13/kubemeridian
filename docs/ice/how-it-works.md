@@ -1,13 +1,9 @@
 ---
-title: How ICE is built
+title: How ICE works — Kubernetes operator, agent and GitOps remediation
 description: The components of ICE — operator, API, console, agent and scan pipeline — the trust path from a read-only agent to a GitOps pull request, posture states and the response catalogue.
-head:
-  - - link
-    - rel: canonical
-      href: https://devopstech.net/ice/how-it-works
 ---
 
-# How ICE is built
+# How ICE works
 
 ICE is a Kubernetes operator with an API, a console and a small agent. It stores facts,
 proposes changes and checks their outcome — but it never applies a change to your cluster
@@ -105,4 +101,4 @@ the preconditions are measured as met and the run is not a dry run.
 
 Both run on a laptop with `kind` in 15–20 minutes, from a synthetic company profile.
 
-<p class="dt-cta">Interested in running ICE early? <a href="mailto:qdrrag@gmail.com?subject=ICE%20design%20partner">Become a design partner</a> · <a href="/ice/">Back to the overview</a></p>
+<PartnerCta lead="Want this loop on your cluster before the public release?" :secondary="{ text: 'What a pilot involves', href: '/ice/design-partners' }" />

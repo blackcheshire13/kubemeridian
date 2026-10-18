@@ -150,12 +150,6 @@
   border: 1px solid var(--vp-c-divider);
   max-width: 620px;
 }
-.vp-doc .dt-cta {
-  margin-top: 40px;
-  padding-top: 18px;
-  border-top: 2px solid var(--vp-c-text-1);
-  font-size: 17px;
-}
 .vp-doc .dt-quote {
   margin: 28px 0;
   max-width: 620px;
@@ -172,3 +166,142 @@
 /* numbers in tables never wrap */
 .vp-doc td[style*='right'],
 .vp-doc th[style*='right'] { white-space: nowrap; }
+
+/* ---------- one left edge: pages without a sidebar line up with the home page ---------- */
+@media (min-width: 960px) {
+  .VPDoc:not(.has-sidebar) .container {
+    justify-content: flex-start !important;
+    max-width: 1104px !important;
+  }
+}
+.VPFooter .container { max-width: 1104px; }
+.VPFooter .message a,
+.VPFooter .copyright a { color: var(--vp-c-brand-1); text-decoration: underline; text-underline-offset: 3px; }
+.VPDocFooter .pager-link.next { text-align: left !important; }
+.VPDocFooter .edit-info { justify-content: flex-start !important; gap: 24px; }
+
+/* ---------- nothing below 13px, part 2 ---------- */
+.vp-doc td code,
+.vp-doc th code,
+.vp-doc .custom-block code,
+.vp-doc div[class*='language-'] > span.lang,
+.VPSkipLink {
+  font-size: 13px !important;
+}
+
+/* ---------- capability status: a small dot next to plain text (no coloured surfaces) ---------- */
+.dt-s { white-space: nowrap; }
+.dt-s::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 7px;
+  border-radius: 50%;
+  vertical-align: 1px;
+  background: var(--dt-s, var(--vp-c-text-3));
+}
+.dt-s.live { --dt-s: oklch(0.6 0.13 150); }
+.dt-s.tested { --dt-s: var(--dt-brass); }
+.dt-s.implemented { --dt-s: oklch(0.6 0.08 250); }
+.vp-doc .dt-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  margin: 16px 0 0;
+  font-size: 15px;
+  color: var(--vp-c-text-2);
+}
+.dt-strip strong { color: var(--vp-c-text-1); }
+
+/* ---------- "at a glance": three short answers before the long read ---------- */
+.vp-doc .dt-glance {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 28px;
+  margin: 28px 0 8px;
+  padding: 0;
+  border-top: 2px solid var(--vp-c-text-1);
+}
+.vp-doc .dt-glance > div { padding: 14px 0 0; }
+.vp-doc .dt-glance dt {
+  margin: 0 0 4px;
+  font-family: var(--dt-font-display);
+  font-size: 16px;
+  font-weight: 700;
+}
+.vp-doc .dt-glance dd {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--vp-c-text-2);
+}
+@media (max-width: 760px) {
+  .vp-doc .dt-glance { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- FAQ as disclosure ---------- */
+.vp-doc details.dt-faq {
+  border-top: 1px solid var(--vp-c-divider);
+  padding: 0;
+}
+.vp-doc details.dt-faq:last-of-type { border-bottom: 1px solid var(--vp-c-divider); }
+.vp-doc details.dt-faq summary {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  list-style: none;
+}
+.vp-doc details.dt-faq summary::-webkit-details-marker { display: none; }
+.vp-doc details.dt-faq summary::before {
+  content: '+';
+  width: 22px;
+  font-family: var(--vp-font-family-mono);
+  color: var(--vp-c-text-2);
+}
+.vp-doc details.dt-faq[open] summary::before { content: '−'; }
+.vp-doc details.dt-faq p { margin: 0 0 14px 22px; }
+
+/* ---------- wide tables become stacked cards on phones ---------- */
+@media (max-width: 640px) {
+  .vp-doc .dt-stack table,
+  .vp-doc .dt-stack tbody,
+  .vp-doc .dt-stack tr,
+  .vp-doc .dt-stack td {
+    display: block;
+    width: 100%;
+    overflow: visible;
+  }
+  .vp-doc .dt-stack table { border: 0; margin: 12px 0; }
+  .vp-doc .dt-stack thead { display: none; }
+  .vp-doc .dt-stack tr {
+    padding: 12px 0;
+    border-top: 1px solid var(--vp-c-divider);
+    background: none !important;
+  }
+  .vp-doc .dt-stack td {
+    padding: 2px 0;
+    border: 0;
+    text-align: left !important;
+    white-space: normal !important;
+    font-size: 15px;
+  }
+  .vp-doc .dt-stack td:first-child { font-weight: 700; font-size: 16px; }
+  .vp-doc .dt-stack td[data-label]:not(:first-child)::before {
+    content: attr(data-label) ': ';
+    color: var(--vp-c-text-2);
+  }
+  /* a description column reads fine without its label */
+  .vp-doc .dt-stack.integrations td:nth-child(2)::before { content: none; }
+}
+
+/* phones: sidebar entries get a 44px tap height */
+@media (max-width: 959px) {
+  .VPSidebarItem .item .text { padding-top: 10px !important; padding-bottom: 10px !important; }
+}
+
+/* long outline entries wrap instead of being cut off */
+.VPDocAsideOutline .outline-link { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; line-height: 1.4; padding: 4px 0; }

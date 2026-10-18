@@ -7,10 +7,7 @@ description: Archived — Kubernetes observability for Grafana in one Apache-2.0
 hero:
   name: KubeMeridian
   text: Kubernetes observability for Grafana
-  tagline: One app plugin for the whole base monitoring stack — metrics, logs, traces, cost and SLOs. Archived; the last release still installs as an unsigned plugin.
-  image:
-    src: /logo.svg
-    alt: KubeMeridian
+  tagline: One app plugin for the whole base monitoring stack — metrics, logs, traces, cost and SLOs.
   actions:
     - theme: brand
       text: Install v2.5.2 (unsigned)

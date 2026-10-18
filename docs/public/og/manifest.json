@@ -11,14 +11,21 @@
     "kicker": "devopstech · ICE",
     "accent": "oklch(0.52 0.1 225)",
     "title": "ICE",
-    "sub": "Active defence for Kubernetes"
+    "sub": "Kubernetes active defence with GitOps remediation"
   },
   "ice-how-it-works": {
     "slug": "ice-how-it-works",
     "kicker": "devopstech · ICE",
     "accent": "oklch(0.52 0.1 225)",
-    "title": "How ICE is built",
+    "title": "How ICE works",
     "sub": "Operator, agent, trust path, posture and responses"
+  },
+  "ice-design-partners": {
+    "slug": "ice-design-partners",
+    "kicker": "devopstech · ICE",
+    "accent": "oklch(0.52 0.1 225)",
+    "title": "ICE design partners",
+    "sub": "Run the loop on your cluster early"
   },
   "deusex": {
     "slug": "deusex",

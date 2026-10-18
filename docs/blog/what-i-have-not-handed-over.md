@@ -4,10 +4,6 @@ title: "What I haven't handed to the machine yet"
 sidebarTitle: What I haven't handed over
 description: deusex runs most of my backlog around the clock; the goal is that I decide only the concept. As of October 2026, here is the honest remainder — what is solvable and just not done, and what no method will ever take off a person.
 tags: [deusex, autonomous-development, agents, engineering-process]
-head:
-  - - link
-    - rel: canonical
-      href: https://devopstech.net/blog/what-i-have-not-handed-over
 ---
 
 # What I haven't handed to the machine yet

@@ -2,9 +2,9 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { HeadConfig, PageData } from 'vitepress';
-import { DOCS, blogPosts } from './blog.mjs';
+import { DOCS, blogPosts, isoDate } from './blog.mjs';
 import { cardSpecs } from './og-specs.mjs';
-import { isKubeMeridianPage } from './kubemeridian.mjs';
+import { KM_LAST_RELEASE, isKubeMeridianPage } from './kubemeridian.mjs';
 
 export const SITE = 'https://devopstech.net';
 export const SITE_TITLE = 'devopstech';
@@ -39,14 +39,75 @@ function ogImage(relativePath: string): string {
   return `${SITE}/devopstech.svg`;
 }
 
-export function socialHead(pageData: PageData): HeadConfig[] {
+const PUBLISHER = { '@type': 'Organization', name: SITE_TITLE, url: `${SITE}/`, logo: `${SITE}/devopstech.svg` };
+// The posts are first-person writing by one engineer, published under the devopstech name.
+const AUTHOR = { '@type': 'Person', name: SITE_TITLE, url: `${SITE}/about`, sameAs: 'https://github.com/blackcheshire13' };
+
+// What a product page is about. ICE and deusex are not released, so they are described as the
+// subject of a WebPage rather than as SoftwareApplication (which expects offers / ratings).
+const PRODUCT: Record<string, Record<string, unknown>> = {
+  'ice/index.md': { '@type': 'Thing', name: 'ICE', alternateName: 'ICE for Kubernetes' },
+  'deusex/index.md': { '@type': 'Thing', name: 'deusex' },
+  'ice/how-it-works.md': { '@type': 'Thing', name: 'ICE' },
+  'deusex/method.md': { '@type': 'Thing', name: 'deusex' },
+};
+const KUBEMERIDIAN = {
+  '@type': 'SoftwareApplication',
+  name: 'KubeMeridian',
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Grafana',
+  softwareVersion: KM_LAST_RELEASE.replace(/^v/, ''),
+  license: 'https://www.apache.org/licenses/LICENSE-2.0',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  sameAs: 'https://github.com/blackcheshire13/kubemeridian',
+};
+
+function isPost(relativePath: string) {
+  return /^blog\/[^/]+\.md$/.test(relativePath) && relativePath !== 'blog/index.md';
+}
+
+function structuredData(pageData: PageData, title: string, description: string, url: string, image: string) {
+  const rel = pageData.relativePath;
+  const base = { '@context': 'https://schema.org', url, image, publisher: PUBLISHER };
+  if (rel === 'index.md') {
+    return { ...base, '@type': 'WebSite', name: SITE_TITLE, url: `${SITE}/`, description };
+  }
+  if (rel === 'kubemeridian.md') {
+    return { ...base, ...KUBEMERIDIAN, description };
+  }
+  if (PRODUCT[rel]) {
+    const type = rel.endsWith('index.md') ? 'WebPage' : 'TechArticle';
+    return { ...base, '@type': type, name: title, headline: title, description, about: PRODUCT[rel], author: AUTHOR };
+  }
+  if (isPost(rel) && pageData.frontmatter.date) {
+    return {
+      ...base,
+      '@type': 'BlogPosting',
+      headline: title,
+      description,
+      mainEntityOfPage: url,
+      datePublished: isoDate(pageData.frontmatter.date),
+      // only an explicit `updated:` counts; git dates move on front-matter-only commits
+      ...(pageData.frontmatter.updated ? { dateModified: isoDate(pageData.frontmatter.updated) } : {}),
+      keywords: Array.isArray(pageData.frontmatter.tags) ? pageData.frontmatter.tags.join(', ') : undefined,
+      author: AUTHOR,
+    };
+  }
+  return null;
+}
+
+// <head> additions for every page: canonical URL, Open Graph / Twitter cards, JSON-LD.
+export function pageHead(pageData: PageData): HeadConfig[] {
+  if (pageData.relativePath === '404.md') {
+    return [];
+  }
   const title = pageData.frontmatter.title || pageData.title || SITE_TITLE;
   const description = pageData.frontmatter.description || pageData.description || SITE_DESCRIPTION;
   const url = SITE + pagePath(pageData.relativePath);
   const image = ogImage(pageData.relativePath);
-  const isPost = pageData.relativePath.startsWith('blog/') && !pageData.relativePath.endsWith('index.md');
-  return [
-    ['meta', { property: 'og:type', content: isPost ? 'article' : 'website' }],
+  const head: HeadConfig[] = [
+    ['link', { rel: 'canonical', href: url }],
+    ['meta', { property: 'og:type', content: isPost(pageData.relativePath) ? 'article' : 'website' }],
     ['meta', { property: 'og:title', content: title }],
     ['meta', { property: 'og:description', content: description }],
     ['meta', { property: 'og:url', content: url }],
@@ -58,6 +119,12 @@ export function socialHead(pageData: PageData): HeadConfig[] {
     ['meta', { name: 'twitter:description', content: description }],
     ['meta', { name: 'twitter:image', content: image }],
   ];
+  const data = structuredData(pageData, title, description, url, image);
+  if (data) {
+    // `<` escaped so a title can never close the script element
+    head.push(['script', { type: 'application/ld+json' }, JSON.stringify(data).replace(/</g, '\\u003c')]);
+  }
+  return head;
 }
 
 // The cards are rendered by hand and committed, so the build refuses to ship a page whose
