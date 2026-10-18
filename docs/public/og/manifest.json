@@ -1,54 +1,100 @@
 {
   "home": {
-    "title": "Production engineering, closed loop."
+    "slug": "home",
+    "kicker": "devopstech",
+    "accent": "oklch(0.74 0.135 78)",
+    "title": "Production engineering, closed loop.",
+    "sub": "ICE · deusex · KubeMeridian"
   },
   "ice": {
-    "file": "ice/index.md",
-    "title": "ICE — active defence for Kubernetes"
+    "slug": "ice",
+    "kicker": "devopstech · ICE",
+    "accent": "oklch(0.52 0.1 225)",
+    "title": "ICE",
+    "sub": "Active defence for Kubernetes"
   },
   "ice-how-it-works": {
-    "file": "ice/how-it-works.md",
-    "title": "How ICE is built"
+    "slug": "ice-how-it-works",
+    "kicker": "devopstech · ICE",
+    "accent": "oklch(0.52 0.1 225)",
+    "title": "How ICE is built",
+    "sub": "Operator, agent, trust path, posture and responses"
   },
   "deusex": {
-    "file": "deusex/index.md",
-    "title": "deusex — an autonomous development loop"
+    "slug": "deusex",
+    "kicker": "devopstech · deusex",
+    "accent": "oklch(0.66 0.13 72)",
+    "title": "deusex",
+    "sub": "An autonomous development loop"
   },
   "deusex-method": {
-    "file": "deusex/method.md",
-    "title": "The deusex method — roles and invariants"
+    "slug": "deusex-method",
+    "kicker": "devopstech · deusex",
+    "accent": "oklch(0.66 0.13 72)",
+    "title": "The deusex method",
+    "sub": "Roles and invariants"
   },
   "kubemeridian": {
-    "title": "KubeMeridian"
+    "slug": "kubemeridian",
+    "kicker": "devopstech · open source",
+    "accent": "#326ce5",
+    "title": "KubeMeridian",
+    "sub": "Kubernetes observability for Grafana in one app plugin"
   },
   "blog": {
-    "title": "Blog"
+    "slug": "blog",
+    "kicker": "devopstech",
+    "accent": "oklch(0.74 0.135 78)",
+    "title": "Blog",
+    "sub": "Kubernetes, security, autonomous development and observability"
   },
   "about": {
-    "title": "About me"
+    "slug": "about",
+    "kicker": "devopstech",
+    "accent": "oklch(0.74 0.135 78)",
+    "title": "About me",
+    "sub": "The engineer behind ICE, deusex and KubeMeridian"
   },
   "blog-live-needs-evidence": {
-    "file": "blog/live-needs-evidence.md",
-    "title": "Live needs evidence: how ICE keeps its own feature list honest"
+    "slug": "blog-live-needs-evidence",
+    "kicker": "devopstech · blog · 2026-10-18",
+    "accent": "oklch(0.52 0.1 225)",
+    "title": "Live needs evidence",
+    "sub": "How ICE keeps its own feature list honest"
   },
   "blog-merged-is-not-fixed": {
-    "file": "blog/merged-is-not-fixed.md",
-    "title": "Merged is not deployed, deployed is not fixed"
+    "slug": "blog-merged-is-not-fixed",
+    "kicker": "devopstech · blog · 2026-10-18",
+    "accent": "oklch(0.52 0.1 225)",
+    "title": "Merged is not deployed, deployed is not fixed",
+    "sub": ""
   },
   "blog-the-bottleneck-is-the-human": {
-    "file": "blog/the-bottleneck-is-the-human.md",
-    "title": "The bottleneck is the human: a week when every agent worked and nothing shipped"
+    "slug": "blog-the-bottleneck-is-the-human",
+    "kicker": "devopstech · blog · 2026-10-18",
+    "accent": "oklch(0.66 0.13 72)",
+    "title": "The bottleneck is the human",
+    "sub": "A week when every agent worked and nothing shipped"
   },
   "blog-what-i-have-not-handed-over": {
-    "file": "blog/what-i-have-not-handed-over.md",
-    "title": "What I haven't handed to the machine yet"
+    "slug": "blog-what-i-have-not-handed-over",
+    "kicker": "devopstech · blog · 2026-10-18",
+    "accent": "oklch(0.66 0.13 72)",
+    "title": "What I haven't handed to the machine yet",
+    "sub": ""
   },
   "blog-consolidating-kubernetes-clusters": {
-    "file": "blog/consolidating-kubernetes-clusters.md",
-    "title": "From 10+ Kubernetes clusters to 4: a hub-and-spoke ArgoCD story"
+    "slug": "blog-consolidating-kubernetes-clusters",
+    "kicker": "devopstech · blog · 2026-06-27",
+    "accent": "#326ce5",
+    "title": "From 10+ Kubernetes clusters to 4",
+    "sub": "A hub-and-spoke ArgoCD story"
   },
   "blog-vault-ha-on-kubernetes": {
-    "file": "blog/vault-ha-on-kubernetes.md",
-    "title": "Vault HA on Kubernetes: auto-unseal, dynamic secrets, and a DR runbook"
+    "slug": "blog-vault-ha-on-kubernetes",
+    "kicker": "devopstech · blog · 2026-06-27",
+    "accent": "#326ce5",
+    "title": "Vault HA on Kubernetes",
+    "sub": "Auto-unseal, dynamic secrets, and a DR runbook"
   }
 }

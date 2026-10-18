@@ -46,21 +46,23 @@ The weak point was the word **live**. It used to be set by flipping a cell, and 
 thing behind the flip was the commit message that flipped it — the author's paraphrase, not
 the artefact. The next reader could not tell an observation from a flipped box.
 
-Now a CI gate refuses any new `live` row without a dated evidence mark:
+Now a CI gate refuses a `live` row without a dated evidence mark of this shape (translated
+here — the repository writes it in its own language):
 
 ```text
 [evidence YYYY-MM-DD <reference>]
 ```
 
-The reference must resolve to something a reader can open — a pull request number, a commit
-SHA of accepted length, or an entry in the test cluster's run journal. The date is parsed as
-a real calendar day, so `2026-02-30` fails. A date without a reference fails too: that is
-exactly the shape of a box being ticked. Rows that were already `live` when the gate arrived
-are tracked on an explicit debt list rather than grandfathered silently.
+The reference has to take the form of something a reader can open: a pull request number, a
+commit SHA of accepted length, or an entry id in the test cluster's run journal. The date is
+parsed as a real calendar day, so `2026-02-30` fails. A date without a reference fails too:
+that is exactly the shape of a box being ticked. The gate checks the form, not that the
+artefact exists — it makes a fake deliberate, not accidental.
 
 ## The day after the gate landed
 
-The gate went in on 9 October. On 10 October five rows lost their `live` status: the
+The gate went in on 9 October with the fifteen rows that were already `live` on an explicit
+debt list. On 10 October the list was emptied, and five rows lost their `live` status: the
 baseline posture, the agent's outbound push, drift-to-fix proposals, finding storage with
 history and triage, and CVE database freshness. Nothing about them had broken — they were
 re-read against the new rule. For four of them the only record of an observation was prose
@@ -74,8 +76,9 @@ evidence mark.
 
 ## Vocabulary pretending to be a feature
 
-A second gate catches a quieter version of the same problem. For months the profile schema
-offered six kinds of container registry while every scan called exactly one. Nobody
+A second gate catches a quieter version of the same problem. For the project's first two and
+a half weeks the profile schema offered six kinds of container registry while every scan
+called exactly one. Nobody
 noticed, because nothing was looking: a value a profile may set but no code reads is not
 extensibility, it is vocabulary pretending to be a feature.
 

@@ -17,8 +17,8 @@ head:
 [deusex](/deusex/) develops two projects, mostly without me in the inner loop. Its rule for
 the human is short: *I hand over everything except the concept.* From 4 to 18 October my own
 branches in the loop's repository were seven concept decisions, six working sessions, four
-new backlog items and one CI change, while 57 of its 75 merges came from the loop's own
-branches.
+new backlog items and one CI change, while about three quarters of its merges — 57 of the
+75 counted through the forge API on 18 October — came from the loop's own branches.
 
 That rule is a goal, not a fact. This is the honest remainder, split by whether the method
 can ever remove it.

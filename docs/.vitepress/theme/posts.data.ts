@@ -1,5 +1,5 @@
 import { createContentLoader } from 'vitepress';
-import { comparePosts, isoDate } from '../blog.mjs';
+import { blogPosts } from '../blog.mjs';
 
 export interface Post {
   title: string;
@@ -12,21 +12,16 @@ export interface Post {
 declare const data: Post[];
 export { data };
 
-export default createContentLoader('blog/!(index).md', {
-  transform(raw): Post[] {
-    return raw
-      .map(({ url, frontmatter }) => {
-        if (!frontmatter.title || !frontmatter.date) {
-          throw new Error(`blog post ${url} needs "title" and "date" in its frontmatter`);
-        }
-        return {
-          title: String(frontmatter.title),
-          url,
-          date: isoDate(frontmatter.date),
-          description: String(frontmatter.description ?? ''),
-          tags: Array.isArray(frontmatter.tags) ? frontmatter.tags.map(String) : [],
-        };
-      })
-      .sort(comparePosts);
+// createContentLoader keeps the dev server watching blog/; the data itself comes from the
+// same reader as the sidebar, RSS and social cards.
+export default createContentLoader('blog/*.md', {
+  transform(): Post[] {
+    return blogPosts().map(({ slug, title, date, description, tags }) => ({
+      title,
+      url: `/blog/${slug}`,
+      date,
+      description,
+      tags,
+    }));
   },
 });

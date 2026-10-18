@@ -6,40 +6,11 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { DOCS, blogPosts, readFrontmatter } from '../.vitepress/blog.mjs';
+import { DOCS } from '../.vitepress/blog.mjs';
+import { cardSpecs } from '../.vitepress/og-specs.mjs';
 
 const OUT = join(DOCS, 'public', 'og');
 const CHROME = process.env.CHROME_BIN || 'chromium';
-
-const ACCENT = {
-  ice: 'oklch(0.52 0.1 225)',
-  deusex: 'oklch(0.66 0.13 72)',
-  km: '#326ce5',
-  hub: 'oklch(0.74 0.135 78)',
-};
-
-// "ICE — active defence…" / "Live needs evidence: how ICE…" → big title + subtitle
-function split(title) {
-  const m = title.match(/^(.+?)(?: — |: )(.+)$/);
-  return m ? [m[1], m[2].charAt(0).toUpperCase() + m[2].slice(1)] : [title, ''];
-}
-
-const cards = [
-  { slug: 'home', kicker: 'devopstech', accent: ACCENT.hub, title: 'Production engineering, closed loop.', sub: 'ICE · deusex · KubeMeridian' },
-  { slug: 'ice', file: 'ice/index.md', kicker: 'devopstech · ICE', accent: ACCENT.ice },
-  { slug: 'ice-how-it-works', file: 'ice/how-it-works.md', kicker: 'devopstech · ICE', accent: ACCENT.ice, sub: 'Operator, agent, trust path, posture and responses' },
-  { slug: 'deusex', file: 'deusex/index.md', kicker: 'devopstech · deusex', accent: ACCENT.deusex },
-  { slug: 'deusex-method', file: 'deusex/method.md', kicker: 'devopstech · deusex', accent: ACCENT.deusex },
-  { slug: 'kubemeridian', kicker: 'devopstech · open source', accent: ACCENT.km, title: 'KubeMeridian', sub: 'Kubernetes observability for Grafana in one app plugin' },
-  { slug: 'blog', kicker: 'devopstech', accent: ACCENT.hub, title: 'Blog', sub: 'Kubernetes, security, autonomous development and observability' },
-  { slug: 'about', kicker: 'devopstech', accent: ACCENT.hub, title: 'About me', sub: 'The engineer behind ICE, deusex and KubeMeridian' },
-  ...blogPosts().map((p) => ({
-    slug: `blog-${p.slug}`,
-    file: p.file,
-    kicker: `devopstech · blog · ${p.date}`,
-    accent: p.tags[0] === 'ice' ? ACCENT.ice : p.tags[0] === 'deusex' ? ACCENT.deusex : ACCENT.km,
-  })),
-];
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const size = (t) => (t.length <= 14 ? 132 : t.length <= 26 ? 104 : t.length <= 44 ? 84 : 70);
@@ -72,22 +43,15 @@ mkdirSync(OUT, { recursive: true });
 const tmp = mkdtempSync(join(tmpdir(), 'og-cards-'));
 const manifest = {};
 try {
-  for (const card of cards) {
-    let { title, sub } = card;
-    const source = card.file ? String(readFrontmatter(card.file).title) : title;
-    manifest[card.slug] = card.file ? { file: card.file, title: source } : { title: source };
-    if (card.file) {
-      const [big, rest] = split(source);
-      title ??= big;
-      sub ??= rest;
-    }
+  for (const card of cardSpecs()) {
     const page = join(tmp, `${card.slug}.html`);
-    writeFileSync(page, html({ ...card, title, sub }));
+    writeFileSync(page, html(card));
     execFileSync(CHROME, [
       '--headless=new', '--no-sandbox', '--disable-gpu', '--hide-scrollbars',
       '--virtual-time-budget=6000', '--window-size=1200,630',
       `--screenshot=${join(OUT, `${card.slug}.png`)}`, `file://${page}`,
     ], { stdio: 'ignore' });
+    manifest[card.slug] = card;
     console.log(`og/${card.slug}.png`);
   }
   // read by checkOgCards() in the docs build to catch missing or stale cards

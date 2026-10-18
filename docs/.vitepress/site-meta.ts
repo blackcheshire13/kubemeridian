@@ -2,7 +2,8 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { HeadConfig, PageData } from 'vitepress';
-import { DOCS, blogPosts, readFrontmatter } from './blog.mjs';
+import { DOCS, blogPosts } from './blog.mjs';
+import { cardSpecs } from './og-specs.mjs';
 
 export const SITE = 'https://devopstech.net';
 export const SITE_TITLE = 'devopstech';
@@ -58,24 +59,27 @@ export function socialHead(pageData: PageData): HeadConfig[] {
   ];
 }
 
-// The cards are rendered by hand and committed, so the build refuses to ship a post
-// without a card, or a card drawn from a title that has since changed.
+// The cards are rendered by hand and committed, so the build refuses to ship a page whose
+// card is missing, orphaned, or drawn from inputs (title, date, accent…) that have changed.
 export function checkOgCards() {
   const manifestFile = join(OG_DIR, 'manifest.json');
-  const manifest: Record<string, { file?: string; title: string }> = existsSync(manifestFile)
+  const manifest: Record<string, unknown> = existsSync(manifestFile)
     ? JSON.parse(readFileSync(manifestFile, 'utf8'))
     : {};
-  const stale = [
-    ...blogPosts()
-      .filter((p) => !manifest[`blog-${p.slug}`])
-      .map((p) => `${p.file} has no card`),
-    ...Object.entries(manifest)
-      .filter(([, c]) => c.file && String(readFrontmatter(c.file).title) !== c.title)
-      .map(([slug, c]) => `og/${slug}.png was drawn from an old title of ${c.file}`),
+  const specs = cardSpecs();
+  const problems = [
+    ...specs.flatMap((spec) => {
+      if (!existsSync(join(OG_DIR, `${spec.slug}.png`))) return [`og/${spec.slug}.png is missing`];
+      if (JSON.stringify(manifest[spec.slug]) !== JSON.stringify(spec)) return [`og/${spec.slug}.png is stale`];
+      return [];
+    }),
+    ...Object.keys(manifest)
+      .filter((slug) => !specs.some((s) => s.slug === slug))
+      .map((slug) => `og/${slug}.png belongs to a page that no longer exists — delete it`),
   ];
-  if (stale.length) {
+  if (problems.length) {
     throw new Error(
-      `social cards are out of date:\n  ${stale.join('\n  ')}\n` +
+      `social cards are out of date:\n  ${problems.join('\n  ')}\n` +
         'run from docs/: CHROME_BIN=/path/to/chrome node scripts/og-cards.mjs',
     );
   }
