@@ -53,6 +53,8 @@ export default defineConfig({
   title: 'devopstech',
   description: SITE_DESCRIPTION,
   cleanUrls: true,
+  // docs/README.md is the deploy note for this folder, not a page of the site
+  srcExclude: ['README.md'],
   lastUpdated: true,
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/devopstech.svg' }],
