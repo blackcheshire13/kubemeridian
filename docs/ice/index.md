@@ -63,8 +63,8 @@ no listing secrets, no `pods/exec`, no impersonation.
 downgraded to `Unknown`. A source that fails reports *unmeasured*, never *clean*. An
 unknown requirement in a pack disables the detector instead of passing silently.
 
-**A rule whose alert cannot be delivered is not loaded.** If the log ruler has no alert
-delivery, the whole log pack switches off and says why in its status. The rule generator
+**A rule whose alert cannot be delivered is not loaded.** If the profile declares that the
+log ruler has no alert delivery, the whole log pack switches off and says why in its status. The rule generator
 refuses to render detectors it cannot back, and names the reason for each one.
 
 **One signal is not an action.** A response to runtime behaviour needs at least three
@@ -90,24 +90,29 @@ company profile.
 ICE does not replace your detection or policy tools — it takes their output and decides
 what to do with it, then proves whether it worked.
 
-| Your tool | What ICE does with it |
-| --- | --- |
-| Falco, Tetragon | receives syscall events as runtime signals |
-| Prometheus, Alertmanager | renders PromQL detectors into `PrometheusRule`; alerts arrive at the agent |
-| Loki | LogQL detectors; a log pack switches itself off if the ruler cannot deliver alerts |
-| Trivy, Grype | image scans from your CI, a delta to the accepted baseline, CycloneDX SBOMs |
-| Kyverno | reads `PolicyReport` objects as posture facts; proposes policies in audit mode only |
-| Istio, Linkerd | posture checks and authorisation-by-service-account responses |
-| Argo CD | a case is `deployed` only when the application is Synced on the merge revision |
-| GitHub, GitLab | remediation pull requests in your GitOps repository |
-| OIDC (Keycloak and others) | console sign-in and the approver role |
-| MCP clients | read-only tools for AI assistants, off by default |
+| Your tool | What ICE does with it | Status |
+| --- | --- | --- |
+| Falco, Tetragon | receives syscall events as runtime signals | live (Falco) |
+| Trivy, Grype | scheduled image scans with a delta to the accepted baseline; CycloneDX SBOMs | live (scans) |
+| GitHub | remediation pull requests opened from a console approval | live |
+| GitLab | the same pull-request flow on a second forge | tested |
+| Argo CD | a case is `deployed` only when the application is Synced on the merge revision | tested |
+| Prometheus, Alertmanager | PromQL detectors as generated `PrometheusRule` objects — one of eleven renders today, and the generator names its reason for each refusal; alerts reach the agent | tested |
+| Loki | LogQL detectors are defined but need a Loki ruler to run | not yet |
+| Kyverno | reads `PolicyReport` objects as posture facts; proposes policies in audit mode only | tested |
+| Istio, Linkerd | posture checks and authorisation-by-service-account responses | tested |
+| OIDC | console sign-in and the approver role, including providers other than Keycloak | tested |
+| MCP clients | read-only tools for AI assistants, off by default | live |
+
+*live* means observed on a running cluster with dated evidence; *tested* means covered by
+tests but not yet seen on a cluster — the same scale as in [Honest status](#honest-status).
 
 ## Honest status
 
 ICE has its own rule for honesty: a capability can be marked **live** only with dated
-evidence from a running cluster, and CI fails if the evidence is missing. Two rows were
-downgraded from *live* to *tested* by that rule — nobody could produce the evidence.
+evidence from a running cluster, and CI fails if the evidence is missing. The day after that
+rule arrived, five rows were downgraded from *live* to *tested* — nobody could produce the
+evidence.
 
 As of **18 October 2026**:
 
@@ -134,7 +139,8 @@ taken after the merge.
 
 **Does ICE change my cluster?** Not directly. The operator has no write rights outside its
 own resources; changes reach the cluster as pull requests to your GitOps repository, and
-your pipeline applies them. The one exception is a trap response, and only if you opt in.
+your pipeline applies them. The one exception to *human approval* is a trap response, and
+only if you opt in — even then the change arrives as a pull request.
 
 **Does it replace Falco or Kyverno?** No — it consumes what they report and turns it into
 decisions, pull requests and verified outcomes.
