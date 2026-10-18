@@ -140,7 +140,10 @@ export default defineConfig({
       ],
       '/blog/': blogSidebar(),
     },
-    socialLinks: [{ icon: 'github', link: 'https://github.com/blackcheshire13' }],
+    socialLinks: [
+      { icon: 'linkedin', link: 'https://www.linkedin.com/in/black-cmd-devops', ariaLabel: 'LinkedIn' },
+      { icon: 'github', link: 'https://github.com/blackcheshire13', ariaLabel: 'GitHub' },
+    ],
     footer: {
       message:
         'ICE and deusex are in active development · <a href="/kubemeridian">KubeMeridian</a> is archived (Apache-2.0) · <a href="/feed.xml">RSS</a>',

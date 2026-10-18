@@ -31,7 +31,7 @@ export function cardSpecs() {
     fromPage('deusex-method', 'deusex/method.md', 'devopstech · deusex', ACCENT.deusex),
     { slug: 'kubemeridian', kicker: 'devopstech · archived', accent: ACCENT.km, title: 'KubeMeridian', sub: 'Kubernetes observability for Grafana in one app plugin — archived' },
     { slug: 'blog', kicker: 'devopstech', accent: ACCENT.hub, title: 'Blog', sub: 'Kubernetes, security, autonomous development and observability' },
-    { slug: 'about', kicker: 'devopstech', accent: ACCENT.hub, title: 'About me', sub: 'The engineer behind ICE, deusex and KubeMeridian' },
+    { slug: 'about', kicker: 'devopstech · about', accent: ACCENT.hub, title: 'Artur Stepanchenko', sub: 'The engineer behind ICE and deusex' },
     ...blogPosts().map((p) =>
       fromPage(
         `blog-${p.slug}`,
