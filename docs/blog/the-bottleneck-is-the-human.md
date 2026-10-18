@@ -73,4 +73,4 @@ measurement it is waiting for, and an expiry.
 ---
 
 *deusex is the loop behind ICE. Read [how it works](/deusex/) or the
-[method](/deusex/method), or write to [qdrrag@gmail.com](mailto:qdrrag@gmail.com).*
+[method](/deusex/method), or write to [hello@devopstech.net](mailto:hello@devopstech.net).*
