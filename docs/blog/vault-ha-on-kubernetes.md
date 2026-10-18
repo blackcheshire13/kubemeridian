@@ -72,5 +72,5 @@ The unseal key never leaves the KMS. Vault holds only a reference.
 
 ---
 
-*Written by the engineer behind [KubeMeridian](/kubemeridian) · [About](/about) ·
+*Written by the engineer behind [devopstech](/) · [About](/about) ·
 [GitHub](https://github.com/blackcheshire13)*

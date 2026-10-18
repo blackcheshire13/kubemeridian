@@ -81,7 +81,7 @@ deliberately boring.
 - **Lower operational overhead** and faster triage with federated logs and metrics.
 - **Clear separation** of control plane vs workloads — spokes became replaceable.
 
-This federated view is exactly the kind of thing [KubeMeridian](/kubemeridian) is built to
+This federated view is exactly the kind of thing [KubeMeridian](/kubemeridian) was built to
 surface — cluster topology and health across a fleet, from one Grafana app.
 
 ## What I'd do differently
@@ -93,5 +93,5 @@ surface — cluster topology and health across a fleet, from one Grafana app.
 
 ---
 
-*Written by the engineer behind [KubeMeridian](/kubemeridian) · [About](/about) ·
+*Written by the engineer behind [devopstech](/) · [About](/about) ·
 [GitHub](https://github.com/blackcheshire13)*

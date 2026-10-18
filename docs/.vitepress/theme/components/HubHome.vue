@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { data as posts } from '../posts.data';
+import { KM_LAST_RELEASE } from '../../kubemeridian.mjs';
 import IceLoop from './IceLoop.vue';
 import DeusexCycle from './DeusexCycle.vue';
 
@@ -57,13 +58,13 @@ const latest = posts.slice(0, 4);
       </article>
 
       <article class="project km">
-        <p class="meta"><span class="idx">03</span><span class="dot" aria-hidden="true"></span>Archived · Apache-2.0 · last release v2.5.2</p>
+        <p class="meta"><span class="idx">03</span><span class="dot" aria-hidden="true"></span>Archived · Apache-2.0 · last release {{ KM_LAST_RELEASE }}</p>
         <div class="km-row">
           <h2><a href="/kubemeridian">KubeMeridian</a></h2>
           <p class="pitch">
             Kubernetes observability for Grafana in one app plugin. Grafana Labs declined to list it
-            in its plugin catalog because it overlaps with Grafana Cloud Kubernetes Monitoring, so
-            development has stopped; v2.5.2 stays available as an unsigned plugin.
+            in its plugin catalog because it overlaps with Grafana Cloud Kubernetes Monitoring;
+            development has stopped, and {{ KM_LAST_RELEASE }} stays available as an unsigned plugin.
           </p>
           <p class="go"><a href="/kubemeridian">Project page</a><a href="/guide/introduction">Read the guide</a><a href="https://github.com/blackcheshire13/kubemeridian">GitHub</a></p>
         </div>

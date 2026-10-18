@@ -1,5 +1,7 @@
 <script setup lang="ts">
 // Shown on /kubemeridian and every /guide/* page (see theme/index.ts).
+import { KM_LAST_RELEASE, KM_RELEASE_URL } from '../../kubemeridian.mjs';
+
 defineProps<{ wide?: boolean }>();
 </script>
 
@@ -8,10 +10,10 @@ defineProps<{ wide?: boolean }>();
     <p class="label"><span class="mark" aria-hidden="true"></span>Archived · October 2026</p>
     <p>
       Grafana Labs declined to list KubeMeridian in its official plugin catalog because it
-      overlaps with Grafana Cloud Kubernetes Monitoring, so it can't be signed for public
-      distribution. Development has stopped; the last release,
-      <a href="https://github.com/blackcheshire13/kubemeridian/releases/tag/v2.5.2">v2.5.2</a>,
-      remains available as an <a href="/guide/install">unsigned plugin</a>.
+      overlaps with Grafana Cloud Kubernetes Monitoring. Without a catalog listing the plugin can
+      only be shared unsigned, and development has stopped. The last release,
+      <a :href="KM_RELEASE_URL">{{ KM_LAST_RELEASE }}</a>, remains available as an
+      <a href="/guide/install">unsigned plugin</a>.
     </p>
   </aside>
 </template>
