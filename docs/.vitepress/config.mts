@@ -1,5 +1,51 @@
-import { defineConfig } from 'vitepress';
+import { defineConfig, type MarkdownRenderer } from 'vitepress';
 import { SITE_DESCRIPTION, blogSidebar, checkOgCards, pageHead, writeFeed } from './site-meta';
+
+// Tables keep their semantics and their column names when CSS stacks them on phones:
+// explicit ARIA roles, and each cell carries its column header as data-label.
+function tableLabels(md: MarkdownRenderer) {
+  const ROLES: Record<string, string> = {
+    thead_open: 'rowgroup',
+    tbody_open: 'rowgroup',
+    tr_open: 'row',
+    th_open: 'columnheader',
+    td_open: 'cell',
+  };
+  // VitePress renders <table> with its own rule, so the role is added there
+  const tableOpen = md.renderer.rules.table_open;
+  md.renderer.rules.table_open = (tokens, idx, options, env, self) =>
+    (tableOpen ? tableOpen(tokens, idx, options, env, self) : self.renderToken(tokens, idx, options)).replace(
+      '<table',
+      '<table role="table"',
+    );
+  md.core.ruler.push('dt_table_labels', (state) => {
+    let headers: string[] = [];
+    let inHead = false;
+    let col = 0;
+    state.tokens.forEach((token, i) => {
+      const role = ROLES[token.type];
+      if (role) {
+        token.attrSet('role', role);
+      }
+      if (token.type === 'table_open') {
+        headers = [];
+      } else if (token.type === 'thead_open') {
+        inHead = true;
+      } else if (token.type === 'thead_close') {
+        inHead = false;
+      } else if (token.type === 'tr_open') {
+        col = 0;
+      } else if (token.type === 'th_open' && inHead) {
+        headers.push((state.tokens[i + 1]?.content ?? '').replace(/[`*_]/g, ''));
+      } else if (token.type === 'td_open') {
+        const header = headers[col++];
+        if (header) {
+          token.attrSet('data-label', header);
+        }
+      }
+    });
+  });
+}
 
 // devopstech.net — engineering hub: ICE, deusex, blog, and the archived KubeMeridian docs
 export default defineConfig({
@@ -26,6 +72,7 @@ export default defineConfig({
   markdown: {
     // high-contrast light theme: github-light comments and operators fall below 4.5:1 on paper
     theme: { light: 'github-light-high-contrast', dark: 'github-dark' },
+    config: tableLabels,
   },
   transformPageData(pageData) {
     const rel = pageData.relativePath;

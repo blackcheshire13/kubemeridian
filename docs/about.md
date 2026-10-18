@@ -28,7 +28,7 @@ I'm **open to collaboration**: design-partner pilots for ICE, conversations abou
 autonomous development with deusex, contract work on Kubernetes, observability, cost and SLOs,
 or just comparing notes on platform engineering.
 
-<PartnerCta variant="plain" />
+<PartnerCta topic="general" variant="plain" />
 
 - **GitHub:** [blackcheshire13](https://github.com/blackcheshire13)
 - **RSS:** [devopstech.net/feed.xml](/feed.xml)

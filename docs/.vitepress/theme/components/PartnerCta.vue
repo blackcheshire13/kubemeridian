@@ -7,7 +7,7 @@ import { EMAIL, mailto } from '../../contact.mjs';
 
 const props = withDefaults(
   defineProps<{
-    topic?: 'ice' | 'deusex';
+    topic?: 'ice' | 'deusex' | 'general';
     variant?: 'block' | 'aside' | 'buttons' | 'plain';
     lead?: string;
     secondary?: { text: string; href: string };
@@ -15,30 +15,46 @@ const props = withDefaults(
   { topic: 'ice', variant: 'block' },
 );
 
-const label = computed(() =>
-  props.topic === 'ice'
-    ? props.variant === 'aside'
-      ? 'Become a design partner'
-      : 'Become an ICE design partner'
-    : 'Talk to me about deusex',
-);
+const LABEL = {
+  ice: props.variant === 'aside' ? 'Become a design partner' : 'Become an ICE design partner',
+  deusex: 'Talk to me about deusex',
+  general: 'Write to me',
+};
+const label = computed(() => LABEL[props.topic]);
 const href = computed(() => mailto(props.topic));
-const copied = ref(false);
+const state = ref<'idle' | 'copied' | 'failed'>('idle');
+let reset: ReturnType<typeof setTimeout> | undefined;
+
+function legacyCopy(): boolean {
+  const field = document.createElement('textarea');
+  field.value = EMAIL;
+  field.setAttribute('readonly', '');
+  field.style.position = 'fixed';
+  field.style.opacity = '0';
+  document.body.appendChild(field);
+  field.select();
+  const ok = document.execCommand('copy');
+  field.remove();
+  return ok;
+}
 
 async function copy() {
+  let ok = false;
   try {
     await navigator.clipboard.writeText(EMAIL);
-    copied.value = true;
-    setTimeout(() => (copied.value = false), 2000);
+    ok = true;
   } catch {
-    // clipboard blocked: the address is on screen and selectable anyway
+    ok = legacyCopy(); // no Clipboard API (plain http, some webviews) or permission denied
   }
+  state.value = ok ? 'copied' : 'failed';
+  clearTimeout(reset);
+  reset = setTimeout(() => (state.value = 'idle'), 2500);
 }
 </script>
 
 <template>
   <div class="cta" :class="variant">
-    <p v-if="variant === 'aside'" class="title">{{ topic === 'ice' ? 'ICE design partners' : 'deusex' }}</p>
+    <p v-if="variant === 'aside'" class="title">{{ topic === 'ice' ? 'ICE design partners' : topic }}</p>
     <p v-if="lead" class="lead">{{ lead }}</p>
     <div class="row">
       <a class="btn" :href="href">{{ label }}</a>
@@ -46,7 +62,8 @@ async function copy() {
     </div>
     <p v-if="variant !== 'buttons'" class="mail">
       or write to <span class="addr">{{ EMAIL }}</span>
-      <button type="button" class="copy" @click="copy">{{ copied ? 'Copied' : 'Copy' }}</button>
+      <button type="button" class="copy" @click="copy">{{ state === 'copied' ? 'Copied' : 'Copy' }}</button>
+      <span v-if="state === 'failed'" class="hint" role="status">Couldn't copy — select the address instead</span>
     </p>
   </div>
 </template>
@@ -135,6 +152,10 @@ async function copy() {
   border-radius: 3px;
   background: var(--vp-c-bg);
   cursor: pointer;
+}
+.hint {
+  font-size: 14px;
+  color: var(--vp-c-text-2);
 }
 .copy:hover {
   border-color: var(--vp-c-text-2);

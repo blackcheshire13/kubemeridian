@@ -150,12 +150,6 @@
   border: 1px solid var(--vp-c-divider);
   max-width: 620px;
 }
-.vp-doc .dt-cta {
-  margin-top: 40px;
-  padding-top: 18px;
-  border-top: 2px solid var(--vp-c-text-1);
-  font-size: 17px;
-}
 .vp-doc .dt-quote {
   margin: 28px 0;
   max-width: 620px;
@@ -296,13 +290,12 @@
     font-size: 15px;
   }
   .vp-doc .dt-stack td:first-child { font-weight: 700; font-size: 16px; }
-  .vp-doc .dt-stack.integrations td:nth-child(3)::before { content: 'Status: '; color: var(--vp-c-text-2); }
-  .vp-doc .dt-stack.numbers td:nth-child(2)::before { content: 'deusex: '; color: var(--vp-c-text-2); }
-  .vp-doc .dt-stack.numbers td:nth-child(3)::before { content: 'ICE: '; color: var(--vp-c-text-2); }
-  .vp-doc .dt-stack.numbers td:nth-child(4)::before { content: 'Target: '; color: var(--vp-c-text-2); }
-  .vp-doc .dt-stack.roles td:nth-child(2)::before { content: 'Decides: '; color: var(--vp-c-text-2); }
-  .vp-doc .dt-stack.roles td:nth-child(3)::before { content: 'Held by: '; color: var(--vp-c-text-2); }
-  .vp-doc .dt-stack.roles td:nth-child(4)::before { content: 'Cadence: '; color: var(--vp-c-text-2); }
+  .vp-doc .dt-stack td[data-label]:not(:first-child)::before {
+    content: attr(data-label) ': ';
+    color: var(--vp-c-text-2);
+  }
+  /* a description column reads fine without its label */
+  .vp-doc .dt-stack.integrations td:nth-child(2)::before { content: none; }
 }
 
 /* phones: sidebar entries get a 44px tap height */

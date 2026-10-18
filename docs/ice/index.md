@@ -69,8 +69,9 @@ person approved, the action fails instead of shipping something nobody reviewed.
 - **One signal is not an action.** A runtime response needs three *different* detectors to
   agree, only for assets you marked as crown jewels; acting on a client IP needs the "client
   IP is trusted" precondition measured as met.
-- **The model advises; it has no hands.** An optional LLM explains entities; it has no tools
-  and never changes a detector's weight. The MCP interface is read-only and off by default.
+- **The model advises; it has no hands.** An optional LLM explains entities; it has no tools,
+  PII redaction cannot be turned off, and it never changes a detector's weight. The MCP
+  interface is read-only, off by default, and marks every answer as untrusted data.
 - **No Black ICE.** The name is cyberpunk's *intrusion countermeasures electronics*,
   popularised by William Gibson's *Neuromancer* — minus the counter-attack. Every response
   targets the estate it protects.

@@ -18,7 +18,7 @@ const latest = posts.slice(0, 4);
           fixed once the cluster proves it — and <a href="/deusex/">deusex</a>, the autonomous
           development loop that builds it.
         </p>
-        <PartnerCta variant="buttons" :secondary="{ text: 'How ICE works', href: '/ice/' }" />
+        <PartnerCta variant="buttons" :secondary="{ text: 'ICE overview', href: '/ice/' }" />
       </div>
 
       <aside class="now" aria-label="Where things stand">
@@ -56,7 +56,7 @@ const latest = posts.slice(0, 4);
             <li><code>Unknown</code> counts as unmet; a failed source reports <em>unmeasured</em>, never <em>clean</em></li>
             <li>Three different detectors must agree before it proposes a runtime response</li>
           </ul>
-          <p class="go"><a href="/ice/">How ICE works</a><a href="/ice/design-partners">Design partners</a></p>
+          <p class="go"><a href="/ice/">ICE overview</a><a href="/ice/how-it-works">How it works</a><a href="/ice/design-partners">Design partners</a></p>
         </div>
         <div class="figure"><IceLoop /></div>
       </article>
@@ -102,6 +102,7 @@ const latest = posts.slice(0, 4);
       <h2 id="contact-h">Work with me</h2>
       <div>
         <PartnerCta
+          topic="general"
           variant="plain"
           lead="Running Kubernetes in production? Get the ICE loop on your cluster before the public release — or talk to me about deusex, Kubernetes, observability, cost and SLOs."
         />
