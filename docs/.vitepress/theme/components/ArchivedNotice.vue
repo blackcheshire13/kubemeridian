@@ -10,8 +10,8 @@ defineProps<{ wide?: boolean }>();
     <p class="label"><span class="mark" aria-hidden="true"></span>Archived · October 2026</p>
     <p>
       Grafana Labs declined to list KubeMeridian in its official plugin catalog because it
-      overlaps with Grafana Cloud Kubernetes Monitoring. Without a catalog listing the plugin can
-      only be shared unsigned, and development has stopped. The last release,
+      overlaps with Grafana Cloud Kubernetes Monitoring. Without a catalog listing it can't get a
+      community signature, so it is distributed unsigned, and development has stopped. The last release,
       <a :href="KM_RELEASE_URL">{{ KM_LAST_RELEASE }}</a>, remains available as an
       <a href="/guide/install">unsigned plugin</a>.
     </p>

@@ -2,7 +2,8 @@
 
 > **Archived (October 2026).** Grafana Labs declined to list KubeMeridian in its official
 > plugin catalog because it overlaps with Grafana Cloud Kubernetes Monitoring. Without a
-> catalog listing the plugin can only be shared unsigned, and development has stopped. The
+> catalog listing it can't get a community signature, so it is distributed unsigned, and
+> development has stopped. The
 > last release, [v2.5.2](https://github.com/blackcheshire13/kubemeridian/releases/tag/v2.5.2),
 > remains available as an unsigned plugin.
 

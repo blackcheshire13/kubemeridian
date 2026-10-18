@@ -18,7 +18,7 @@ one is [v2.5.2](https://github.com/blackcheshire13/kubemeridian/releases/tag/v2.
 GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=devopstech-kubemeridian-app,devopstech-kubemeridian-datasource
 
 # 2. install the v2.5.2 release archive (Grafana's classic installer)
-GF_INSTALL_PLUGINS=https://github.com/blackcheshire13/kubemeridian/releases/download/v2.5.2/devopstech-kubemeridian-app-2.5.2.zip;devopstech-kubemeridian-app
+GF_INSTALL_PLUGINS='https://github.com/blackcheshire13/kubemeridian/releases/download/v2.5.2/devopstech-kubemeridian-app-2.5.2.zip;devopstech-kubemeridian-app'
 ```
 
 Set both as environment variables on the Grafana instance, then restart Grafana.
