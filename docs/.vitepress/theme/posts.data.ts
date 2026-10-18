@@ -5,6 +5,7 @@ export interface Post {
   url: string;
   date: string;
   description: string;
+  tags: string[];
 }
 
 declare const data: Post[];
@@ -26,9 +27,10 @@ export default createContentLoader('blog/!(index).md', {
           url,
           date: toIsoDate(frontmatter.date),
           description: String(frontmatter.description ?? ''),
+          tags: Array.isArray(frontmatter.tags) ? frontmatter.tags.map(String) : [],
         };
       })
-      // newest first; same-day posts in title order, as in blog/index.md and the sidebar
+      // newest first; same-day posts in title order (the sidebar uses the same rule)
       .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
   },
 });
