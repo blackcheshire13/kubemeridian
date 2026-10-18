@@ -107,8 +107,8 @@ export default defineConfig({
           text: 'Blog',
           items: [
             { text: 'All posts', link: '/blog/' },
-            { text: 'The bottleneck is the human', link: '/blog/the-bottleneck-is-the-human' },
             { text: 'Merged is not fixed', link: '/blog/merged-is-not-fixed' },
+            { text: 'The bottleneck is the human', link: '/blog/the-bottleneck-is-the-human' },
             { text: 'Clusters → hub-and-spoke ArgoCD', link: '/blog/consolidating-kubernetes-clusters' },
             { text: 'Vault HA on Kubernetes', link: '/blog/vault-ha-on-kubernetes' },
           ],

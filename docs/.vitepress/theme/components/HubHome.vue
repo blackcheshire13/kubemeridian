@@ -47,7 +47,7 @@ const latest = posts.slice(0, 4);
             Agents plan, build, review and merge on a schedule; a person decides only the concept.
           </p>
           <ul class="facts">
-            <li>89% of ICE's merges in the last two weeks came from the loop, 0.7 h median to merge</li>
+            <li>4–18 October: 89% of ICE's merges came from the loop, with a 0.7 h median to merge</li>
             <li>Rights held by tooling: the owner has read-only tools, the merge policy is a function</li>
             <li>A machine never approves changes to the machine that approves changes</li>
           </ul>
@@ -132,7 +132,7 @@ a:hover { text-decoration-thickness: 2px; }
   font-weight: 800;
 }
 .turn {
-  background-image: linear-gradient(transparent 70%, oklch(0.74 0.135 78 / 0.45) 70%);
+  background-image: linear-gradient(transparent 70%, color-mix(in oklch, var(--dt-brass) 45%, transparent) 70%);
   padding: 0 0.04em;
 }
 .lede {
@@ -237,9 +237,7 @@ a:hover { text-decoration-thickness: 2px; }
   padding: 28px 28px 24px;
   background: var(--dt-paper-2);
   border: 1px solid var(--vp-c-divider);
-  --rail-accent: var(--accent);
 }
-.figure :deep(.rail) { --rail-accent: var(--accent); }
 
 .project.km {
   display: block;

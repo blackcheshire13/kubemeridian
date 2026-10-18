@@ -1,12 +1,18 @@
 <script setup lang="ts">
 // Left-to-right flow of labelled stages that wraps on narrow screens.
-// `who` marks the actor that moves the item into this stage.
-defineProps<{
-  steps: { label: string; note?: string; who?: 'human' | 'machine' | 'measure' }[];
-  exits?: string[];
-  accent?: string;
-}>();
-const whoLabel = { human: 'person', machine: 'ICE', measure: 'measurement' } as const;
+// `who` marks the actor that moves the item into this stage; `machine` names the system.
+import { computed } from 'vue';
+
+const props = withDefaults(
+  defineProps<{
+    steps: { label: string; note?: string; who?: 'human' | 'machine' | 'measure' }[];
+    exits?: string[];
+    accent?: string;
+    machine?: string;
+  }>(),
+  { machine: 'ICE' },
+);
+const whoLabel = computed(() => ({ human: 'person', machine: props.machine, measure: 'measurement' }));
 </script>
 
 <template>
@@ -50,7 +56,6 @@ li {
   border-top: 3px solid var(--flow-accent);
   background: var(--dt-paper-2);
 }
-li + li { margin-left: 0; }
 li:not(:last-child)::after {
   content: '→';
   position: absolute;

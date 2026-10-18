@@ -5,18 +5,17 @@ defineProps<{
   steps: { label: string; detail?: string; gate?: boolean }[];
   back: string;
   accent?: string;
-  compact?: boolean;
 }>();
 </script>
 
 <template>
-  <figure class="rail" :class="{ compact }" :style="accent ? { '--rail-accent': accent } : undefined">
+  <figure class="rail" :style="accent ? { '--rail-accent': accent } : undefined">
     <ol>
       <li v-for="(s, i) in steps" :key="s.label" :class="{ gate: s.gate }">
         <span class="node" aria-hidden="true">{{ i + 1 }}</span>
         <span class="body">
           <strong>{{ s.label }}</strong>
-          <span v-if="s.detail && !compact" class="detail">{{ s.detail }}</span>
+          <span v-if="s.detail" class="detail">{{ s.detail }}</span>
         </span>
       </li>
     </ol>
@@ -55,7 +54,6 @@ li {
   padding: 0 0 18px 0;
   margin: 0;
 }
-.compact li { padding-bottom: 10px; }
 li:last-child { padding-bottom: 0; }
 .node {
   position: absolute;

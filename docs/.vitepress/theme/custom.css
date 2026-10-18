@@ -119,7 +119,7 @@
 /* ---------- small brand details ---------- */
 .custom-block.tip { border-color: var(--dt-brass); }
 .vp-doc a { text-underline-offset: 3px; }
-::selection { background: oklch(0.74 0.135 78 / 0.35); }
+::selection { background: color-mix(in oklch, var(--dt-brass) 35%, transparent); }
 
 /* ---------- product pages ---------- */
 .vp-doc .dt-lede {

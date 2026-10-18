@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import LoopRail from './LoopRail.vue';
 
-defineProps<{ compact?: boolean }>();
-
 const steps = [
   { label: 'Plan', detail: 'The owner reads the board and prints one move. It has no write tools; a script carries the move out.' },
   { label: 'Build', detail: 'Five lines on models from four providers each take one item and open a pull request.' },
@@ -16,7 +14,6 @@ const steps = [
 <template>
   <LoopRail
     :steps="steps"
-    :compact="compact"
     accent="var(--dt-deusex)"
     back="Every ten minutes ready work is handed out; every two hours the owner re-plans from what actually landed."
   />

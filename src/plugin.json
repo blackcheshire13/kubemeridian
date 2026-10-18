@@ -14,7 +14,7 @@
       "large": "img/logo.svg"
     },
     "links": [
-      { "name": "Website", "url": "https://devopstech.net" },
+      { "name": "Website", "url": "https://devopstech.net/kubemeridian" },
       { "name": "Documentation", "url": "https://devopstech.net/guide/introduction" },
       { "name": "GitHub", "url": "https://github.com/blackcheshire13/kubemeridian" },
       { "name": "Report issue", "url": "https://github.com/blackcheshire13/kubemeridian/issues" }
