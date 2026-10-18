@@ -1,11 +1,11 @@
 import { defineConfig } from 'vitepress';
+import { SITE_DESCRIPTION, blogSidebar, checkOgCards, socialHead, writeFeed } from './site-meta';
 
 // devopstech.net — engineering hub: ICE, deusex, KubeMeridian (docs), blog
 export default defineConfig({
   lang: 'en-US',
   title: 'devopstech',
-  description:
-    'An engineering workshop: active defence for Kubernetes (ICE), an autonomous development loop (deusex), and open-source observability (KubeMeridian).',
+  description: SITE_DESCRIPTION,
   cleanUrls: true,
   lastUpdated: true,
   head: [
@@ -21,15 +21,13 @@ export default defineConfig({
       },
     ],
     ['meta', { property: 'og:site_name', content: 'devopstech' }],
-    ['meta', { property: 'og:title', content: 'devopstech — production engineering, closed loop' }],
-    [
-      'meta',
-      {
-        property: 'og:description',
-        content: 'ICE (active defence for Kubernetes), deusex (autonomous development loop) and KubeMeridian (Kubernetes observability for Grafana).',
-      },
-    ],
+    ['link', { rel: 'alternate', type: 'application/rss+xml', title: 'devopstech — blog', href: '/feed.xml' }],
   ],
+  transformHead: ({ pageData }) => socialHead(pageData),
+  buildEnd: ({ outDir }) => {
+    checkOgCards();
+    writeFeed(outDir);
+  },
   themeConfig: {
     logo: '/devopstech.svg',
     siteTitle: 'devopstech',
@@ -102,18 +100,7 @@ export default defineConfig({
           ],
         },
       ],
-      '/blog/': [
-        {
-          text: 'Blog',
-          items: [
-            { text: 'All posts', link: '/blog/' },
-            { text: 'Merged is not fixed', link: '/blog/merged-is-not-fixed' },
-            { text: 'The bottleneck is the human', link: '/blog/the-bottleneck-is-the-human' },
-            { text: 'Clusters → hub-and-spoke ArgoCD', link: '/blog/consolidating-kubernetes-clusters' },
-            { text: 'Vault HA on Kubernetes', link: '/blog/vault-ha-on-kubernetes' },
-          ],
-        },
-      ],
+      '/blog/': blogSidebar(),
     },
     socialLinks: [{ icon: 'github', link: 'https://github.com/blackcheshire13' }],
     footer: {

@@ -1,34 +1,27 @@
 import { createContentLoader } from 'vitepress';
+import { blogPosts } from '../blog.mjs';
 
 export interface Post {
   title: string;
   url: string;
   date: string;
   description: string;
+  tags: string[];
 }
 
 declare const data: Post[];
 export { data };
 
-function toIsoDate(d: unknown): string {
-  return d instanceof Date ? d.toISOString().slice(0, 10) : String(d).slice(0, 10);
-}
-
-export default createContentLoader('blog/!(index).md', {
-  transform(raw): Post[] {
-    return raw
-      .map(({ url, frontmatter }) => {
-        if (!frontmatter.title || !frontmatter.date) {
-          throw new Error(`blog post ${url} needs "title" and "date" in its frontmatter`);
-        }
-        return {
-          title: String(frontmatter.title),
-          url,
-          date: toIsoDate(frontmatter.date),
-          description: String(frontmatter.description ?? ''),
-        };
-      })
-      // newest first; same-day posts in title order, as in blog/index.md and the sidebar
-      .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
+// createContentLoader keeps the dev server watching blog/; the data itself comes from the
+// same reader as the sidebar, RSS and social cards.
+export default createContentLoader('blog/*.md', {
+  transform(): Post[] {
+    return blogPosts().map(({ slug, title, date, description, tags }) => ({
+      title,
+      url: `/blog/${slug}`,
+      date,
+      description,
+      tags,
+    }));
   },
 });

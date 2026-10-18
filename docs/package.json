@@ -8,6 +8,7 @@
     "docs:preview": "vitepress preview"
   },
   "devDependencies": {
+    "gray-matter": "^4.0.3",
     "vitepress": "^1.6.4"
   }
 }
