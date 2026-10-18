@@ -20,6 +20,13 @@
     "title": "How ICE works",
     "sub": "Operator, agent, trust path, posture and responses"
   },
+  "ice-design-partners": {
+    "slug": "ice-design-partners",
+    "kicker": "devopstech · ICE",
+    "accent": "oklch(0.52 0.1 225)",
+    "title": "ICE design partners",
+    "sub": "Run the loop on your cluster early"
+  },
   "deusex": {
     "slug": "deusex",
     "kicker": "devopstech · deusex",

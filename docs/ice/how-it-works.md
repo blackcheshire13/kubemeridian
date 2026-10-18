@@ -101,4 +101,4 @@ the preconditions are measured as met and the run is not a dry run.
 
 Both run on a laptop with `kind` in 15–20 minutes, from a synthetic company profile.
 
-<p class="dt-cta">Interested in running ICE early? <a href="mailto:qdrrag@gmail.com?subject=ICE%20design%20partner">Become a design partner</a> · <a href="/ice/">Back to the overview</a></p>
+<PartnerCta lead="Want this loop on your cluster before the public release?" :secondary="{ text: 'What a pilot involves', href: '/ice/design-partners' }" />

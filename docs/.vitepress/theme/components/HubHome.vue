@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { data as posts } from '../posts.data';
-import { KM_LAST_RELEASE } from '../../kubemeridian.mjs';
 import IceLoop from './IceLoop.vue';
 import DeusexCycle from './DeusexCycle.vue';
+import PartnerCta from './PartnerCta.vue';
 
 const latest = posts.slice(0, 4);
 </script>
@@ -10,13 +10,35 @@ const latest = posts.slice(0, 4);
 <template>
   <div class="hub">
     <header class="intro">
-      <p class="kicker"><img src="/devopstech.svg" alt="" width="22" height="22" />devopstech · an engineering workshop</p>
-      <h1>Production engineering,<br /><span class="turn">closed loop.</span></h1>
-      <p class="lede">
-        I build the tools I want next to production: a defence system for Kubernetes that only
-        calls a problem fixed once the cluster proves it, and a development loop that ships code
-        while I sleep.
-      </p>
+      <div class="intro-main">
+        <p class="kicker">devopstech · an engineering workshop</p>
+        <h1>Production engineering,<br /><span class="turn">closed loop.</span></h1>
+        <p class="lede">
+          I build <a href="/ice/">ICE</a>, active defence for Kubernetes that only calls a problem
+          fixed once the cluster proves it — and <a href="/deusex/">deusex</a>, the autonomous
+          development loop that builds it.
+        </p>
+        <PartnerCta variant="buttons" :secondary="{ text: 'How ICE works', href: '/ice/' }" />
+      </div>
+
+      <aside class="now" aria-label="Where things stand">
+        <h2>Now</h2>
+        <ul>
+          <li>
+            <span class="dt-s live" aria-hidden="true"></span>
+            <span><strong>ICE</strong> — 10 capabilities live on a real cluster, 63 tested; looking for design partners.</span>
+          </li>
+          <li>
+            <span class="dt-s live" aria-hidden="true"></span>
+            <span><strong>deusex</strong> — 89% of ICE's merges came from the loop, 0.7&nbsp;h median to merge.</span>
+          </li>
+          <li v-if="latest[0]">
+            <span class="dt-s" aria-hidden="true"></span>
+            <span><strong>Latest</strong> — <a :href="latest[0].url">{{ latest[0].title }}</a></span>
+          </li>
+        </ul>
+        <p class="asof">As of 18 October 2026 · figures for 4–18 October</p>
+      </aside>
     </header>
 
     <section class="projects" aria-label="Projects">
@@ -34,7 +56,7 @@ const latest = posts.slice(0, 4);
             <li><code>Unknown</code> counts as unmet; a failed source reports <em>unmeasured</em>, never <em>clean</em></li>
             <li>Three different detectors must agree before it proposes a runtime response</li>
           </ul>
-          <p class="go"><a href="/ice/">How ICE works</a><a href="mailto:qdrrag@gmail.com?subject=ICE%20early%20access">Ask for early access</a></p>
+          <p class="go"><a href="/ice/">How ICE works</a><a href="/ice/design-partners">Design partners</a></p>
         </div>
         <div class="figure"><IceLoop /></div>
       </article>
@@ -48,27 +70,20 @@ const latest = posts.slice(0, 4);
             Agents plan, build, review and merge on a schedule; a person decides only the concept.
           </p>
           <ul class="facts">
-            <li>4–18 October: 89% of ICE's merges came from the loop, with a 0.7 h median to merge</li>
+            <li>4–18 October: 89% of ICE's merges came from the loop, with a 0.7&nbsp;h median to merge</li>
             <li>Rights held by tooling: the owner has read-only tools, the merge policy is a function</li>
             <li>A machine never approves changes to the machine that approves changes</li>
           </ul>
-          <p class="go"><a href="/deusex/">How deusex works</a><a href="mailto:qdrrag@gmail.com?subject=deusex">Talk about deusex</a></p>
+          <p class="go"><a href="/deusex/">How deusex works</a><a href="/deusex/method">The method</a></p>
         </div>
         <div class="figure"><DeusexCycle /></div>
       </article>
 
-      <article class="project km">
-        <p class="meta"><span class="idx">03</span><span class="dot" aria-hidden="true"></span>Archived · Apache-2.0 · last release {{ KM_LAST_RELEASE }}</p>
-        <div class="km-row">
-          <h2><a href="/kubemeridian">KubeMeridian</a></h2>
-          <p class="pitch">
-            Kubernetes observability for Grafana in one app plugin. Grafana Labs declined to list it
-            in its plugin catalog because it overlaps with Grafana Cloud Kubernetes Monitoring;
-            development has stopped, and {{ KM_LAST_RELEASE }} stays available as an unsigned plugin.
-          </p>
-          <p class="go"><a href="/kubemeridian">Project page</a><a href="/guide/introduction">Read the guide</a><a href="https://github.com/blackcheshire13/kubemeridian">GitHub</a></p>
-        </div>
-      </article>
+      <p class="archive">
+        <span class="label">Archive</span>
+        <a href="/kubemeridian">KubeMeridian</a> — Kubernetes observability for Grafana, archived in
+        October 2026.
+      </p>
     </section>
 
     <section class="writing" aria-labelledby="writing-h">
@@ -83,14 +98,15 @@ const latest = posts.slice(0, 4);
       <p class="more"><a href="/blog/">All posts</a></p>
     </section>
 
-    <section class="contact">
-      <h2>Work with me</h2>
-      <p>
-        Running Kubernetes in production and want ICE on your cluster before it is public? Curious
-        how deusex would handle your backlog? Need a hand with Grafana, Kubernetes cost or SLOs?
-        Write to <a href="mailto:qdrrag@gmail.com">qdrrag@gmail.com</a> — or read more
-        <a href="/about">about me</a>.
-      </p>
+    <section class="contact" aria-labelledby="contact-h">
+      <h2 id="contact-h">Work with me</h2>
+      <div>
+        <PartnerCta
+          variant="plain"
+          lead="Running Kubernetes in production? Get the ICE loop on your cluster before the public release — or talk to me about deusex, Kubernetes, observability, cost and SLOs."
+        />
+        <p class="about-link"><a href="/about">About me</a></p>
+      </div>
     </section>
   </div>
 </template>
@@ -118,12 +134,14 @@ a {
 }
 a:hover { text-decoration-thickness: 2px; }
 
-/* intro */
-.intro { max-width: 820px; }
+/* intro: statement + actions on the left, a dated "now" panel on the right */
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 40px clamp(32px, 6vw, 88px);
+  align-items: end;
+}
 .kicker {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   margin: 0 0 20px;
   font-size: 15px;
   color: var(--vp-c-text-2);
@@ -137,17 +155,53 @@ a:hover { text-decoration-thickness: 2px; }
   background-image: linear-gradient(transparent 70%, color-mix(in oklch, var(--dt-brass) 45%, transparent) 70%);
   padding: 0 0.04em;
 }
+:global(.dark) .turn {
+  /* on dark paper a wide marker turns muddy: a thin brass rule instead */
+  background-image: linear-gradient(transparent 88%, var(--dt-brass) 88%, var(--dt-brass) 94%, transparent 94%);
+}
 .lede {
-  margin: 28px 0 0;
-  max-width: 640px;
-  font-size: clamp(17px, 1.6vw, 19px);
+  margin: 28px 0 28px;
+  max-width: 600px;
+  font-size: clamp(18px, 1.6vw, 20px);
   line-height: 1.6;
+  color: var(--vp-c-text-1);
+}
+.lede a { font-weight: 600; }
+
+.now {
+  padding-top: 14px;
+  border-top: 2px solid var(--vp-c-text-1);
+}
+.now h2 {
+  font-size: 18px;
+  font-weight: 700;
+}
+.now ul {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+}
+.now li {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--vp-c-text-2);
+  border-top: 1px solid var(--vp-c-divider);
+}
+.now li strong { color: var(--vp-c-text-1); }
+.now li .dt-s { padding-top: 1px; }
+.now li .dt-s::before { margin-right: 0; }
+.asof {
+  margin: 8px 0 0;
+  font-size: 13px;
   color: var(--vp-c-text-2);
 }
 
 /* projects */
 .projects {
-  margin-top: clamp(56px, 9vw, 112px);
+  margin-top: clamp(56px, 9vw, 104px);
   border-top: 2px solid var(--vp-c-text-1);
 }
 .project {
@@ -157,8 +211,6 @@ a:hover { text-decoration-thickness: 2px; }
   padding: clamp(36px, 5vw, 56px) 0;
   border-bottom: 1px solid var(--vp-c-divider);
 }
-.project.deusex .figure { order: -1; }
-.project.deusex { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); }
 .meta {
   display: flex;
   align-items: center;
@@ -180,7 +232,6 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .ice { --accent: var(--dt-ice); }
 .deusex { --accent: var(--dt-deusex); }
-.km { --accent: var(--vp-c-text-2); }
 .project h2 {
   font-size: clamp(34px, 4.6vw, 52px);
   line-height: 1;
@@ -228,32 +279,41 @@ a:hover { text-decoration-thickness: 2px; }
 .go {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 24px;
-  margin: 24px 0 0;
+  gap: 4px 24px;
+  margin: 20px 0 0;
   font-size: 16px;
   font-weight: 600;
 }
-.go a:first-child::after { content: ' →'; }
+.go a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.go a:first-child::after { content: ' →'; white-space: pre; }
 .figure {
-  align-self: center;
+  align-self: start;
   padding: 28px 28px 24px;
   background: var(--dt-paper-2);
   border: 1px solid var(--vp-c-divider);
 }
 
-.project.km {
-  display: block;
-  padding-bottom: clamp(32px, 4vw, 48px);
-}
-.km-row {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 16px 40px;
+.archive {
+  display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
+  gap: 4px 12px;
+  margin: 0;
+  padding: 22px 0;
+  font-size: 16px;
+  color: var(--vp-c-text-2);
+  border-bottom: 1px solid var(--vp-c-divider);
 }
-.km-row .pitch,
-.km-row .go { margin: 0; }
-.km h2 { font-size: clamp(28px, 3.4vw, 38px); white-space: nowrap; }
+.archive .label {
+  font-family: var(--vp-font-family-mono);
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+}
+.archive a { font-weight: 600; }
 
 /* writing */
 .writing {
@@ -305,22 +365,31 @@ a:hover { text-decoration-thickness: 2px; }
   font-size: 16px;
   font-weight: 600;
 }
-.more a::after { content: ' →'; }
+.more a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.more a::after { content: ' →'; white-space: pre; }
 
 /* contact */
 .contact {
   margin-top: clamp(56px, 8vw, 96px);
-  padding: 32px 0 0;
+  padding: 28px 0 0;
   border-top: 2px solid var(--vp-c-text-1);
   display: grid;
   grid-template-columns: minmax(160px, 0.45fr) minmax(0, 1.55fr);
   gap: 16px 40px;
 }
-.contact p {
-  margin: 0;
-  max-width: 680px;
-  font-size: 18px;
-  line-height: 1.6;
+.about-link {
+  margin: 16px 0 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+.about-link a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 /* entrance */
@@ -329,11 +398,9 @@ a:hover { text-decoration-thickness: 2px; }
   .project {
     animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
-  .intro h1 { animation-delay: 0.05s; }
-  .intro .lede { animation-delay: 0.12s; }
+  .intro .now { animation-delay: 0.12s; }
   .project.ice { animation-delay: 0.2s; }
   .project.deusex { animation-delay: 0.28s; }
-  .project.km { animation-delay: 0.36s; }
 }
 @keyframes rise {
   from { opacity: 0; transform: translateY(14px); }
@@ -341,11 +408,11 @@ a:hover { text-decoration-thickness: 2px; }
 }
 
 /* narrow screens */
+@media (max-width: 960px) {
+  .intro { grid-template-columns: minmax(0, 1fr); align-items: start; }
+}
 @media (max-width: 860px) {
-  .project,
-  .project.deusex { grid-template-columns: minmax(0, 1fr); }
-  .project.deusex .figure { order: 0; }
-  .km-row,
+  .project { grid-template-columns: minmax(0, 1fr); }
   .writing,
   .contact { grid-template-columns: minmax(0, 1fr); }
   .more { grid-column: 1; }
@@ -354,6 +421,9 @@ a:hover { text-decoration-thickness: 2px; }
   .hub { padding-left: 16px; padding-right: 16px; }
   .writing li { grid-template-columns: minmax(0, 1fr); }
   .writing li p { grid-column: 1; }
-  .figure { padding: 22px 18px 18px; }
+  .figure { padding: 20px 16px 16px; }
+  /* on a phone the loop reads as its step names; the details live on the product pages */
+  .figure :deep(.detail) { display: none; }
+  .figure :deep(li) { padding-bottom: 10px; }
 }
 </style>

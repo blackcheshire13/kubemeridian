@@ -23,29 +23,38 @@ export default defineConfig({
     ['meta', { property: 'og:site_name', content: 'devopstech' }],
     ['link', { rel: 'alternate', type: 'application/rss+xml', title: 'devopstech — blog', href: '/feed.xml' }],
   ],
+  markdown: {
+    // high-contrast light theme: github-light comments and operators fall below 4.5:1 on paper
+    theme: { light: 'github-light-high-contrast', dark: 'github-dark' },
+  },
+  transformPageData(pageData) {
+    const rel = pageData.relativePath;
+    // "Edit on GitHub" and "Updated" belong to the KubeMeridian guide, not to product pages or posts
+    if (!rel.startsWith('guide/')) {
+      pageData.frontmatter.editLink = false;
+      pageData.frontmatter.lastUpdated = false;
+    }
+    // product pages navigate with their section tabs, the blog index is already a list of posts
+    if (/^(ice|deusex)\//.test(rel) || rel === 'about.md') {
+      pageData.frontmatter.prev = false;
+      pageData.frontmatter.next = false;
+    }
+    if (rel === 'blog/index.md') {
+      pageData.frontmatter.sidebar = false;
+    }
+  },
   transformHead: ({ pageData }) => pageHead(pageData),
   buildEnd: ({ outDir }) => {
     checkOgCards();
     writeFeed(outDir);
   },
   themeConfig: {
-    logo: '/devopstech.svg',
+    logo: { light: '/devopstech.svg', dark: '/devopstech-dark.svg', alt: '' },
     siteTitle: 'devopstech',
     nav: [
       { text: 'ICE', link: '/ice/', activeMatch: '^/ice/' },
       { text: 'deusex', link: '/deusex/', activeMatch: '^/deusex/' },
       { text: 'Blog', link: '/blog/', activeMatch: '^/blog/' },
-      {
-        text: 'KubeMeridian (archived)',
-        activeMatch: '^/(kubemeridian|guide/)',
-        items: [
-          { text: 'Overview', link: '/kubemeridian' },
-          { text: 'Guide', link: '/guide/introduction' },
-          { text: 'Dashboards', link: '/guide/dashboards' },
-          { text: 'Alert pack', link: '/guide/alerts' },
-          { text: 'Changelog', link: 'https://github.com/blackcheshire13/kubemeridian/blob/main/CHANGELOG.md' },
-        ],
-      },
       { text: 'About', link: '/about' },
     ],
     sidebar: {
@@ -82,32 +91,16 @@ export default defineConfig({
           ],
         },
       ],
-      '/ice/': [
-        {
-          text: 'ICE',
-          items: [
-            { text: 'Overview', link: '/ice/' },
-            { text: 'How ICE works', link: '/ice/how-it-works' },
-          ],
-        },
-      ],
-      '/deusex/': [
-        {
-          text: 'deusex',
-          items: [
-            { text: 'Overview', link: '/deusex/' },
-            { text: 'The method', link: '/deusex/method' },
-          ],
-        },
-      ],
       '/blog/': blogSidebar(),
     },
     socialLinks: [{ icon: 'github', link: 'https://github.com/blackcheshire13' }],
     footer: {
-      message: 'ICE and deusex are in active development. KubeMeridian is archived and Apache-2.0 licensed.',
+      message:
+        'ICE and deusex are in active development · <a href="/kubemeridian">KubeMeridian</a> is archived (Apache-2.0) · <a href="/feed.xml">RSS</a>',
       copyright: '© 2026 devopstech · devopstech.net',
     },
     search: { provider: 'local' },
+    lastUpdated: { text: 'Updated', formatOptions: { dateStyle: 'long' } },
     editLink: {
       pattern: 'https://github.com/blackcheshire13/kubemeridian/edit/main/docs/:path',
       text: 'Edit this page on GitHub',

@@ -26,6 +26,7 @@ export function cardSpecs() {
     { slug: 'home', kicker: 'devopstech', accent: ACCENT.hub, title: 'Production engineering, closed loop.', sub: 'ICE · deusex · KubeMeridian' },
     fromPage('ice', 'ice/index.md', 'devopstech · ICE', ACCENT.ice),
     fromPage('ice-how-it-works', 'ice/how-it-works.md', 'devopstech · ICE', ACCENT.ice, 'Operator, agent, trust path, posture and responses'),
+    fromPage('ice-design-partners', 'ice/design-partners.md', 'devopstech · ICE', ACCENT.ice),
     fromPage('deusex', 'deusex/index.md', 'devopstech · deusex', ACCENT.deusex),
     fromPage('deusex-method', 'deusex/method.md', 'devopstech · deusex', ACCENT.deusex),
     { slug: 'kubemeridian', kicker: 'devopstech · archived', accent: ACCENT.km, title: 'KubeMeridian', sub: 'Kubernetes observability for Grafana in one app plugin — archived' },

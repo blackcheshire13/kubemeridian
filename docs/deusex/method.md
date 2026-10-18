@@ -11,6 +11,8 @@ tools, a hook, a function — rather than by asking the model nicely.
 
 ## Roles
 
+<div class="dt-stack roles">
+
 | Role | Decides | What holds its rights | Cadence |
 | --- | --- | --- | --- |
 | Vision | the goal | written by a person, rarely; for the loop itself the vision is its own method | — |
@@ -23,6 +25,8 @@ tools, a hook, a function — rather than by asking the model nicely.
 | Scout | how others solve the same problem | brings one idea with the source's licence; never copies foreign code | ~3.5 days |
 | Audit | an independent look at everything merged in a day | a model from another provider, read-only sandbox; advisory | daily |
 | Digests | the day and the week | metrics and code survival | daily, weekly |
+
+</div>
 
 Each run checks out a snapshot of the loop's own `main` and logs its version: what runs is
 always text that went through review.
@@ -91,4 +95,4 @@ For good: the goal, the weight between projects, money and access, and irreversi
 actions. For now: a second judge for changes to the loop itself, onboarding a new project,
 and a spending budget.
 
-<p class="dt-cta">Want deusex on your codebase? <a href="mailto:qdrrag@gmail.com?subject=deusex">Write to me</a> · <a href="/deusex/">Back to the overview</a></p>
+<PartnerCta topic="deusex" lead="Want to see deusex run on a codebase of yours?" />

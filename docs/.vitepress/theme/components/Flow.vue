@@ -20,7 +20,7 @@ const whoLabel = computed(() => ({ human: 'person', machine: props.machine, meas
     <ol>
       <li v-for="s in steps" :key="s.label" :class="s.who">
         <strong>{{ s.label }}</strong>
-        <span v-if="s.who" class="who">{{ whoLabel[s.who] }}</span>
+        <span class="who">{{ s.who ? whoLabel[s.who] : '' }}</span>
         <span v-if="s.note" class="note">{{ s.note }}</span>
       </li>
     </ol>
@@ -34,6 +34,7 @@ const whoLabel = computed(() => ({ human: 'person', machine: props.machine, meas
 .flow {
   --flow-accent: var(--dt-brass);
   margin: 24px 0 28px;
+  container-type: inline-size;
 }
 ol {
   display: flex;
@@ -71,6 +72,7 @@ strong {
   font-size: 16px;
   line-height: 1.3;
 }
+.who:empty { display: none; }
 .who {
   font-family: var(--vp-font-family-mono);
   font-size: 13px;
@@ -81,6 +83,33 @@ strong {
   font-size: 14px;
   line-height: 1.45;
   color: var(--vp-c-text-2);
+}
+/* too narrow for one row: stages become a timeline (stage · who · note) instead of breaking 5 + 2 */
+@container (max-width: 900px) {
+  ol { flex-direction: column; gap: 0; border-left: 3px solid var(--flow-accent); }
+  li {
+    display: grid;
+    grid-template-columns: minmax(96px, 140px) minmax(88px, 116px) minmax(0, 1fr);
+    align-items: baseline;
+    gap: 2px 16px;
+    max-width: none;
+    flex: none;
+    padding: 9px 12px;
+    border-top: 0;
+    background: none;
+  }
+  li + li,
+  li.human + li,
+  li + li.human,
+  li + li.measure { border-top: 1px solid var(--vp-c-divider); }
+  li:not(:last-child)::after { content: none; }
+  .note { margin-top: 0; }
+  /* keep the three columns even when a stage has no actor */
+  .who:empty { display: block; }
+}
+@container (max-width: 480px) {
+  li { grid-template-columns: minmax(0, 1fr) auto; }
+  .note { grid-column: 1 / -1; }
 }
 figcaption {
   display: flex;
