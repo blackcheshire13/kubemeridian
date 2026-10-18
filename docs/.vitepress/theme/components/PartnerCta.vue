@@ -15,12 +15,15 @@ const props = withDefaults(
   { topic: 'ice', variant: 'block' },
 );
 
-const LABEL = {
-  ice: props.variant === 'aside' ? 'Become a design partner' : 'Become an ICE design partner',
-  deusex: 'Talk to me about deusex',
-  general: 'Write to me',
-};
-const label = computed(() => LABEL[props.topic]);
+const label = computed(
+  () =>
+    ({
+      ice: props.variant === 'aside' ? 'Become a design partner' : 'Become an ICE design partner',
+      deusex: 'Talk to me about deusex',
+      general: 'Write to me',
+    })[props.topic],
+);
+const TITLE = { ice: 'ICE design partners', deusex: 'deusex', general: 'Get in touch' } as const;
 const href = computed(() => mailto(props.topic));
 const state = ref<'idle' | 'copied' | 'failed'>('idle');
 let reset: ReturnType<typeof setTimeout> | undefined;
@@ -54,7 +57,7 @@ async function copy() {
 
 <template>
   <div class="cta" :class="variant">
-    <p v-if="variant === 'aside'" class="title">{{ topic === 'ice' ? 'ICE design partners' : topic }}</p>
+    <p v-if="variant === 'aside'" class="title">{{ TITLE[topic] }}</p>
     <p v-if="lead" class="lead">{{ lead }}</p>
     <div class="row">
       <a class="btn" :href="href">{{ label }}</a>
