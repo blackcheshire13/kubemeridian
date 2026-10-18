@@ -36,10 +36,10 @@
   },
   "kubemeridian": {
     "slug": "kubemeridian",
-    "kicker": "devopstech · open source",
+    "kicker": "devopstech · archived",
     "accent": "#326ce5",
     "title": "KubeMeridian",
-    "sub": "Kubernetes observability for Grafana in one app plugin"
+    "sub": "Kubernetes observability for Grafana in one app plugin — archived"
   },
   "blog": {
     "slug": "blog",

@@ -2,22 +2,22 @@
 layout: home
 pageClass: km-page
 title: KubeMeridian
-description: Turnkey Kubernetes observability for Grafana — metrics, logs, traces, cost and SLOs from one Apache-2.0 plugin.
+description: Archived — Kubernetes observability for Grafana in one Apache-2.0 app plugin. Not in the Grafana catalog; v2.5.2 remains available as an unsigned plugin.
 
 hero:
   name: KubeMeridian
   text: Kubernetes observability for Grafana
-  tagline: Install one plugin, link your connections, and get the whole base monitoring stack — metrics, logs, traces, cost and SLOs.
+  tagline: One app plugin for the whole base monitoring stack — metrics, logs, traces, cost and SLOs. Archived; the last release still installs as an unsigned plugin.
   image:
     src: /logo.svg
     alt: KubeMeridian
   actions:
     - theme: brand
-      text: Get started
-      link: /guide/introduction
+      text: Install v2.5.2 (unsigned)
+      link: /guide/install
     - theme: alt
-      text: Connect your stack
-      link: /guide/connections
+      text: Read the guide
+      link: /guide/introduction
     - theme: alt
       text: View on GitHub
       link: https://github.com/blackcheshire13/kubemeridian

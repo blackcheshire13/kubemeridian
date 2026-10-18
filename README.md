@@ -1,5 +1,12 @@
 # KubeMeridian — Kubernetes observability app for Grafana
 
+> **Archived (October 2026).** Grafana Labs declined to list KubeMeridian in its official
+> plugin catalog because it overlaps with Grafana Cloud Kubernetes Monitoring. Without a
+> catalog listing it can't get a community signature, so it is distributed unsigned, and
+> development has stopped. The
+> last release, [v2.5.2](https://github.com/blackcheshire13/kubemeridian/releases/tag/v2.5.2),
+> remains available as an unsigned plugin.
+
 **KubeMeridian** turns Grafana into a turnkey Kubernetes observability product: install one
 app plugin, link your connections (metrics, logs, traces, cost), and get a curated base
 monitoring stack — topology, dashboards, logs, traces, cost/efficiency and an alert pack.

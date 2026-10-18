@@ -4,11 +4,12 @@ import { join } from 'node:path';
 import type { HeadConfig, PageData } from 'vitepress';
 import { DOCS, blogPosts } from './blog.mjs';
 import { cardSpecs } from './og-specs.mjs';
+import { isKubeMeridianPage } from './kubemeridian.mjs';
 
 export const SITE = 'https://devopstech.net';
 export const SITE_TITLE = 'devopstech';
 export const SITE_DESCRIPTION =
-  'An engineering workshop: active defence for Kubernetes (ICE), an autonomous development loop (deusex), and open-source observability (KubeMeridian).';
+  'An engineering workshop: active defence for Kubernetes (ICE) and an autonomous development loop (deusex), plus the archived KubeMeridian plugin for Grafana.';
 
 const OG_DIR = join(DOCS, 'public', 'og');
 
@@ -32,7 +33,7 @@ function pagePath(relativePath: string): string {
 function ogImage(relativePath: string): string {
   const path = pagePath(relativePath);
   const slug = path === '/' ? 'home' : path.replace(/^\/|\/$/g, '').replace(/\//g, '-');
-  for (const candidate of [slug, path.startsWith('/guide/') ? 'kubemeridian' : '', 'home']) {
+  for (const candidate of [slug, isKubeMeridianPage(relativePath) ? 'kubemeridian' : '', 'home']) {
     if (candidate && existsSync(join(OG_DIR, `${candidate}.png`))) return `${SITE}/og/${candidate}.png`;
   }
   return `${SITE}/devopstech.svg`;

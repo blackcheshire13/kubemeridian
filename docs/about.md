@@ -19,14 +19,16 @@ when something in production annoys me twice, I build the fix — and, where I c
 - **[deusex](/deusex/)** — an autonomous development loop that plans, builds, reviews and
   merges code on a schedule and stops only at the decisions people have not handed over.
   It has been developing ICE since day one.
-- **[KubeMeridian](/kubemeridian)** — open-source Kubernetes observability for Grafana in one
-  app plugin. Apache-2.0, install it today.
+- **[KubeMeridian](/kubemeridian)** — Kubernetes observability for Grafana in one app plugin,
+  Apache-2.0. Archived: Grafana Labs declined to list it in its plugin catalog because it
+  overlaps with Grafana Cloud Kubernetes Monitoring; v2.5.2 stays available as an unsigned
+  plugin.
 
 ## Open to collaboration
 
 I'm **open to collaboration**: design-partner pilots for ICE, conversations about
-autonomous development with deusex, contract work on Kubernetes, Grafana, cost and SLOs, or
-just comparing notes on platform engineering.
+autonomous development with deusex, contract work on Kubernetes, observability, cost and SLOs,
+or just comparing notes on platform engineering.
 
 - 📧 **Email:** [qdrrag@gmail.com](mailto:qdrrag@gmail.com)
 - 💻 **GitHub:** [blackcheshire13](https://github.com/blackcheshire13)

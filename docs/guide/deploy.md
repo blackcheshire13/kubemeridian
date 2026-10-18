@@ -24,7 +24,8 @@ helm upgrade <kps-release> prometheus-community/kube-prometheus-stack \
 
 The overlay only touches `grafana.*`:
 
-- `GF_INSTALL_PLUGINS` — installs the unsigned zip from your host.
+- `GF_INSTALL_PLUGINS` — installs the unsigned zip: the v2.5.2 release asset, or a zip you
+  build and host yourself.
 - `allow_loading_unsigned_plugins` — **both** ids (`devopstech-kubemeridian-app`,
   `devopstech-kubemeridian-datasource`); in Grafana 13 the bundled datasource does
   not inherit the app's permission.
@@ -55,8 +56,8 @@ curl -s -u admin:PASS -X POST -H 'Content-Type: application/json' \
 kubectl apply -f deploy/kubemeridian-prometheusrule.yaml   # optional alert pack
 ```
 
-## Updating
+## Replacing the installed zip
 
-`GF_INSTALL_PLUGINS` skips an already-installed plugin, so to roll a new build:
-re-upload the zip, then `rm -rf /var/lib/grafana/plugins/devopstech-kubemeridian-app`
+`GF_INSTALL_PLUGINS` skips an already-installed plugin, so to switch to a different zip
+(for example one you built yourself): point the overlay at it, then `rm -rf /var/lib/grafana/plugins/devopstech-kubemeridian-app`
 in the pod and `rollout restart` the Grafana deployment.
