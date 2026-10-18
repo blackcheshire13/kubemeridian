@@ -333,3 +333,22 @@
 .vp-doc .dt-person-role { margin-top: 4px !important; font-size: 16px; color: var(--vp-c-text-2); }
 .vp-doc .dt-person-links { display: flex; flex-wrap: wrap; gap: 0 20px; margin-top: 6px !important; }
 .vp-doc .dt-person-links a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+
+/* ---------- product screenshots ---------- */
+.vp-doc .dt-shots-note { font-size: 15px; color: var(--vp-c-text-2); }
+.vp-doc .dt-shot { margin: 20px 0 32px; }
+.vp-doc .dt-shot a { display: block; }
+.vp-doc .dt-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 3px;
+}
+.vp-doc .dt-shot figcaption {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--vp-c-text-2);
+}
+.vp-doc .dt-shot figcaption strong { color: var(--vp-c-text-1); }
