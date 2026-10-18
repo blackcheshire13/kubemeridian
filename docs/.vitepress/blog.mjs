@@ -25,7 +25,9 @@ export function blogPosts() {
     .filter((f) => f.endsWith('.md') && f !== 'index.md')
     .map((f) => {
       const fm = readFrontmatter(`blog/${f}`);
-      if (!fm.title || !fm.date) throw new Error(`blog/${f} needs "title" and "date" in its frontmatter`);
+      if (!fm.title || !fm.date) {
+        throw new Error(`blog/${f} needs "title" and "date" in its frontmatter`);
+      }
       return {
         slug: f.replace(/\.md$/, ''),
         file: `blog/${f}`,

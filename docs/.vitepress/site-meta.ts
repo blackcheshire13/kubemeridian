@@ -69,8 +69,12 @@ export function checkOgCards() {
   const specs = cardSpecs();
   const problems = [
     ...specs.flatMap((spec) => {
-      if (!existsSync(join(OG_DIR, `${spec.slug}.png`))) return [`og/${spec.slug}.png is missing`];
-      if (JSON.stringify(manifest[spec.slug]) !== JSON.stringify(spec)) return [`og/${spec.slug}.png is stale`];
+      if (!existsSync(join(OG_DIR, `${spec.slug}.png`))) {
+        return [`og/${spec.slug}.png is missing`];
+      }
+      if (JSON.stringify(manifest[spec.slug]) !== JSON.stringify(spec)) {
+        return [`og/${spec.slug}.png is stale`];
+      }
       return [];
     }),
     ...Object.keys(manifest)
