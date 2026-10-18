@@ -1,0 +1,54 @@
+{
+  "home": {
+    "title": "Production engineering, closed loop."
+  },
+  "ice": {
+    "file": "ice/index.md",
+    "title": "ICE — active defence for Kubernetes"
+  },
+  "ice-how-it-works": {
+    "file": "ice/how-it-works.md",
+    "title": "How ICE is built"
+  },
+  "deusex": {
+    "file": "deusex/index.md",
+    "title": "deusex — an autonomous development loop"
+  },
+  "deusex-method": {
+    "file": "deusex/method.md",
+    "title": "The deusex method — roles and invariants"
+  },
+  "kubemeridian": {
+    "title": "KubeMeridian"
+  },
+  "blog": {
+    "title": "Blog"
+  },
+  "about": {
+    "title": "About me"
+  },
+  "blog-live-needs-evidence": {
+    "file": "blog/live-needs-evidence.md",
+    "title": "Live needs evidence: how ICE keeps its own feature list honest"
+  },
+  "blog-merged-is-not-fixed": {
+    "file": "blog/merged-is-not-fixed.md",
+    "title": "Merged is not deployed, deployed is not fixed"
+  },
+  "blog-the-bottleneck-is-the-human": {
+    "file": "blog/the-bottleneck-is-the-human.md",
+    "title": "The bottleneck is the human: a week when every agent worked and nothing shipped"
+  },
+  "blog-what-i-have-not-handed-over": {
+    "file": "blog/what-i-have-not-handed-over.md",
+    "title": "What I haven't handed to the machine yet"
+  },
+  "blog-consolidating-kubernetes-clusters": {
+    "file": "blog/consolidating-kubernetes-clusters.md",
+    "title": "From 10+ Kubernetes clusters to 4: a hub-and-spoke ArgoCD story"
+  },
+  "blog-vault-ha-on-kubernetes": {
+    "file": "blog/vault-ha-on-kubernetes.md",
+    "title": "Vault HA on Kubernetes: auto-unseal, dynamic secrets, and a DR runbook"
+  }
+}

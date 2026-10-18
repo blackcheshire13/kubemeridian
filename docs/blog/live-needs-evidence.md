@@ -2,7 +2,7 @@
 date: 2026-10-18
 title: "Live needs evidence: how ICE keeps its own feature list honest"
 sidebarTitle: Live needs evidence
-description: A security product that promises to call the unverified unverified has to apply the rule to itself. Five capability statuses, a dated evidence mark that CI enforces, and the rows that were downgraded the day the gate landed.
+description: A security product that promises to call the unverified unverified has to apply the rule to itself. Five capability statuses, a dated evidence mark that CI enforces, and the five rows that lost their live status the day after the gate landed.
 tags: [ice, engineering-process, testing, honesty]
 head:
   - - link
@@ -46,7 +46,7 @@ The weak point was the word **live**. It used to be set by flipping a cell, and 
 thing behind the flip was the commit message that flipped it — the author's paraphrase, not
 the artefact. The next reader could not tell an observation from a flipped box.
 
-Now a CI gate requires every `live` row to carry a dated evidence mark:
+Now a CI gate refuses any new `live` row without a dated evidence mark:
 
 ```text
 [evidence YYYY-MM-DD <reference>]
@@ -55,17 +55,22 @@ Now a CI gate requires every `live` row to carry a dated evidence mark:
 The reference must resolve to something a reader can open — a pull request number, a commit
 SHA of accepted length, or an entry in the test cluster's run journal. The date is parsed as
 a real calendar day, so `2026-02-30` fails. A date without a reference fails too: that is
-exactly the shape of a box being ticked.
+exactly the shape of a box being ticked. Rows that were already `live` when the gate arrived
+are tracked on an explicit debt list rather than grandfathered silently.
 
-## The day the gate landed
+## The day after the gate landed
 
-Three rows lost their `live` status the same day — the baseline posture, the agent's
-outbound push, and drift-to-fix proposals. Nothing about them had broken. They had simply
-been observed once, and the only record of the observation was prose in a commit. Without
-an artefact a reader could open, they became `tested`, which was the truth.
+The gate went in on 9 October. On 10 October five rows lost their `live` status: the
+baseline posture, the agent's outbound push, drift-to-fix proposals, finding storage with
+history and triage, and CVE database freshness. Nothing about them had broken — they were
+re-read against the new rule. For four of them the only record of an observation was prose
+in a commit; for the fifth there was not even that. Without an artefact a reader could open,
+they became `tested`, which was the truth.
+`live` went from 15 rows to 10.
 
-The feature list got less impressive and more useful. Today it reads 10 live, 63 tested,
-3 implemented and 1 contract — and each of the ten links to the evidence.
+The feature list got less impressive and more useful. As of 18 October 2026 it reads
+10 live, 63 tested, 3 implemented and 1 contract, and each of the ten live rows carries its
+evidence mark.
 
 ## Vocabulary pretending to be a feature
 

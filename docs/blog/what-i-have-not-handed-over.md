@@ -2,7 +2,7 @@
 date: 2026-10-18
 title: "What I haven't handed to the machine yet"
 sidebarTitle: What I haven't handed over
-description: deusex runs my backlog around the clock, and I decide only the concept. Here is the honest remainder — what is solvable and just not done, and what no method will ever take off a person.
+description: deusex runs most of my backlog around the clock; the goal is that I decide only the concept. As of October 2026, here is the honest remainder — what is solvable and just not done, and what no method will ever take off a person.
 tags: [deusex, autonomous-development, agents, engineering-process]
 head:
   - - link
@@ -14,11 +14,11 @@ head:
 
 *2026-10-18 · deusex · autonomous-development · agents*
 
-[deusex](/deusex/) develops two projects without me in the inner loop. Its rule for the
-human is short: *I hand over everything except the concept.* Over the last two weeks my own
+[deusex](/deusex/) develops two projects, mostly without me in the inner loop. Its rule for
+the human is short: *I hand over everything except the concept.* From 4 to 18 October my own
 branches in the loop's repository were seven concept decisions, six working sessions, four
-new backlog items and one CI change. Three quarters of the merges in that repository came
-from the loop itself.
+new backlog items and one CI change, while 57 of its 75 merges came from the loop's own
+branches.
 
 That rule is a goal, not a fact. This is the honest remainder, split by whether the method
 can ever remove it.
@@ -53,8 +53,8 @@ threshold is met, below it is a gap, and fewer than five events in the window is
 know" rather than "met". The thresholds themselves are part of the concept: I change them,
 and only between windows.
 
-The reason is not modesty. A measure that the measured party can rewrite gets gamed — that
-is how a self-improving agent once removed the very markers it was being checked by.
+The reason is not modesty. A measure that the measured party can rewrite gets gamed: an
+agent judged by markers it is allowed to edit will, sooner or later, edit the markers.
 
 ## How I'll know the remainder is shrinking
 

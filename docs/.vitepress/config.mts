@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitepress';
-import { SITE_DESCRIPTION, blogSidebar, socialHead, writeFeed } from './site-meta';
+import { SITE_DESCRIPTION, blogSidebar, checkOgCards, socialHead, writeFeed } from './site-meta';
 
 // devopstech.net — engineering hub: ICE, deusex, KubeMeridian (docs), blog
 export default defineConfig({
@@ -24,7 +24,10 @@ export default defineConfig({
     ['link', { rel: 'alternate', type: 'application/rss+xml', title: 'devopstech — blog', href: '/feed.xml' }],
   ],
   transformHead: ({ pageData }) => socialHead(pageData),
-  buildEnd: ({ outDir }) => writeFeed(outDir),
+  buildEnd: ({ outDir }) => {
+    checkOgCards();
+    writeFeed(outDir);
+  },
   themeConfig: {
     logo: '/devopstech.svg',
     siteTitle: 'devopstech',

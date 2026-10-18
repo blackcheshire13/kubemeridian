@@ -3,12 +3,11 @@
 // Usage (from docs/):  CHROME_BIN=/path/to/chrome node scripts/og-cards.mjs
 // Re-run after adding a page or a post; the PNGs are committed.
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
+import { DOCS, blogPosts, readFrontmatter } from '../.vitepress/blog.mjs';
 
-const DOCS = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(DOCS, 'public', 'og');
 const CHROME = process.env.CHROME_BIN || 'chromium';
 
@@ -18,16 +17,6 @@ const ACCENT = {
   km: '#326ce5',
   hub: 'oklch(0.74 0.135 78)',
 };
-
-function frontmatter(file) {
-  const m = readFileSync(join(DOCS, file), 'utf8').match(/^---\n([\s\S]*?)\n---/);
-  const out = {};
-  for (const line of m?.[1].split('\n') ?? []) {
-    const kv = line.match(/^([A-Za-z]+):\s*(.+)$/);
-    if (kv) out[kv[1]] = kv[2].replace(/^(["'])(.*)\1$/, '$2');
-  }
-  return out;
-}
 
 // "ICE — active defence…" / "Live needs evidence: how ICE…" → big title + subtitle
 function split(title) {
@@ -44,18 +33,12 @@ const cards = [
   { slug: 'kubemeridian', kicker: 'devopstech · open source', accent: ACCENT.km, title: 'KubeMeridian', sub: 'Kubernetes observability for Grafana in one app plugin' },
   { slug: 'blog', kicker: 'devopstech', accent: ACCENT.hub, title: 'Blog', sub: 'Kubernetes, security, autonomous development and observability' },
   { slug: 'about', kicker: 'devopstech', accent: ACCENT.hub, title: 'About me', sub: 'The engineer behind ICE, deusex and KubeMeridian' },
-  ...readdirSync(join(DOCS, 'blog'))
-    .filter((f) => f.endsWith('.md') && f !== 'index.md')
-    .map((f) => {
-      const fm = frontmatter(`blog/${f}`);
-      const tag = (fm.tags ?? '').replace(/[[\]\s]/g, '').split(',')[0];
-      return {
-        slug: `blog-${f.replace(/\.md$/, '')}`,
-        file: `blog/${f}`,
-        kicker: `devopstech · blog · ${fm.date}`,
-        accent: tag === 'ice' ? ACCENT.ice : tag === 'deusex' ? ACCENT.deusex : ACCENT.km,
-      };
-    }),
+  ...blogPosts().map((p) => ({
+    slug: `blog-${p.slug}`,
+    file: p.file,
+    kicker: `devopstech · blog · ${p.date}`,
+    accent: p.tags[0] === 'ice' ? ACCENT.ice : p.tags[0] === 'deusex' ? ACCENT.deusex : ACCENT.km,
+  })),
 ];
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -87,11 +70,14 @@ function html({ kicker, accent, title, sub }) {
 
 mkdirSync(OUT, { recursive: true });
 const tmp = mkdtempSync(join(tmpdir(), 'og-cards-'));
+const manifest = {};
 try {
   for (const card of cards) {
     let { title, sub } = card;
+    const source = card.file ? String(readFrontmatter(card.file).title) : title;
+    manifest[card.slug] = card.file ? { file: card.file, title: source } : { title: source };
     if (card.file) {
-      const [big, rest] = split(frontmatter(card.file).title);
+      const [big, rest] = split(source);
       title ??= big;
       sub ??= rest;
     }
@@ -104,6 +90,8 @@ try {
     ], { stdio: 'ignore' });
     console.log(`og/${card.slug}.png`);
   }
+  // read by checkOgCards() in the docs build to catch missing or stale cards
+  writeFileSync(join(OUT, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 } finally {
   rmSync(tmp, { recursive: true, force: true });
 }

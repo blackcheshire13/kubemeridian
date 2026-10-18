@@ -1,4 +1,5 @@
 import { createContentLoader } from 'vitepress';
+import { comparePosts, isoDate } from '../blog.mjs';
 
 export interface Post {
   title: string;
@@ -11,10 +12,6 @@ export interface Post {
 declare const data: Post[];
 export { data };
 
-function toIsoDate(d: unknown): string {
-  return d instanceof Date ? d.toISOString().slice(0, 10) : String(d).slice(0, 10);
-}
-
 export default createContentLoader('blog/!(index).md', {
   transform(raw): Post[] {
     return raw
@@ -25,12 +22,11 @@ export default createContentLoader('blog/!(index).md', {
         return {
           title: String(frontmatter.title),
           url,
-          date: toIsoDate(frontmatter.date),
+          date: isoDate(frontmatter.date),
           description: String(frontmatter.description ?? ''),
           tags: Array.isArray(frontmatter.tags) ? frontmatter.tags.map(String) : [],
         };
       })
-      // newest first; same-day posts in title order (the sidebar uses the same rule)
-      .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
+      .sort(comparePosts);
   },
 });
