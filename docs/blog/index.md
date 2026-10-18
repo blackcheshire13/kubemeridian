@@ -9,10 +9,22 @@ head:
 
 # Blog
 
-Field notes on Kubernetes, observability, platform engineering and security — the
-day-2 problems behind [KubeMeridian](/) and the fixes I ship for them.
+Field notes on Kubernetes, observability, platform engineering, security and autonomous
+development — the problems behind [ICE](/ice/), [deusex](/deusex/) and
+[KubeMeridian](/kubemeridian), and the fixes I ship for them.
 
 ---
+
+## [Merged is not deployed, deployed is not fixed](/blog/merged-is-not-fixed)
+<small>2026-10-18 · ice, kubernetes, gitops, security</small>
+
+Why ICE closes a finding only on a measurement taken after the merge: digest-pinned
+approvals, Argo CD's sync revision and `Unknown` counted as unmet.
+## [The bottleneck is the human: a week when every agent worked and nothing shipped](/blog/the-bottleneck-is-the-human)
+<small>2026-10-18 · deusex, autonomous-development, agents</small>
+
+Every role of an autonomous development loop behaved as designed, and two green one-line
+fixes waited six days. Why refusals by category never expire — and what changed.
 
 ## [From 10+ Kubernetes clusters to 4: a hub-and-spoke ArgoCD story](/blog/consolidating-kubernetes-clusters)
 <small>2026-06-27 · kubernetes, argocd, gitops, platform-engineering</small>
@@ -30,4 +42,4 @@ runbook everyone skips.
 
 ---
 
-*Want to compare notes on observability or platform engineering? See [About](/about).*
+*Want to compare notes? See [About](/about).*

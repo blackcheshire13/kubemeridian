@@ -42,7 +42,7 @@ export const COLOR_GREEN = '#299c46';
 
 // Project links (also mirrored in plugin.json info.links).
 export const LINKS = {
-  website: 'https://devopstech.net',
+  website: 'https://devopstech.net/kubemeridian',
   docs: 'https://devopstech.net/guide/introduction',
   github: 'https://github.com/blackcheshire13/kubemeridian',
   issues: 'https://github.com/blackcheshire13/kubemeridian/issues',

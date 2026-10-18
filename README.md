@@ -7,7 +7,7 @@ monitoring stack — topology, dashboards, logs, traces, cost/efficiency and an 
 Built for **Grafana 13.x** on `@grafana/create-plugin` (`@grafana/*` 13.x, React 18,
 `@grafana/scenes`, webpack). Frontend-only, open-source, self-hostable.
 
-📖 Docs: **[devopstech.net](https://devopstech.net)**
+📖 Docs: **[devopstech.net/kubemeridian](https://devopstech.net/kubemeridian)**
 
 ![KubeMeridian — fleet & connections](https://raw.githubusercontent.com/blackcheshire13/kubemeridian/main/src/img/screenshots/clusters.png)
 ![KubeMeridian — Cluster Overview](https://raw.githubusercontent.com/blackcheshire13/kubemeridian/main/src/img/screenshots/cluster-overview.png)
