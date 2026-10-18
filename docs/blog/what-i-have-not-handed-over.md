@@ -63,4 +63,4 @@ it does, this list is the best measurement I have.
 ---
 
 *Read [how deusex works](/deusex/) and [its method](/deusex/method), or write to
-[qdrrag@gmail.com](mailto:qdrrag@gmail.com?subject=deusex).*
+[hello@devopstech.net](mailto:hello@devopstech.net?subject=deusex).*

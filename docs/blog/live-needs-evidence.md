@@ -92,4 +92,4 @@ the README.
 ---
 
 *ICE is looking for design partners — see [the overview](/ice/) or write to
-[qdrrag@gmail.com](mailto:qdrrag@gmail.com?subject=ICE%20design%20partner).*
+[hello@devopstech.net](mailto:hello@devopstech.net?subject=ICE%20design%20partner).*

@@ -77,4 +77,4 @@ true, and the resolved ticket often is not.
 ---
 
 *ICE is in development and looking for design partners — see [the overview](/ice/) or
-write to [qdrrag@gmail.com](mailto:qdrrag@gmail.com).*
+write to [hello@devopstech.net](mailto:hello@devopstech.net).*
