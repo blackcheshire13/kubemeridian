@@ -1,8 +1,8 @@
 ---
 layout: page
-title: devopstech — production engineering, closed loop
+title: ICE — Kubernetes security fixes that prove they worked
 titleTemplate: false
-description: ICE — active defence and GitOps remediation for Kubernetes; deusex — an autonomous development loop; plus the archived KubeMeridian plugin for Grafana.
+description: ICE turns Kubernetes findings into GitOps pull requests you approve and closes a case only when a measurement after the merge proves the fix. For teams of 5–50 engineers without a security team. In development, Apache-2.0 at release.
 ---
 
 <HubHome />

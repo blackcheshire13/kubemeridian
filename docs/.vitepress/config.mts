@@ -47,7 +47,7 @@ function tableLabels(md: MarkdownRenderer) {
   });
 }
 
-// devopstech.net — engineering hub: ICE, deusex, blog, and the archived KubeMeridian docs
+// devopstech.net — the home of ICE; deusex (how ICE is built), news, blog, and the archived KubeMeridian docs
 export default defineConfig({
   lang: 'en-US',
   title: 'devopstech',
@@ -57,7 +57,10 @@ export default defineConfig({
   srcExclude: ['README.md'],
   lastUpdated: true,
   head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/devopstech.svg' }],
+    // ICE mark: the 16 px icon is drawn on its own pixel grid, the 32 px one scaled down would blur
+    ['link', { rel: 'icon', href: '/favicon.ico', sizes: '16x16 32x32' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+    ['link', { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }],
     ['meta', { name: 'theme-color', content: '#1f2a36' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
@@ -98,8 +101,8 @@ export default defineConfig({
     writeFeed(outDir);
   },
   themeConfig: {
-    logo: { light: '/devopstech.svg', dark: '/devopstech-dark.svg', alt: '' },
-    siteTitle: 'devopstech',
+    logo: { light: '/ice-mark.svg', dark: '/ice-mark-dark.svg', alt: '' },
+    siteTitle: 'ICE',
     nav: [
       { text: 'ICE', link: '/ice/', activeMatch: '^/ice/' },
       { text: 'deusex', link: '/deusex/', activeMatch: '^/deusex/' },

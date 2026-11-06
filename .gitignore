@@ -52,3 +52,7 @@ docker-compose.override.yaml
 # Packaged plugin artifact
 *.zip
 build-pkg/
+
+# design-partner form worker: rendered config holds the inbox address
+workers/pilot/wrangler.toml
+.wrangler/

@@ -95,4 +95,7 @@ For good: the goal, the weight between projects, money and access, and irreversi
 actions. For now: a second judge for changes to the loop itself, onboarding a new project,
 and a spending budget.
 
-<PartnerCta topic="deusex" lead="Want to see deusex run on a codebase of yours?" />
+deusex is private; what it builds is [ICE](/ice/). To compare notes on autonomous
+development, write to me:
+
+<PartnerCta topic="deusex" variant="address" />

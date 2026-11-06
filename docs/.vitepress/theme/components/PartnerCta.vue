@@ -1,5 +1,6 @@
 <script setup lang="ts">
-// The site's one call to action, used once per page at most, at the end of it.
+// The site's one call to action, used once per page at most, at the end of it; `address`
+// is the bare address row, for pages whose own primary action is something else (a form).
 // mailto: alone fails silently in a browser with no mail app (most of desktop Chrome), so a
 // click also copies the address and says what to do next; the address, Copy and a web-mail
 // link stay visible for readers who never press the button.
@@ -9,7 +10,7 @@ import { EMAIL, gmail, mailto } from '../../contact.mjs';
 const props = withDefaults(
   defineProps<{
     topic?: 'ice' | 'deusex' | 'general';
-    variant?: 'block' | 'plain';
+    variant?: 'block' | 'plain' | 'address';
     lead?: string;
   }>(),
   { topic: 'ice', variant: 'block' },
@@ -68,7 +69,7 @@ async function copy() {
 <template>
   <div class="cta" :class="variant">
     <p v-if="lead" class="lead">{{ lead }}</p>
-    <a class="btn" :href="mailHref" @click="onMail">{{ LABEL[topic] }}</a>
+    <a v-if="variant !== 'address'" class="btn" :href="mailHref" @click="onMail">{{ LABEL[topic] }}</a>
     <p class="mail">
       <span class="addr">{{ EMAIL }}</span>
       <button type="button" class="copy" @click="copy">{{ state === 'copied' ? 'Copied' : 'Copy' }}</button>

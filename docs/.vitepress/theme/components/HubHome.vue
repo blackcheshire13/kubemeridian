@@ -1,10 +1,10 @@
 <script setup lang="ts">
+// Home of ICE: what it is and who it is for in the first screen, one call to action,
+// then how a case closes, what the console looks like, how ICE is built, news and writing.
 import { data as posts } from '../posts.data';
 import NewsList from './NewsList.vue';
 import { NEWS, newsId } from '../../news.mjs';
 import IceLoop from './IceLoop.vue';
-import DeusexCycle from './DeusexCycle.vue';
-import PartnerCta from './PartnerCta.vue';
 
 const latest = posts.slice(0, 4);
 const lastNews = NEWS.find((n) => n.status !== 'planned');
@@ -14,26 +14,34 @@ const lastNews = NEWS.find((n) => n.status !== 'planned');
   <div class="hub">
     <header class="intro">
       <div class="intro-main">
-        <p class="kicker">devopstech · an engineering workshop</p>
-        <h1>Production engineering,<br /><span class="turn">closed loop.</span></h1>
-        <p class="lede">
-          I build <a href="/ice/">ICE</a>, active defence for Kubernetes that only calls a problem
-          fixed once the cluster proves it — and <a href="/deusex/">deusex</a>, the autonomous
-          development loop that builds it.
+        <p class="kicker">
+          <img class="kern" src="/ice-mark.svg" alt="" width="10" height="20" />
+          <img class="kern dark-only" src="/ice-mark-dark.svg" alt="" width="10" height="20" />
+          <span><strong>ICE</strong> · active defence for Kubernetes · in development, Apache-2.0 at release</span>
         </p>
-        <p class="dt-next"><a href="/ice/">ICE overview</a><a href="/deusex/">How deusex works</a></p>
+        <h1>Kubernetes security fixes that <span class="turn">prove they worked.</span></h1>
+        <p class="lede">
+          ICE turns findings from your cluster, CI image scans and runtime sensors into GitOps pull
+          requests you review and merge, then keeps each case open until a measurement taken after
+          the merge shows the fix landed. Built for teams of 5–50 engineers without a dedicated
+          security team.
+        </p>
+        <div class="actions">
+          <a class="dt-btn" href="/ice/design-partners">Become a design partner</a>
+          <p class="dt-next"><a href="/ice/how-it-works">How ICE works</a></p>
+        </div>
       </div>
 
-      <aside class="now" aria-label="Where things stand">
-        <h2>Now</h2>
+      <aside class="now" aria-label="Where ICE stands">
+        <h2>Where ICE stands</h2>
         <ul>
           <li>
             <span class="dt-s live" aria-hidden="true"></span>
-            <span><strong>ICE</strong> — 13 capabilities live on a real cluster, 66 tested; looking for design partners.</span>
+            <span><strong>13 capabilities live</strong> on a real cluster, 66 tested — <a href="/ice/#honest-status">what that means</a></span>
           </li>
           <li>
             <span class="dt-s live" aria-hidden="true"></span>
-            <span><strong>deusex</strong> — 88% of ICE's merges came from the loop, 33&nbsp;min median to merge.</span>
+            <span><strong>Built by an autonomous loop</strong> — 88% of merges, 33&nbsp;min median to merge</span>
           </li>
           <li v-if="lastNews">
             <span class="dt-s" aria-hidden="true"></span>
@@ -44,49 +52,49 @@ const lastNews = NEWS.find((n) => n.status !== 'planned');
       </aside>
     </header>
 
-    <section class="projects" aria-label="Projects">
+    <section class="projects" aria-label="How ICE works">
       <article class="project ice">
         <div class="copy">
-          <p class="meta"><span class="idx">01</span><span class="dot" aria-hidden="true"></span>In development · design partners wanted</p>
-          <h2><a href="/ice/">ICE</a></h2>
+          <h2>A case closes on proof, not on merge</h2>
           <p class="pitch">
-            Active defence for Kubernetes. ICE turns findings and drift into GitOps pull requests
-            a person approves — and keeps the case open until a measurement taken after the merge
-            proves the fix.
+            Every signal has to say what the action is, who performs it and why ICE is sure before it
+            enters the system. Changes reach your workloads only as pull requests to your GitOps
+            repository, and a merged fix stays open until the cluster is measured again.
           </p>
           <ul class="facts">
             <li>Writes only through pull requests — the operator has no write rights outside its own resources</li>
             <li><code>Unknown</code> counts as unmet; a failed source reports <em>unmeasured</em>, never <em>clean</em></li>
             <li>Three different detectors must agree before it proposes a runtime response</li>
           </ul>
-          <p class="go"><a href="/ice/">ICE overview</a><a href="/ice/how-it-works">How it works</a><a href="/ice/design-partners">Design partners</a></p>
+          <p class="go"><a href="/ice/how-it-works">How it works</a><a href="/ice/">ICE overview</a></p>
         </div>
         <div class="figure"><IceLoop /></div>
       </article>
 
-      <article class="project deusex">
-        <div class="copy">
-          <p class="meta"><span class="idx">02</span><span class="dot" aria-hidden="true"></span>Running around the clock on two projects · private</p>
-          <h2><a href="/deusex/">deusex</a></h2>
-          <p class="pitch">
-            An autonomous development loop that turns a vision document into working, merged code.
-            Agents plan, build, review and merge on a schedule; a person decides only the concept.
-          </p>
-          <ul class="facts">
-            <li>19 October – 5 November: 88% of ICE's merges came from the loop, with a 33-minute median to merge</li>
-            <li>Rights held by tooling: the owner has read-only tools, the merge policy is a function</li>
-            <li>A machine never approves changes to the machine that approves changes</li>
-          </ul>
-          <p class="go"><a href="/deusex/">How deusex works</a><a href="/deusex/method">The method</a></p>
-        </div>
-        <div class="figure"><DeusexCycle /></div>
-      </article>
+      <figure class="shot">
+        <img
+          src="/screenshots/ice/action-approval.png"
+          alt="ICE console: approving a change shows the rendered manifest and what merging it does"
+          width="1440"
+          height="900"
+          loading="lazy"
+        />
+        <figcaption>
+          Approving a change in the ICE console: the rendered manifest and what merging it does.
+          Synthetic demo data. <a href="/ice/#what-it-looks-like">More screenshots</a>
+        </figcaption>
+      </figure>
 
-      <p class="archive">
-        <span class="label">Archive</span>
-        <a href="/kubemeridian">KubeMeridian</a> — Kubernetes observability for Grafana, archived in
-        October 2026.
-      </p>
+      <article class="built">
+        <p class="meta"><span class="dot" aria-hidden="true"></span>How ICE is built</p>
+        <h2><a href="/deusex/">deusex</a></h2>
+        <p class="pitch">
+          ICE is developed by deusex, an autonomous loop: agents plan, build, review and merge on a
+          schedule, and a person decides the concept. From 19 October to 5 November, 88% of ICE's
+          merges came from the loop, with a 33-minute median from opened to merged.
+        </p>
+        <p class="go"><a href="/deusex/">How deusex works</a><a href="/deusex/method">The method</a></p>
+      </article>
     </section>
 
     <section class="writing" aria-labelledby="news-h">
@@ -110,14 +118,17 @@ const lastNews = NEWS.find((n) => n.status !== 'planned');
     </section>
 
     <section class="contact" aria-labelledby="contact-h">
-      <h2 id="contact-h">Work with me</h2>
+      <h2 id="contact-h">Pilot ICE</h2>
       <div>
-        <PartnerCta
-          topic="general"
-          variant="plain"
-          lead="Running Kubernetes in production? Get the ICE loop on your cluster before the public release — or talk to me about deusex, Kubernetes, observability, cost and SLOs."
-        />
-        <p class="about-link"><a href="/about">About me</a></p>
+        <p class="contact-lead">
+          Running Kubernetes in production without a security team? Run the loop on your cluster
+          before the public release, and tell me where it is noisy, missing or wrong.
+        </p>
+        <a class="dt-btn" href="/ice/design-partners#apply">Become a design partner</a>
+        <p class="about-link">
+          ICE is built by <a href="/about">Artur Stepanchenko</a>, who also takes contract work on
+          Kubernetes platforms, observability and cost.
+        </p>
       </div>
     </section>
   </div>
@@ -146,7 +157,7 @@ a {
 }
 a:hover { text-decoration-thickness: 2px; }
 
-/* intro: statement + actions on the left, a dated "now" panel on the right */
+/* intro: what ICE is, for whom, one action on the left; a dated status panel on the right */
 .intro {
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
@@ -154,20 +165,30 @@ a:hover { text-decoration-thickness: 2px; }
   align-items: end;
 }
 .kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin: 0 0 20px;
   font-size: 15px;
   color: var(--vp-c-text-2);
 }
+.kicker strong { color: var(--vp-c-text-1); }
+.kern { flex: none; width: 10px; height: 20px; }
+.kern.dark-only { display: none; }
+/* :global() must wrap the whole selector: `:global(.dark) .x` compiles to a bare `.dark` rule */
+:global(.dark .hub .kern) { display: none; }
+:global(.dark .hub .kern.dark-only) { display: block; }
 .intro h1 {
-  font-size: clamp(40px, 7.2vw, 84px);
-  line-height: 0.98;
+  font-size: clamp(38px, 6vw, 72px);
+  line-height: 1;
   font-weight: 800;
+  text-wrap: balance;
 }
 .turn {
   background-image: linear-gradient(transparent 70%, color-mix(in oklch, var(--dt-brass) 45%, transparent) 70%);
   padding: 0 0.04em;
 }
-:global(.dark) .turn {
+:global(.dark .hub .turn) {
   /* on dark paper a wide marker turns muddy: a thin brass rule instead */
   background-image: linear-gradient(transparent 88%, var(--dt-brass) 88%, var(--dt-brass) 94%, transparent 94%);
 }
@@ -179,6 +200,13 @@ a:hover { text-decoration-thickness: 2px; }
   color: var(--vp-c-text-1);
 }
 .lede a { font-weight: 600; }
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+}
+.actions .dt-next { margin: 0 !important; }
 
 .now {
   padding-top: 14px;
@@ -231,11 +259,6 @@ a:hover { text-decoration-thickness: 2px; }
   font-size: 14px;
   color: var(--vp-c-text-2);
 }
-.idx {
-  font-family: var(--vp-font-family-mono);
-  font-weight: 600;
-  color: var(--vp-c-text-1);
-}
 .dot {
   width: 9px;
   height: 9px;
@@ -243,11 +266,12 @@ a:hover { text-decoration-thickness: 2px; }
   background: var(--accent);
 }
 .ice { --accent: var(--dt-ice); }
-.deusex { --accent: var(--dt-deusex); }
+.built { --accent: var(--dt-deusex); }
 .project h2 {
-  font-size: clamp(34px, 4.6vw, 52px);
-  line-height: 1;
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.1;
   font-weight: 800;
+  text-wrap: balance;
 }
 .project h2 a {
   color: var(--vp-c-text-1);
@@ -302,6 +326,35 @@ a:hover { text-decoration-thickness: 2px; }
   min-height: 44px;
 }
 .go a:first-child::after { content: ' →'; white-space: pre; }
+.shot {
+  margin: 0;
+  padding: clamp(28px, 4vw, 48px) 0;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 4px;
+}
+.shot figcaption {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--vp-c-text-2);
+}
+.built {
+  padding: clamp(28px, 4vw, 48px) 0;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+.built h2 {
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.1;
+  font-weight: 800;
+}
+.built h2 a { color: var(--vp-c-text-1); text-decoration: none; }
+.built h2 a:hover { color: var(--vp-c-brand-1); }
 .figure {
   align-self: start;
   padding: 28px 28px 24px;
@@ -309,23 +362,6 @@ a:hover { text-decoration-thickness: 2px; }
   border: 1px solid var(--vp-c-divider);
 }
 
-.archive {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 12px;
-  margin: 0;
-  padding: 22px 0;
-  font-size: 16px;
-  color: var(--vp-c-text-2);
-  border-bottom: 1px solid var(--vp-c-divider);
-}
-.archive .label {
-  font-family: var(--vp-font-family-mono);
-  font-size: 14px;
-  color: var(--vp-c-text-2);
-}
-.archive a { font-weight: 600; }
 
 /* writing */
 .writing {
@@ -393,16 +429,20 @@ a:hover { text-decoration-thickness: 2px; }
   grid-template-columns: minmax(160px, 0.45fr) minmax(0, 1.55fr);
   gap: 16px 40px;
 }
+.contact-lead {
+  margin: 0 0 20px;
+  max-width: 640px;
+  font-size: 18px;
+  line-height: 1.55;
+}
 .about-link {
-  margin: 16px 0 0;
-  font-size: 16px;
-  font-weight: 600;
+  margin: 20px 0 0;
+  max-width: 640px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--vp-c-text-2);
 }
-.about-link a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-}
+.about-link a { font-weight: 600; }
 
 /* entrance */
 @media (prefers-reduced-motion: no-preference) {
@@ -412,7 +452,6 @@ a:hover { text-decoration-thickness: 2px; }
   }
   .intro .now { animation-delay: 0.12s; }
   .project.ice { animation-delay: 0.2s; }
-  .project.deusex { animation-delay: 0.28s; }
 }
 @keyframes rise {
   from { opacity: 0; transform: translateY(14px); }

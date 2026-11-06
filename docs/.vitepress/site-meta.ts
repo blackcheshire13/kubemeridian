@@ -9,7 +9,7 @@ import { KM_LAST_RELEASE, isKubeMeridianPage } from './kubemeridian.mjs';
 export const SITE = 'https://devopstech.net';
 export const SITE_TITLE = 'devopstech';
 export const SITE_DESCRIPTION =
-  'An engineering workshop: active defence for Kubernetes (ICE) and an autonomous development loop (deusex), plus the archived KubeMeridian plugin for Grafana.';
+  'ICE: Kubernetes security fixes delivered as GitOps pull requests, closed only when a measurement after the merge proves them. Built by deusex, an autonomous development loop.';
 
 const OG_DIR = join(DOCS, 'public', 'og');
 
@@ -36,10 +36,10 @@ function ogImage(relativePath: string): string {
   for (const candidate of [slug, isKubeMeridianPage(relativePath) ? 'kubemeridian' : '', 'home']) {
     if (candidate && existsSync(join(OG_DIR, `${candidate}.png`))) return `${SITE}/og/${candidate}.png`;
   }
-  return `${SITE}/devopstech.svg`;
+  return `${SITE}/apple-touch-icon.png`;
 }
 
-const PUBLISHER = { '@type': 'Organization', name: SITE_TITLE, url: `${SITE}/`, logo: `${SITE}/devopstech.svg` };
+const PUBLISHER = { '@type': 'Organization', name: SITE_TITLE, url: `${SITE}/`, logo: `${SITE}/apple-touch-icon.png` };
 // The posts are first-person writing by the engineer behind devopstech.
 const AUTHOR = {
   '@type': 'Person',

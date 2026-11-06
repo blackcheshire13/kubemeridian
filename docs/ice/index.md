@@ -176,4 +176,4 @@ I'm looking for teams running Kubernetes in production that want the loop on the
 before the public release — and will tell me where it hurts.
 [What a pilot involves →](/ice/design-partners)
 
-<PartnerCta />
+<p class="dt-cta"><a class="dt-btn" href="/ice/design-partners#apply">Become a design partner</a></p>
