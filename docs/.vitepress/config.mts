@@ -1,5 +1,5 @@
 import { defineConfig, type MarkdownRenderer } from 'vitepress';
-import { SITE_DESCRIPTION, blogSidebar, checkOgCards, pageHead, writeFeed } from './site-meta';
+import { SITE_DESCRIPTION, checkOgCards, pageHead, writeFeed } from './site-meta';
 
 // Tables keep their semantics and their column names when CSS stacks them on phones:
 // explicit ARIA roles, and each cell carries its column header as data-label.
@@ -75,7 +75,8 @@ export default defineConfig({
   ],
   markdown: {
     // high-contrast light theme: github-light comments and operators fall below 4.5:1 on paper
-    theme: { light: 'github-light-high-contrast', dark: 'github-dark' },
+    // high-contrast themes on both sides: comments must pass AA on the site's code background
+    theme: { light: 'github-light-high-contrast', dark: 'github-dark-high-contrast' },
     config: tableLabels,
   },
   transformPageData(pageData) {
@@ -84,9 +85,6 @@ export default defineConfig({
     if (/^(ice|deusex|news)\//.test(rel) || rel === 'about.md') {
       pageData.frontmatter.prev = false;
       pageData.frontmatter.next = false;
-    }
-    if (rel === 'blog/index.md') {
-      pageData.frontmatter.sidebar = false;
     }
   },
   transformHead: ({ pageData }) => pageHead(pageData),
@@ -99,21 +97,13 @@ export default defineConfig({
     siteTitle: 'ICE',
     nav: [
       { text: 'ICE', link: '/ice/', activeMatch: '^/ice/' },
-      { text: 'deusex', link: '/deusex/', activeMatch: '^/deusex/' },
       { text: 'News', link: '/news/', activeMatch: '^/news/' },
       { text: 'Blog', link: '/blog/', activeMatch: '^/blog/' },
       { text: 'About', link: '/about' },
     ],
-    sidebar: {
-      '/blog/': blogSidebar(),
-    },
-    socialLinks: [
-      { icon: 'linkedin', link: 'https://www.linkedin.com/in/black-cmd-devops', ariaLabel: 'LinkedIn' },
-      { icon: 'github', link: 'https://github.com/blackcheshire13', ariaLabel: 'GitHub' },
-    ],
     footer: {
       message:
-        'ICE and deusex are in active development · <a href="/kubemeridian">KubeMeridian</a> is archived (Apache-2.0) · <a href="/feed.xml">RSS</a>',
+        'ICE is built by <a href="/deusex/">deusex</a> · <a href="/news/">News</a> · <a href="/feed.xml">RSS</a> · <a href="https://www.linkedin.com/in/black-cmd-devops">LinkedIn</a> · <a href="https://github.com/blackcheshire13">GitHub</a> · <a href="/kubemeridian">KubeMeridian</a> (archived)',
       copyright: '© 2026 devopstech · devopstech.net',
     },
     // no site search until the ICE documentation section exists; it will search that

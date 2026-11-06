@@ -91,7 +91,7 @@ async function copy() {
 .cta.block {
   margin: 32px 0;
   padding: 24px 0 0;
-  border-top: 2px solid var(--vp-c-text-1);
+  border-top: 1px solid var(--vp-c-divider);
 }
 .lead {
   margin: 0 0 16px !important;

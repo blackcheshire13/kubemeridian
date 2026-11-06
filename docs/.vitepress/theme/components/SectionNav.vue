@@ -1,5 +1,6 @@
 <script setup lang="ts">
-// Tabs across the top of a product's pages, replacing a two-item sidebar.
+// The band above every doc page's title: a product's tabs, a way back from a blog post, or
+// an empty band of the same height, so the title sits at the same height on every page.
 import { computed } from 'vue';
 import { useData } from 'vitepress';
 
@@ -18,6 +19,7 @@ const SECTIONS: Record<string, { text: string; link: string; file: string }[]> =
 const { page } = useData();
 const section = computed(() => page.value.relativePath.split('/')[0]);
 const items = computed(() => SECTIONS[section.value] ?? []);
+const isPost = computed(() => section.value === 'blog' && page.value.relativePath !== 'blog/index.md');
 </script>
 
 <template>
@@ -29,6 +31,10 @@ const items = computed(() => SECTIONS[section.value] ?? []);
       :aria-current="item.file === page.relativePath ? 'page' : undefined"
     >{{ item.text }}</a>
   </nav>
+  <nav v-else-if="isPost" class="section-nav" aria-label="Blog">
+    <a href="/blog/">← All posts</a>
+  </nav>
+  <div v-else class="section-nav spacer" aria-hidden="true"></div>
 </template>
 
 <style scoped>
@@ -38,6 +44,11 @@ const items = computed(() => SECTIONS[section.value] ?? []);
   gap: 0 28px;
   margin: 0 0 28px;
   border-bottom: 1px solid var(--vp-c-divider);
+}
+/* same height as a row of tabs: 44px links + the 1px rule */
+.section-nav.spacer {
+  height: 45px;
+  border-bottom-color: transparent;
 }
 .section-nav a {
   display: inline-flex;
