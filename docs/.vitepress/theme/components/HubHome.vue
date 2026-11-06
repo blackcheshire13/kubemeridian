@@ -393,7 +393,7 @@ a:hover { text-decoration-thickness: 2px; }
   padding-top: 3px;
 }
 .writing li a {
-  font-family: var(--dt-font-display);
+  font-family: var(--vp-font-family-base);
   font-size: 19px;
   font-weight: 700;
   line-height: 1.3;

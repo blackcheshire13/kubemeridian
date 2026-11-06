@@ -79,7 +79,7 @@ li.gate .node {
   line-height: 1.45;
 }
 .body strong {
-  font-family: var(--dt-font-display);
+  font-family: var(--vp-font-family-base);
   font-size: 16px;
   font-weight: 700;
   color: var(--vp-c-text-1);

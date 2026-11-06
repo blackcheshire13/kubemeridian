@@ -71,17 +71,22 @@
 }
 
 /* ---------- typography ---------- */
+/* Bricolage Grotesque only for large English display headings (h1, h2, heroes); smaller
+   headings, labels and the ICE wordmark use the text face, as in the ICE console */
 .vp-doc h1,
 .vp-doc h2,
-.vp-doc h3,
 .VPHero .name,
-.VPHero .text,
-.VPFeature .title,
-.VPNavBarTitle .title {
+.VPHero .text {
   font-family: var(--dt-font-display);
   letter-spacing: -0.015em;
 }
-.VPNavBarTitle .title { font-weight: 700; }
+.vp-doc h3,
+.VPFeature .title,
+.VPNavBarTitle .title {
+  font-family: var(--vp-font-family-base);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
 .vp-doc h1 { font-weight: 800; }
 .vp-doc h2 { font-weight: 700; border-top-color: var(--dt-rule); }
 .vp-doc p,
@@ -232,9 +237,8 @@
 .vp-doc .dt-glance > div { padding: 14px 0 0; }
 .vp-doc .dt-glance dt {
   margin: 0 0 4px;
-  font-family: var(--dt-font-display);
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
 }
 .vp-doc .dt-glance dd {
   margin: 0;
@@ -431,8 +435,21 @@
   border-top: 2px solid var(--vp-c-text-1);
 }
 
-/* VitePress sets these menu labels at 12px (`.VPMenu[data-v] .label`); the site's floor is 13px */
-.VPNav .VPNavBarExtra .VPMenu .label,
-.VPNavScreenAppearance .text {
+/* VitePress sets these labels at 12px (`.VPMenu[data-v] .label` and friends); the site's
+   floor is 13px. Selectors outrank VitePress's own, so bundle order does not matter. */
+.VPNav .VPNavBar .VPMenu .label,
+.VPNav .VPNavScreen .VPNavScreenAppearance .text,
+.VPNav .DocSearch-Button .DocSearch-Button-Key:first-child::after {
   font-size: 13px;
+}
+/* VitePress's own controls and cards on the shared radii */
+.VPButton,
+.DocSearch-Button,
+.vp-doc div[class*='language-'] > button.copy {
+  border-radius: var(--dt-radius-control) !important;
+}
+.VPMenu,
+.VPFeature,
+.vp-doc div[class*='language-'] {
+  border-radius: var(--dt-radius-card) !important;
 }

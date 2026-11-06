@@ -3,11 +3,11 @@
 // Usage (from docs/):  CHROME_BIN=/path/to/chrome node scripts/og-cards.mjs
 // Re-run after adding a page or a post; the PNGs are committed.
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { DOCS } from '../.vitepress/blog.mjs';
-import { cardSpecs } from '../.vitepress/og-specs.mjs';
+import { MARK_FILES, cardSpecs, templateHash } from '../.vitepress/og-specs.mjs';
 
 const OUT = join(DOCS, 'public', 'og');
 const CHROME = process.env.CHROME_BIN || 'chromium';
@@ -15,13 +15,18 @@ const CHROME = process.env.CHROME_BIN || 'chromium';
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const size = (t) => (t.length <= 14 ? 132 : t.length <= 26 ? 104 : t.length <= 44 ? 84 : 70);
 
-// devopstech's ring on its own pages, the ICE core sample on ICE's (same tile, same family)
-const MARK = {
-  devopstech: '<rect width="32" height="32" rx="7" fill="#1f2a36"/><path d="M21.79 9.11 A9 9 0 1 0 25 16" fill="none" stroke="#f1ebe0" stroke-width="3.2" stroke-linecap="round"/><circle cx="25" cy="16" r="3.1" fill="#e2a93b"/>',
-  ice: '<rect width="32" height="32" rx="7" fill="#1f2a36"/><polygon points="12,10 20,7 20,12 12,12" fill="#4e7b91"/><rect x="12" y="14" width="8" height="5" fill="#559dbb"/><path d="M12 21H20V26a1 1 0 0 1-1 1H13a1 1 0 0 1-1-1Z" fill="#6edbfc"/>',
-};
+// The marks' inner SVG, taken from the site's own icons so the cards cannot drift from them.
+const MARK = Object.fromEntries(
+  Object.entries(MARK_FILES).map(([name, file]) => [
+    name,
+    readFileSync(join(DOCS, file), 'utf8').replace(/^[\s\S]*?<svg[^>]*>|<\/svg>\s*$/g, '').trim(),
+  ]),
+);
 
 function html({ kicker, accent, title, sub, mark = 'devopstech' }) {
+  if (!MARK[mark]) {
+    throw new Error(`unknown card mark "${mark}" — expected one of ${Object.keys(MARK).join(', ')}`);
+  }
   return `<!doctype html><html><head><meta charset="utf-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Geologica:wght@400&family=JetBrains+Mono:wght@400&display=block">
 <style>
@@ -47,7 +52,7 @@ function html({ kicker, accent, title, sub, mark = 'devopstech' }) {
 
 mkdirSync(OUT, { recursive: true });
 const tmp = mkdtempSync(join(tmpdir(), 'og-cards-'));
-const manifest = {};
+const manifest = { __template: templateHash() };
 try {
   for (const card of cardSpecs()) {
     const page = join(tmp, `${card.slug}.html`);

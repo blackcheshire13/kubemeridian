@@ -1,4 +1,5 @@
 {
+  "__template": "8c4258f91caf198c",
   "home": {
     "slug": "home",
     "kicker": "devopstech · ICE",
@@ -78,16 +79,14 @@
     "kicker": "devopstech · blog · 2026-10-18",
     "accent": "#2675a9",
     "title": "Live needs evidence",
-    "sub": "How ICE keeps its own feature list honest",
-    "mark": "ice"
+    "sub": "How ICE keeps its own feature list honest"
   },
   "blog-merged-is-not-fixed": {
     "slug": "blog-merged-is-not-fixed",
     "kicker": "devopstech · blog · 2026-10-18",
     "accent": "#2675a9",
     "title": "Merged is not deployed, deployed is not fixed",
-    "sub": "",
-    "mark": "ice"
+    "sub": ""
   },
   "blog-the-bottleneck-is-the-human": {
     "slug": "blog-the-bottleneck-is-the-human",
