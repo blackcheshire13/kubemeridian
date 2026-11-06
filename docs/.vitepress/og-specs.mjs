@@ -4,7 +4,7 @@
 import { blogPosts, readFrontmatter } from './blog.mjs';
 
 const ACCENT = {
-  ice: 'oklch(0.52 0.1 225)',
+  ice: '#2675a9',
   deusex: 'oklch(0.66 0.13 72)',
   km: '#326ce5',
   hub: 'oklch(0.74 0.135 78)',
@@ -23,7 +23,7 @@ function fromPage(slug, file, kicker, accent, sub) {
 
 export function cardSpecs() {
   return [
-    { slug: 'home', kicker: 'devopstech', accent: ACCENT.hub, title: 'Production engineering, closed loop.', sub: 'ICE · deusex · KubeMeridian' },
+    { slug: 'home', kicker: 'devopstech · ICE', accent: ACCENT.ice, title: 'Kubernetes security fixes that prove they worked.', sub: 'ICE · in development, Apache-2.0 at release' },
     fromPage('ice', 'ice/index.md', 'devopstech · ICE', ACCENT.ice),
     fromPage('ice-how-it-works', 'ice/how-it-works.md', 'devopstech · ICE', ACCENT.ice, 'Operator, agent, trust path, posture and responses'),
     fromPage('ice-design-partners', 'ice/design-partners.md', 'devopstech · ICE', ACCENT.ice),

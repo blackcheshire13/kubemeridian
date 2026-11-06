@@ -8,7 +8,9 @@ import Flow from './components/Flow.vue';
 import PostList from './components/PostList.vue';
 import PartnerCta from './components/PartnerCta.vue';
 import NewsList from './components/NewsList.vue';
+import PilotForm from './components/PilotForm.vue';
 import NavCta from './components/NavCta.vue';
+import NavBrandSuffix from './components/NavBrandSuffix.vue';
 import SectionNav from './components/SectionNav.vue';
 import NotFound from './components/NotFound.vue';
 import ArchivedNotice from './components/ArchivedNotice.vue';
@@ -22,6 +24,7 @@ export default {
     const rel = () => page.value.relativePath;
     return h(DefaultTheme.Layout, null, {
       // the navbar link is the only call to action outside a page's own closing block
+      'nav-bar-title-after': () => h(NavBrandSuffix),
       'nav-bar-content-after': () => h(NavCta),
       'nav-screen-content-before': () => h(NavCta, { screen: true }),
       // product pages navigate with tabs; KubeMeridian is archived
@@ -38,5 +41,6 @@ export default {
     app.component('PostList', PostList);
     app.component('PartnerCta', PartnerCta);
     app.component('NewsList', NewsList);
+    app.component('PilotForm', PilotForm);
   },
 } satisfies Theme;

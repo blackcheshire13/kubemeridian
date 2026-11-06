@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="ICE">
+  <rect width="32" height="32" rx="7" fill="#1f2a36"/>
+  <polygon points="12,10 20,7 20,12 12,12" fill="#4e7b91"/>
+  <rect x="12" y="14" width="8" height="5" fill="#559dbb"/>
+  <path d="M12 21H20V26a1 1 0 0 1-1 1H13a1 1 0 0 1-1-1Z" fill="#6edbfc"/>
+</svg>

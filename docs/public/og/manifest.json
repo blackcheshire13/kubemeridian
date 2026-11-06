@@ -1,29 +1,29 @@
 {
   "home": {
     "slug": "home",
-    "kicker": "devopstech",
-    "accent": "oklch(0.74 0.135 78)",
-    "title": "Production engineering, closed loop.",
-    "sub": "ICE · deusex · KubeMeridian"
+    "kicker": "devopstech · ICE",
+    "accent": "#2675a9",
+    "title": "Kubernetes security fixes that prove they worked.",
+    "sub": "ICE · in development, Apache-2.0 at release"
   },
   "ice": {
     "slug": "ice",
     "kicker": "devopstech · ICE",
-    "accent": "oklch(0.52 0.1 225)",
+    "accent": "#2675a9",
     "title": "ICE",
     "sub": "Kubernetes active defence with GitOps remediation"
   },
   "ice-how-it-works": {
     "slug": "ice-how-it-works",
     "kicker": "devopstech · ICE",
-    "accent": "oklch(0.52 0.1 225)",
+    "accent": "#2675a9",
     "title": "How ICE works",
     "sub": "Operator, agent, trust path, posture and responses"
   },
   "ice-design-partners": {
     "slug": "ice-design-partners",
     "kicker": "devopstech · ICE",
-    "accent": "oklch(0.52 0.1 225)",
+    "accent": "#2675a9",
     "title": "ICE design partners",
     "sub": "Run the loop on your cluster early"
   },
@@ -72,14 +72,14 @@
   "blog-live-needs-evidence": {
     "slug": "blog-live-needs-evidence",
     "kicker": "devopstech · blog · 2026-10-18",
-    "accent": "oklch(0.52 0.1 225)",
+    "accent": "#2675a9",
     "title": "Live needs evidence",
     "sub": "How ICE keeps its own feature list honest"
   },
   "blog-merged-is-not-fixed": {
     "slug": "blog-merged-is-not-fixed",
     "kicker": "devopstech · blog · 2026-10-18",
-    "accent": "oklch(0.52 0.1 225)",
+    "accent": "#2675a9",
     "title": "Merged is not deployed, deployed is not fixed",
     "sub": ""
   },

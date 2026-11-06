@@ -10,7 +10,7 @@ development loop that turns a vision document into working, merged code — and 
 
 <p class="dt-status"><span class="dt-dot deusex"></span>Running around the clock on two projects since September 2026 · private</p>
 
-<p class="dt-next"><a href="/deusex/method">The method</a><a href="#interested">Talk to me about it</a></p>
+<p class="dt-next"><a href="/deusex/method">The method</a><a href="/ice/">What it builds: ICE</a></p>
 
 The name is the joke in reverse: *deus ex machina* is the plot device that resolves a story
 without earning it. deusex is built so that nothing reaches `main` that has not earned it.
@@ -83,12 +83,13 @@ of its own work. A person still files about half of deusex's backlog.
   today, and the bootstrap phase — the loop building its own fence, an assumptions log
   instead of questions to a person, a spending ceiling — exists only on paper.
 - Pauses and daily budgets are not yet separated per project.
-- Token cost is not measured by the loop itself yet.
+- Token cost is measured only for the workers whose session logs the loop can read (since 25 October).
 - The UI-testing role is written and switched off.
 
-## Interested?
+## What it builds
 
-deusex is private for now. If you want to see it run on a codebase of yours, or compare
-notes on autonomous development:
+deusex is private and not a product; what it builds is [ICE](/ice/). If you run Kubernetes,
+[pilot ICE on your cluster](/ice/design-partners). To compare notes on autonomous development,
+write to me:
 
-<PartnerCta topic="deusex" />
+<PartnerCta topic="deusex" variant="address" />

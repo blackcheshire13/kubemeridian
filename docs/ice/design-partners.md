@@ -1,14 +1,35 @@
 ---
 title: ICE design partners — run the loop on your cluster early
-description: What an ICE design-partner pilot involves — a local trial, a read-only agent, pull requests you approve and merge — what leaves your cluster, and what it needs.
+description: The ICE design-partner pilot — up to five teams, eight weeks, free. Who it fits, what you get and commit to, what leaves your cluster, and a short application.
 ---
 
 # Design partners
 
-<p class="dt-lede">ICE is built on real estates, not fixtures. A design partner runs the loop on their own
+<p class="dt-lede">ICE is built on real clusters, not fixtures. A design partner runs the loop on their own
 Kubernetes before the public release, and tells me where it is noisy, missing or wrong.</p>
 
-<p class="dt-next"><a href="#interested">Get in touch</a><a href="/ice/">What ICE is</a></p>
+<dl class="dt-glance">
+  <div><dt>First cohort</dt><dd>Up to five teams.</dd></div>
+  <div><dt>Pilot</dt><dd>Eight weeks, with a 30-minute call every two weeks.</dd></div>
+  <div><dt>Cost</dt><dd>Free. ICE will be released under Apache-2.0, so you keep what you run.</dd></div>
+</dl>
+
+<p class="dt-next"><a href="#apply">Apply for the pilot</a><a href="/ice/">What ICE is</a></p>
+
+## A good fit
+
+- Kubernetes in production, managed or bare-metal, looked after by one or two people.
+- Workload manifests in a GitOps repository on GitHub.
+- No dedicated security team, and more findings than anyone has time to triage.
+- Someone who can spare 30 minutes every two weeks and say where ICE is wrong.
+
+## Not a fit yet
+
+- **Changes applied by hand, or by CI running `kubectl`, with no GitOps repository.** ICE
+  delivers every fix as a pull request, so it needs one.
+- **GitOps on GitLab only.** GitLab is tested but not yet live.
+- **Several teams or customers in one installation.** There is no multi-tenancy yet.
+- **A hosted service.** ICE runs in your cluster; nothing is hosted for you.
 
 ## What you get
 
@@ -28,6 +49,12 @@ Kubernetes before the public release, and tells me where it is noisy, missing or
   { label: 'Approve a change', who: 'human', note: 'a rendered, digest-pinned pull request' },
   { label: 'Merge and measure', who: 'measure', note: 'the case closes only on a fresh measurement' },
 ]" />
+
+## What you commit to
+
+- A test or staging cluster for the read-only agent first, and later the cluster you care about.
+- A GitOps repository where ICE may open pull requests. You review and merge each one.
+- A 30-minute call every two weeks, with honest notes on what is noisy, missing or wrong.
 
 ## What leaves your cluster, and what can change it
 
@@ -55,9 +82,9 @@ Kubernetes before the public release, and tells me where it is noisy, missing or
 | Falco or Tetragon | for runtime signals |
 | Prometheus and Alertmanager, Kyverno, Istio or Linkerd | optional — each adds detectors or posture facts |
 
-## Interested?
+## Apply {#apply}
 
-Tell me about your estate — the cluster count, the GitOps setup, and what you would want ICE
-to catch first.
+A few questions about your team, your clusters and what you want ICE to catch first. I read
+every application myself.
 
-<PartnerCta />
+<PilotForm />

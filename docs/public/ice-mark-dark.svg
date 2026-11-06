@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="14 4 20 41" role="img" aria-label="ICE">
+  <polygon points="14,10 34,4 34,14 14,14" fill="#4e7b91"/>
+  <rect x="14" y="17" width="20" height="10" fill="#559dbb"/>
+  <path d="M14 30H34V43a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2Z" fill="#6edbfc"/>
+</svg>
