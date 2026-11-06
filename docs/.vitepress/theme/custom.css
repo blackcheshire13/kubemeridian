@@ -382,3 +382,10 @@
     align-items: center;
   }
 }
+
+/* /news/: the list below brings its own top rule */
+.vp-doc h2.dt-news-next {
+  margin-top: 56px;
+  padding-top: 0;
+  border-top: 0;
+}

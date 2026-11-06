@@ -84,7 +84,7 @@ export default defineConfig({
       pageData.frontmatter.lastUpdated = false;
     }
     // product pages navigate with their section tabs, the blog index is already a list of posts
-    if (/^(ice|deusex)\//.test(rel) || rel === 'about.md') {
+    if (/^(ice|deusex|news)\//.test(rel) || rel === 'about.md') {
       pageData.frontmatter.prev = false;
       pageData.frontmatter.next = false;
     }
@@ -103,6 +103,7 @@ export default defineConfig({
     nav: [
       { text: 'ICE', link: '/ice/', activeMatch: '^/ice/' },
       { text: 'deusex', link: '/deusex/', activeMatch: '^/deusex/' },
+      { text: 'News', link: '/news/', activeMatch: '^/news/' },
       { text: 'Blog', link: '/blog/', activeMatch: '^/blog/' },
       { text: 'About', link: '/about' },
     ],

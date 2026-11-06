@@ -55,6 +55,13 @@
     "title": "Blog",
     "sub": "Kubernetes, security, autonomous development and observability"
   },
+  "news": {
+    "slug": "news",
+    "kicker": "devopstech",
+    "accent": "oklch(0.74 0.135 78)",
+    "title": "News",
+    "sub": "What changed in ICE and deusex"
+  },
   "about": {
     "slug": "about",
     "kicker": "devopstech · about",

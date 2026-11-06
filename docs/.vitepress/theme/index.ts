@@ -7,6 +7,7 @@ import DeusexCycle from './components/DeusexCycle.vue';
 import Flow from './components/Flow.vue';
 import PostList from './components/PostList.vue';
 import PartnerCta from './components/PartnerCta.vue';
+import NewsList from './components/NewsList.vue';
 import NavCta from './components/NavCta.vue';
 import SectionNav from './components/SectionNav.vue';
 import NotFound from './components/NotFound.vue';
@@ -36,5 +37,6 @@ export default {
     app.component('Flow', Flow);
     app.component('PostList', PostList);
     app.component('PartnerCta', PartnerCta);
+    app.component('NewsList', NewsList);
   },
 } satisfies Theme;
