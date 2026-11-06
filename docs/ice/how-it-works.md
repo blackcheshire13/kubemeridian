@@ -101,4 +101,6 @@ the preconditions are measured as met and the run is not a dry run.
 
 Both run on a laptop with `kind` in 15–20 minutes, from a synthetic company profile.
 
-<PartnerCta lead="Want this loop on your cluster before the public release?" :secondary="{ text: 'What a pilot involves', href: '/ice/design-partners' }" />
+[What a pilot involves →](/ice/design-partners)
+
+<PartnerCta lead="Want this loop on your cluster before the public release?" />

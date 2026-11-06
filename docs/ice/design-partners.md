@@ -8,7 +8,7 @@ description: What an ICE design-partner pilot involves — a local trial, a read
 <p class="dt-lede">ICE is built on real estates, not fixtures. A design partner runs the loop on their own
 Kubernetes before the public release, and tells me where it is noisy, missing or wrong.</p>
 
-<PartnerCta variant="buttons" :secondary="{ text: 'What ICE is', href: '/ice/' }" />
+<p class="dt-next"><a href="#interested">Get in touch</a><a href="/ice/">What ICE is</a></p>
 
 ## What you get
 

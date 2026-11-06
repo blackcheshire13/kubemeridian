@@ -10,7 +10,7 @@ development loop that turns a vision document into working, merged code — and 
 
 <p class="dt-status"><span class="dt-dot deusex"></span>Running around the clock on two projects since September 2026 · private</p>
 
-<PartnerCta topic="deusex" variant="buttons" :secondary="{ text: 'The method', href: '/deusex/method' }" />
+<p class="dt-next"><a href="/deusex/method">The method</a><a href="#interested">Talk to me about it</a></p>
 
 The name is the joke in reverse: *deus ex machina* is the plot device that resolves a story
 without earning it. deusex is built so that nothing reaches `main` that has not earned it.

@@ -14,9 +14,9 @@ person approves, and calls a problem fixed only when a measurement taken <em>aft
   <div><dt>Where it stands</dt><dd>In development since July 2026, to be open-sourced under Apache-2.0. Looking for design partners.</dd></div>
 </dl>
 
-<p class="dt-strip"><span class="dt-s live"><strong>10</strong>&nbsp;live</span><span class="dt-s tested"><strong>63</strong>&nbsp;tested</span><span class="dt-s implemented"><strong>3</strong>&nbsp;implemented</span><span class="dt-s"><strong>1</strong>&nbsp;contract</span><span>capabilities as of 18 October 2026 · <a href="#honest-status">what that means</a></span></p>
+<p class="dt-strip"><span class="dt-s live"><strong>13</strong>&nbsp;live</span><span class="dt-s tested"><strong>66</strong>&nbsp;tested</span><span class="dt-s implemented"><strong>3</strong>&nbsp;implemented</span><span class="dt-s"><strong>1</strong>&nbsp;contract</span><span>capabilities as of 6 November 2026 · <a href="#honest-status">what that means</a></span></p>
 
-<PartnerCta variant="buttons" :secondary="{ text: 'How ICE works', href: '/ice/how-it-works' }" />
+<p class="dt-next"><a href="/ice/how-it-works">How ICE works</a><a href="/ice/design-partners">What a pilot involves</a></p>
 
 ## Why another security tool
 
@@ -133,18 +133,20 @@ evidence from a running cluster, and CI fails if the evidence is missing. The da
 rule arrived, five rows were downgraded from *live* to *tested* — nobody could produce the
 evidence.
 
-As of **18 October 2026**:
+As of **6 November 2026**:
 
 | Status | Capabilities | Meaning |
 | --- | ---: | --- |
-| <span class="dt-s live">live</span> | 10 | observed on a real cluster, with dated evidence |
-| <span class="dt-s tested">tested</span> | 63 | covered by tests against envtest and a real PostgreSQL |
+| <span class="dt-s live">live</span> | 13 | observed on a real cluster, with dated evidence |
+| <span class="dt-s tested">tested</span> | 66 | covered by tests against envtest and a real PostgreSQL |
 | <span class="dt-s implemented">implemented</span> | 3 | code exists, tests are partial |
 | <span class="dt-s">contract</span> | 1 | the interface is fixed, there is no executor yet |
 
-**Live today:** daily image scans with a delta to baseline and provenance; syscall detectors
-via Falco; console approval that opens a real GitOps pull request; the read-only MCP; a daily
-automated walk-through of the console.
+**Live today:** daily image scans with a delta to baseline and provenance, including images a
+profile declares without cluster access; a findings queue split into vulnerabilities,
+misconfigurations and secrets; the age of each CVE database next to the findings; syscall
+detectors via Falco; console approval that opens a real GitOps pull request; the read-only MCP;
+a daily automated walk-through of the console. What changed lately is in [News](/news/).
 
 **Not there yet:** the full case up to *verified* passes in tests but has not been watched
 end-to-end on a live cluster; the second proving-ground cluster is not connected; there are

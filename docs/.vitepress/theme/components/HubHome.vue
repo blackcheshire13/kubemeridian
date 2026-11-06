@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { data as posts } from '../posts.data';
+import NewsList from './NewsList.vue';
+import { NEWS, newsId } from '../../news.mjs';
 import IceLoop from './IceLoop.vue';
 import DeusexCycle from './DeusexCycle.vue';
 import PartnerCta from './PartnerCta.vue';
 
 const latest = posts.slice(0, 4);
+const lastNews = NEWS.find((n) => n.status !== 'planned');
 </script>
 
 <template>
@@ -18,7 +21,7 @@ const latest = posts.slice(0, 4);
           fixed once the cluster proves it — and <a href="/deusex/">deusex</a>, the autonomous
           development loop that builds it.
         </p>
-        <PartnerCta variant="buttons" :secondary="{ text: 'ICE overview', href: '/ice/' }" />
+        <p class="dt-next"><a href="/ice/">ICE overview</a><a href="/deusex/">How deusex works</a></p>
       </div>
 
       <aside class="now" aria-label="Where things stand">
@@ -26,18 +29,18 @@ const latest = posts.slice(0, 4);
         <ul>
           <li>
             <span class="dt-s live" aria-hidden="true"></span>
-            <span><strong>ICE</strong> — 10 capabilities live on a real cluster, 63 tested; looking for design partners.</span>
+            <span><strong>ICE</strong> — 13 capabilities live on a real cluster, 66 tested; looking for design partners.</span>
           </li>
           <li>
             <span class="dt-s live" aria-hidden="true"></span>
-            <span><strong>deusex</strong> — 89% of ICE's merges came from the loop, 0.7&nbsp;h median to merge.</span>
+            <span><strong>deusex</strong> — 88% of ICE's merges came from the loop, 33&nbsp;min median to merge.</span>
           </li>
-          <li v-if="latest[0]">
+          <li v-if="lastNews">
             <span class="dt-s" aria-hidden="true"></span>
-            <span><strong>Latest</strong> — <a :href="latest[0].url">{{ latest[0].title }}</a></span>
+            <span><strong>Latest</strong> — <a :href="`/news/#${newsId(lastNews)}`">{{ lastNews.title }}</a></span>
           </li>
         </ul>
-        <p class="asof">As of 18 October 2026 · figures for 4–18 October</p>
+        <p class="asof">As of 6 November 2026 · loop figures for 19 October – 5 November</p>
       </aside>
     </header>
 
@@ -70,7 +73,7 @@ const latest = posts.slice(0, 4);
             Agents plan, build, review and merge on a schedule; a person decides only the concept.
           </p>
           <ul class="facts">
-            <li>4–18 October: 89% of ICE's merges came from the loop, with a 0.7&nbsp;h median to merge</li>
+            <li>19 October – 5 November: 88% of ICE's merges came from the loop, with a 33-minute median to merge</li>
             <li>Rights held by tooling: the owner has read-only tools, the merge policy is a function</li>
             <li>A machine never approves changes to the machine that approves changes</li>
           </ul>
@@ -84,6 +87,14 @@ const latest = posts.slice(0, 4);
         <a href="/kubemeridian">KubeMeridian</a> — Kubernetes observability for Grafana, archived in
         October 2026.
       </p>
+    </section>
+
+    <section class="writing" aria-labelledby="news-h">
+      <h2 id="news-h">News</h2>
+      <div>
+        <NewsList compact :limit="4" />
+        <p class="more"><a href="/news/">All news</a></p>
+      </div>
     </section>
 
     <section class="writing" aria-labelledby="writing-h">

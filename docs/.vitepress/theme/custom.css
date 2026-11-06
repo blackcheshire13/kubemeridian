@@ -356,3 +356,36 @@
 @media (max-width: 520px) {
   .vp-doc .dt-person { flex-direction: column; align-items: flex-start; gap: 14px; }
 }
+
+/* "where next" links under a page lede — text links, never a second solid button */
+.dt-next {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  margin: 22px 0 8px !important;
+}
+.dt-next a {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--vp-c-brand-1);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.dt-next a::after {
+  content: ' →';
+  white-space: pre;
+}
+@media (max-width: 640px) {
+  .dt-next a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+/* /news/: the list below brings its own top rule */
+.vp-doc h2.dt-news-next {
+  margin-top: 56px;
+  padding-top: 0;
+  border-top: 0;
+}
