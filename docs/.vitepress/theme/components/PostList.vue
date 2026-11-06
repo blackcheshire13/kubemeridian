@@ -26,7 +26,7 @@ import { data as posts } from '../posts.data';
   padding: 22px 0;
   border-top: 1px solid var(--vp-c-divider);
 }
-.posts li:first-child { border-top: 2px solid var(--vp-c-text-1); }
+.posts li:first-child { border-top: 1px solid var(--vp-c-divider); }
 .meta {
   display: flex;
   flex-wrap: wrap;

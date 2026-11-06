@@ -27,7 +27,7 @@ defineProps<{ wide?: boolean }>();
   color: var(--vp-c-text-1);
 }
 .archived.wide {
-  max-width: 1152px;
+  max-width: 1104px;
   margin: 24px auto 0;
 }
 .label {

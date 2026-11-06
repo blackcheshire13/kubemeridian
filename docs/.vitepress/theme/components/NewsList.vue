@@ -50,7 +50,7 @@ const fmt = (iso: string) =>
   border-top: 1px solid var(--vp-c-divider);
 }
 .news li:first-child {
-  border-top: 2px solid var(--vp-c-text-1);
+  border-top: 1px solid var(--vp-c-divider);
 }
 .meta {
   display: flex;
@@ -69,7 +69,8 @@ const fmt = (iso: string) =>
   color: var(--dt-ice);
 }
 .prod.deusex {
-  color: var(--dt-deusex, var(--vp-c-text-1));
+  /* the darker brass: the label is 13px text and needs 4.5:1 */
+  color: var(--dt-brass-ink, var(--vp-c-text-1));
 }
 .title {
   margin: 0 !important;

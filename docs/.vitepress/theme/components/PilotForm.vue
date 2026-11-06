@@ -121,7 +121,7 @@ async function submit(event: Event) {
 .pilot {
   margin: 24px 0 8px;
   padding: 24px 0 0;
-  border-top: 2px solid var(--vp-c-text-1);
+  border-top: 1px solid var(--vp-c-divider);
 }
 form {
   display: grid;

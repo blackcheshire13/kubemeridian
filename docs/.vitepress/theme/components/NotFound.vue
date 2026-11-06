@@ -43,7 +43,7 @@ ul {
   margin: 24px 0 0;
   padding: 0;
   list-style: none;
-  border-top: 2px solid var(--vp-c-text-1);
+  border-top: 1px solid var(--vp-c-divider);
   max-width: 560px;
 }
 li {

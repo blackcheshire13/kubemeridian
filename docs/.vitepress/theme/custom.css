@@ -6,6 +6,11 @@
  * brass belongs to devopstech and never to the product; radius 6px on controls, 4px on cards.
  */
 :root {
+  /* one type scale and one section rhythm for every page */
+  --dt-h1: clamp(36px, 4.4vw, 56px);
+  --dt-h2: clamp(26px, 2.6vw, 34px);
+  --dt-h3: 20px;
+  --dt-section-gap: clamp(64px, 8vw, 96px);
   --dt-paper: oklch(0.975 0.008 85);
   --dt-paper-2: oklch(0.955 0.011 85);
   --dt-paper-3: oklch(0.925 0.014 85);
@@ -44,7 +49,7 @@
 
   --vp-home-hero-name-color: var(--dt-ink);
   --vp-home-hero-image-background-image: none;
-  --vp-code-block-bg: oklch(0.94 0.012 85);
+  --vp-code-block-bg: oklch(0.985 0.004 85);
 }
 
 .dark {
@@ -88,9 +93,10 @@
   letter-spacing: -0.005em;
 }
 .vp-doc h1 { font-weight: 800; }
-.vp-doc h2 { font-weight: 700; border-top-color: var(--dt-rule); }
+.vp-doc h2 { font-weight: 700; border-top-color: var(--dt-rule); font-size: var(--dt-h2); line-height: 1.15; }
+.vp-doc h3 { font-size: var(--dt-h3); }
 .vp-doc p,
-.vp-doc li { line-height: 1.7; }
+.vp-doc li { font-size: 17px; line-height: 1.65; }
 
 /* ---------- minimum readable sizes (nothing below 13px) ---------- */
 .VPBadge,
@@ -173,17 +179,56 @@
   padding-left: 18px;
   background: linear-gradient(var(--dt-brass), var(--dt-brass)) left 6px / 3px calc(100% - 12px) no-repeat;
 }
-.vp-doc h1 { font-size: clamp(36px, 5vw, 52px); line-height: 1.05; }
+.vp-doc h1 { font-size: var(--dt-h1); line-height: 1.05; }
 /* numbers in tables never wrap */
 .vp-doc td[style*='right'],
 .vp-doc th[style*='right'] { white-space: nowrap; }
 
-/* ---------- one left edge: pages without a sidebar line up with the home page ---------- */
+/* ---------- one grid ----------
+   Every page sits in the same 1104px container with VitePress's own gutters (24px on phones,
+   32px from 768px), so the left edge of the text never moves between pages: 168px at 1440px,
+   32px on a tablet. The text column is left-aligned (no centring) and at most 720px; the
+   outline, where a page has one, sits at the right edge of the container. The home page
+   (HubHome) and the footer use the same container. */
+/* the text column starts at the container's left edge at every width (VitePress centres it) */
+.VPDoc .content,
+.VPDoc .content-container {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.VPDoc .content-container { max-width: 720px !important; }
 @media (min-width: 960px) {
   .VPDoc:not(.has-sidebar) .container {
-    justify-content: flex-start !important;
+    justify-content: space-between !important;
     max-width: 1104px !important;
   }
+  .VPDoc:not(.has-sidebar) .content {
+    padding-left: 0 !important;
+    max-width: 752px !important;
+  }
+}
+/* the "On this page" bar VitePress adds under the navbar below 1280px pushes titles down on
+   some pages and not others; the outline stays in the right column on wide screens */
+.VPLocalNav { display: none !important; }
+/* KubeMeridian's archive page uses VitePress's home layout: same container and gutters */
+.km-page .VPHero,
+.km-page .VPFeatures,
+.km-page .VPHomeContent {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+@media (min-width: 768px) {
+  .km-page .VPHero,
+  .km-page .VPFeatures,
+  .km-page .VPHomeContent {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+}
+.km-page .VPHero .container,
+.km-page .VPFeatures .container,
+.km-page .VPHomeContent .container {
+  max-width: 1104px !important;
 }
 .VPFooter .container { max-width: 1104px; }
 .VPFooter .message a,
@@ -232,7 +277,7 @@
   gap: 0 28px;
   margin: 28px 0 8px;
   padding: 0;
-  border-top: 2px solid var(--vp-c-text-1);
+  border-top: 1px solid var(--vp-c-divider);
 }
 .vp-doc .dt-glance > div { padding: 14px 0 0; }
 .vp-doc .dt-glance dt {
@@ -323,7 +368,7 @@
   gap: 20px;
   margin: 8px 0 28px;
   padding: 18px 0;
-  border-top: 2px solid var(--vp-c-text-1);
+  border-top: 1px solid var(--vp-c-divider);
   border-bottom: 1px solid var(--vp-c-divider);
 }
 .vp-doc .dt-person img {
@@ -377,9 +422,13 @@
 .dt-next a {
   font-size: 17px;
   font-weight: 600;
-  color: var(--vp-c-brand-1);
-  text-decoration: underline;
+  color: var(--vp-c-text-1) !important;
+  text-decoration: none !important;
   text-underline-offset: 4px;
+}
+.dt-next a:hover,
+.dt-next a:focus-visible {
+  text-decoration: underline !important;
 }
 .dt-next a::after {
   content: ' →';
@@ -432,7 +481,7 @@
 .vp-doc .dt-cta {
   margin: 28px 0 8px;
   padding-top: 24px;
-  border-top: 2px solid var(--vp-c-text-1);
+  border-top: 1px solid var(--vp-c-divider);
 }
 
 /* VitePress sets these labels at 12px (`.VPMenu[data-v] .label` and friends); the site's

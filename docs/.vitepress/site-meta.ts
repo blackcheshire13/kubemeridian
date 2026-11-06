@@ -1,4 +1,4 @@
-// Build-time helpers for devopstech.net: blog sidebar, per-page social meta, RSS feed.
+// Build-time helpers for devopstech.net: per-page social meta, RSS feed, social-card check.
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { HeadConfig, PageData } from 'vitepress';
@@ -12,18 +12,6 @@ export const SITE_DESCRIPTION =
   'ICE: Kubernetes security fixes delivered as GitOps pull requests, closed only when a measurement after the merge proves them. Built by deusex, an autonomous development loop.';
 
 const OG_DIR = join(DOCS, 'public', 'og');
-
-export function blogSidebar() {
-  return [
-    {
-      text: 'Blog',
-      items: [
-        { text: 'All posts', link: '/blog/' },
-        ...blogPosts().map((p) => ({ text: p.sidebarTitle, link: `/blog/${p.slug}` })),
-      ],
-    },
-  ];
-}
 
 function pagePath(relativePath: string): string {
   return '/' + relativePath.replace(/\.md$/, '').replace(/(^|\/)index$/, '$1');

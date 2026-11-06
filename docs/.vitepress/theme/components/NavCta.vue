@@ -4,7 +4,7 @@ defineProps<{ screen?: boolean }>();
 </script>
 
 <template>
-  <a class="nav-cta" :class="{ screen }" href="/ice/design-partners">Design partners</a>
+  <a class="nav-cta" :class="{ screen }" href="/ice/design-partners">Become a design partner</a>
 </template>
 
 <style scoped>

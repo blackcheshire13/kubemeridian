@@ -20,6 +20,9 @@ defineProps<{
       </li>
     </ol>
     <figcaption><span class="back" aria-hidden="true">↺</span>{{ back }}</figcaption>
+    <p v-if="steps.some((s) => s.gate)" class="legend">
+      <span class="node mini" aria-hidden="true"></span>A dashed step is decided by a person.
+    </p>
   </figure>
 </template>
 
@@ -89,6 +92,23 @@ li.gate .node {
   color: var(--vp-c-text-2);
 }
 li.gate strong { color: var(--vp-c-text-2); }
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding-left: 30px;
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+}
+.legend .node.mini {
+  display: inline-block;
+  flex: none;
+  position: static;
+  width: 14px;
+  height: 14px;
+  border-style: dashed;
+}
 figcaption {
   margin-top: 14px;
   padding-left: 30px;
