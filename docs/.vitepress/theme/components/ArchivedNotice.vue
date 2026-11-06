@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Shown on /kubemeridian and every /guide/* page (see theme/index.ts).
+// Shown on the /kubemeridian archive page (see theme/index.ts).
 import { KM_LAST_RELEASE, KM_RELEASE_URL } from '../../kubemeridian.mjs';
 
 defineProps<{ wide?: boolean }>();
@@ -13,7 +13,7 @@ defineProps<{ wide?: boolean }>();
       overlaps with Grafana Cloud Kubernetes Monitoring. Without a catalog listing it can't get a
       community signature, so it is distributed unsigned, and development has stopped. The last release,
       <a :href="KM_RELEASE_URL">{{ KM_LAST_RELEASE }}</a>, remains available as an
-      <a href="/guide/install">unsigned plugin</a>.
+      <a href="#install">unsigned plugin</a>.
     </p>
   </aside>
 </template>

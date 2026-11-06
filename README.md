@@ -1,92 +1,30 @@
-# KubeMeridian — Kubernetes observability app for Grafana
+# devopstech.net
 
-> **Archived (October 2026).** Grafana Labs declined to list KubeMeridian in its official
-> plugin catalog because it overlaps with Grafana Cloud Kubernetes Monitoring. Without a
-> catalog listing it can't get a community signature, so it is distributed unsigned, and
-> development has stopped. The
-> last release, [v2.5.2](https://github.com/blackcheshire13/kubemeridian/releases/tag/v2.5.2),
-> remains available as an unsigned plugin.
+Sources of [devopstech.net](https://devopstech.net), the home of **ICE** — Kubernetes security
+fixes delivered as GitOps pull requests and closed only when a measurement after the merge
+proves them — and of **deusex**, the autonomous development loop that builds it.
 
-**KubeMeridian** turns Grafana into a turnkey Kubernetes observability product: install one
-app plugin, link your connections (metrics, logs, traces, cost), and get a curated base
-monitoring stack — topology, dashboards, logs, traces, cost/efficiency and an alert pack.
+| Path | What it is |
+| --- | --- |
+| [`docs/`](docs/) | The VitePress site; how to run and deploy it is in [`docs/README.md`](docs/README.md) |
+| [`functions/`](functions/) | Cloudflare Pages Functions: the Go vanity import for `devopstech.net/ice` |
+| [`workers/pilot/`](workers/pilot/) | The worker behind the design-partner form (`devopstech.net/api/pilot`) |
 
-Built for **Grafana 13.x** on `@grafana/create-plugin` (`@grafana/*` 13.x, React 18,
-`@grafana/scenes`, webpack). Frontend-only, open-source, self-hostable.
+`npm ci && npm run lint` lints the JavaScript; CI also builds the site and bundles the worker
+on every pull request.
 
-📖 Docs: **[devopstech.net/kubemeridian](https://devopstech.net/kubemeridian)**
+## KubeMeridian (archived)
 
-![KubeMeridian — fleet & connections](https://raw.githubusercontent.com/blackcheshire13/kubemeridian/main/src/img/screenshots/clusters.png)
-![KubeMeridian — Cluster Overview](https://raw.githubusercontent.com/blackcheshire13/kubemeridian/main/src/img/screenshots/cluster-overview.png)
-
-## What it provides
-
-### App pages (per cluster)
-- **Clusters** — add/manage clusters; each cluster is one datasource instance.
-- **Cluster Status** — control-plane components + node grid with pod-status squares.
-- **Applications Overview** — namespaces → workloads → pods map (deployments / statefulsets /
-  daemonsets / jobs / cronjobs / other pods) with services. **Click a pod → inline Loki logs.**
-- **Nodes Overview** — per-node status, roles, CPU/memory requests vs allocatable, pod count.
-- **Events** — live, filterable Kubernetes events feed (type / namespace / text).
-- **Logs** — Loki logs explorer (namespace/pod/container + free-text), built with Grafana Scenes.
-- **Traces** — Tempo TraceQL search + service graph, built with Grafana Scenes.
-- **Services (RED)** — request rate / errors / latency / SLO + error-budget burn rate,
-  driven by your cluster's **traffic profile** (Istio / Linkerd / Cilium / nginx /
-  Traefik / HAProxy / Envoy / Kong / Consul / Kuma / app-HTTP / OTel — or a custom
-  metric mapping). Pick or auto-detect the stack in the cluster config.
-
-### Bundled dashboards (Prometheus)
-Curated, computed inline from raw kube-state-metrics / node-exporter / cAdvisor (no mixin
-recording rules required):
-
-- **Cluster Overview**, **Namespace Overview**, **Workload Health** (CrashLoop/OOM/Pending/
-  throttling), **Storage** (PVC/PV), **Cost & Efficiency** (FinOps), **Control Plane**,
-  **Networking**, **RED & SLO**, plus the classic **Node / Pod / Deployment / StatefulSet /
-  DaemonSet** dashboards.
-
-### Connections & cost
-Each cluster links a **metrics (Prometheus)**, **logs (Loki)** and **traces (Tempo)** datasource
-by UID, plus FinOps cost settings (OpenCost toggle or an estimation price list). Configure them
-in the cluster ConfigEditor or the one-step *Add cluster* modal.
-
-### Alert pack
-`deploy/kubemeridian-prometheusrule.yaml` — 25 curated Prometheus Operator alerts (nodes, workloads,
-resources, storage, monitoring-meta) for environments without the kube-prometheus-stack mixin.
-
-### Datasource
-`devopstech-kubemeridian-datasource` — a thin proxy to the Kubernetes API. Frontend-only: it proxies
-read-only `GET` calls through Grafana with a ServiceAccount **bearer token** injected server-side
-(`secureJsonData`, never exposed to the browser), and implements `metricFindQuery` for dashboard
-template variables.
-
-## Develop
-
-```bash
-npm install
-npm run dev          # webpack watch build into ./dist
-npm run server       # docker compose: Grafana 13.x with the plugin mounted (unsigned allowed)
-# open http://localhost:3000  (admin / admin)
-npm run typecheck
-npm run build        # production build
-```
-
-The dev Grafana sets `GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=devopstech-kubemeridian-app,devopstech-kubemeridian-datasource`.
-
-## Deploy (in-cluster Grafana)
-
-See [`deploy/`](https://github.com/blackcheshire13/kubemeridian/tree/main/deploy): a read-only ServiceAccount + RBAC (`rbac.yaml`), a kube-prometheus-stack
-Grafana overlay (`kps-grafana-overlay.yaml`), the datasource provisioning Secret
-(`grafana-datasource.yaml`) and the alert pack (`kubemeridian-prometheusrule.yaml`).
-
-## Configure a cluster
-
-Create a `KubeMeridian Kubernetes` datasource (or use *Add cluster*) and set:
-
-- **API server URL** — e.g. `https://kubernetes.default.svc` (when Grafana runs in-cluster).
-- **Access via bearer token** — on; paste a read-only ServiceAccount token.
-- **Skip TLS verify** — on for the in-cluster API server certificate.
-- **Connections** — link your Prometheus / Loki / Tempo datasources.
+This repository used to hold **KubeMeridian**, a Kubernetes observability app plugin for
+Grafana. It was archived in October 2026: Grafana Labs declined to list it in the plugin
+catalog because it overlaps with Grafana Cloud Kubernetes Monitoring, so it can't get a
+community signature. The plugin source and its user guide are kept at the
+[`v2.5.2` tag](https://github.com/blackcheshire13/kubemeridian/tree/v2.5.2), and the last
+release, [v2.5.2](https://github.com/blackcheshire13/kubemeridian/releases/tag/v2.5.2), still
+installs as an unsigned plugin — see [devopstech.net/kubemeridian](https://devopstech.net/kubemeridian#install).
+`deploy/` and two screenshots under `src/` stay on this branch because that release's README
+links to them.
 
 ## License
 
-Distributed under Apache-2.0. See [LICENSE](https://github.com/blackcheshire13/kubemeridian/blob/main/LICENSE).
+Apache-2.0 — see [LICENSE](LICENSE).

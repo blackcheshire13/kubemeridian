@@ -1,11 +1,10 @@
-// KubeMeridian is archived. One rule for which pages belong to it (archived notice, social
-// card), shared by the theme and the build helpers. KM_LAST_RELEASE feeds the notice and the
-// homepage card; markdown cannot import it, so a new tag must also be updated by hand in
-// guide/install.md, kubemeridian.md, about.md and the root README.md.
+// KubeMeridian is archived: its plugin source and user guide live at the last release tag,
+// and the site keeps one archive page. KM_LAST_RELEASE feeds the archived notice; markdown
+// cannot import it, so kubemeridian.md and the root README.md repeat it by hand.
 export const KM_LAST_RELEASE = 'v2.5.2';
 export const KM_RELEASE_URL = `https://github.com/blackcheshire13/kubemeridian/releases/tag/${KM_LAST_RELEASE}`;
 
-/** @param {string} relativePath page source path, e.g. "kubemeridian.md" or "guide/install.md" */
+/** @param {string} relativePath page source path, e.g. "kubemeridian.md" */
 export function isKubeMeridianPage(relativePath) {
-  return relativePath === 'kubemeridian.md' || relativePath.startsWith('guide/');
+  return relativePath === 'kubemeridian.md';
 }

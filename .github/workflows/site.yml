@@ -1,0 +1,28 @@
+name: site
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            docs/package-lock.json
+      - name: Lint
+        run: npm ci && npm run lint
+      - name: Build the site (fails on missing or stale social cards)
+        run: npm ci --prefix docs && npm run build
+      - name: Bundle the pilot form worker
+        run: PILOT_TO=ci@example.invalid ./workers/pilot/deploy.sh --dry-run --outdir "$RUNNER_TEMP/pilot"

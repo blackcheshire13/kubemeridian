@@ -11,13 +11,10 @@ hero:
   actions:
     - theme: brand
       text: Install v2.5.2 (unsigned)
-      link: /guide/install
+      link: '#install'
     - theme: alt
-      text: Read the guide
-      link: /guide/introduction
-    - theme: alt
-      text: View on GitHub
-      link: https://github.com/blackcheshire13/kubemeridian
+      text: Guide and source at v2.5.2
+      link: https://github.com/blackcheshire13/kubemeridian/tree/v2.5.2
 
 features:
   - title: One plugin, the whole stack
@@ -42,5 +39,22 @@ Most Kubernetes monitoring setups are a pile of imported dashboards that drift, 
 - **Stack-agnostic.** Metrics from any Prometheus-compatible store; logs from Loki; traces from Tempo; RED from whichever mesh/ingress you run (or a custom mapping).
 - **Batteries included.** 12+ bundled dashboards and a curated Prometheus alert pack ship with the plugin.
 
-> [!TIP]
-> New here? Start with [Install](/guide/install), then [Connect your stack](/guide/connections) — that's the whole setup.
+## Install
+
+KubeMeridian is archived and not in the Grafana catalog, so it installs as an unsigned plugin
+from the last release, [v2.5.2](https://github.com/blackcheshire13/kubemeridian/releases/tag/v2.5.2).
+It needs Grafana 12.3 or newer and a Prometheus-compatible datasource; Loki, Tempo and OpenCost
+are optional. Set both variables on the Grafana instance and restart it:
+
+```bash
+# allow the unsigned plugin (both ids: the bundled datasource needs it too)
+GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=devopstech-kubemeridian-app,devopstech-kubemeridian-datasource
+
+# install the v2.5.2 release archive
+GF_INSTALL_PLUGINS='https://github.com/blackcheshire13/kubemeridian/releases/download/v2.5.2/devopstech-kubemeridian-app-2.5.2.zip;devopstech-kubemeridian-app'
+```
+
+The full user guide (connecting datasources, in-cluster deployment with RBAC, the alert pack,
+traffic profiles) and the plugin source are kept at the
+[v2.5.2 tag](https://github.com/blackcheshire13/kubemeridian/tree/v2.5.2/docs/guide); this
+repository's main branch now holds only the devopstech.net site.

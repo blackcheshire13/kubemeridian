@@ -47,7 +47,7 @@ function tableLabels(md: MarkdownRenderer) {
   });
 }
 
-// devopstech.net — the home of ICE; deusex (how ICE is built), news, blog, and the archived KubeMeridian docs
+// devopstech.net — the home of ICE; deusex (how ICE is built), news, blog, and the KubeMeridian archive page
 export default defineConfig({
   lang: 'en-US',
   title: 'devopstech',
@@ -55,7 +55,6 @@ export default defineConfig({
   cleanUrls: true,
   // docs/README.md is the deploy note for this folder, not a page of the site
   srcExclude: ['README.md'],
-  lastUpdated: true,
   head: [
     // ICE mark: the 16 px icon is drawn on its own pixel grid, the 32 px one scaled down would blur
     ['link', { rel: 'icon', href: '/favicon.ico', sizes: '16x16 32x32' }],
@@ -81,11 +80,6 @@ export default defineConfig({
   },
   transformPageData(pageData) {
     const rel = pageData.relativePath;
-    // "Edit on GitHub" and "Updated" belong to the KubeMeridian guide, not to product pages or posts
-    if (!rel.startsWith('guide/')) {
-      pageData.frontmatter.editLink = false;
-      pageData.frontmatter.lastUpdated = false;
-    }
     // product pages navigate with their section tabs, the blog index is already a list of posts
     if (/^(ice|deusex|news)\//.test(rel) || rel === 'about.md') {
       pageData.frontmatter.prev = false;
@@ -111,39 +105,6 @@ export default defineConfig({
       { text: 'About', link: '/about' },
     ],
     sidebar: {
-      '/guide/': [
-        {
-          text: 'KubeMeridian',
-          items: [{ text: 'Overview', link: '/kubemeridian' }],
-        },
-        {
-          text: 'Getting started',
-          items: [
-            { text: 'Introduction', link: '/guide/introduction' },
-            { text: 'Install', link: '/guide/install' },
-            { text: 'Connect your stack', link: '/guide/connections' },
-          ],
-        },
-        {
-          text: 'Observe',
-          items: [
-            { text: 'Topology & nodes', link: '/guide/topology' },
-            { text: 'Dashboards', link: '/guide/dashboards' },
-            { text: 'Logs & traces', link: '/guide/logs-traces' },
-            { text: 'Cost & efficiency', link: '/guide/cost' },
-            { text: 'Services (RED & SLO)', link: '/guide/red-slo' },
-            { text: 'Events', link: '/guide/events' },
-          ],
-        },
-        {
-          text: 'Operate',
-          items: [
-            { text: 'Alert pack', link: '/guide/alerts' },
-            { text: 'Traffic stack profiles', link: '/guide/traffic-profiles' },
-            { text: 'Deploy in-cluster', link: '/guide/deploy' },
-          ],
-        },
-      ],
       '/blog/': blogSidebar(),
     },
     socialLinks: [
@@ -156,11 +117,6 @@ export default defineConfig({
       copyright: '© 2026 devopstech · devopstech.net',
     },
     search: { provider: 'local' },
-    lastUpdated: { text: 'Updated', formatOptions: { dateStyle: 'long' } },
-    editLink: {
-      pattern: 'https://github.com/blackcheshire13/kubemeridian/edit/main/docs/:path',
-      text: 'Edit this page on GitHub',
-    },
   },
   sitemap: { hostname: 'https://devopstech.net' },
 });

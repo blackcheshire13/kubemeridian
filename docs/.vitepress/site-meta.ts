@@ -29,7 +29,7 @@ function pagePath(relativePath: string): string {
   return '/' + relativePath.replace(/\.md$/, '').replace(/(^|\/)index$/, '$1');
 }
 
-// public/og/<slug>.png, rendered by scripts/og-cards.mjs; guide pages share the KubeMeridian card.
+// public/og/<slug>.png, rendered by scripts/og-cards.mjs.
 function ogImage(relativePath: string): string {
   const path = pagePath(relativePath);
   const slug = path === '/' ? 'home' : path.replace(/^\/|\/$/g, '').replace(/\//g, '-');
