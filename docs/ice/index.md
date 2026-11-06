@@ -64,7 +64,7 @@ person approved, the action fails instead of shipping something nobody reviewed.
 company, acme-corp — not a production estate.</p>
 
 <figure class="dt-shot">
-  <a class="dt-light-only" href="/screenshots/ice/action-approval.png"><img src="/screenshots/ice/action-approval.png" width="1440" height="900" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request."></a><a class="dt-dark-only" href="/screenshots/ice/action-approval-dark.png"><img src="/screenshots/ice/action-approval-dark.png" width="1440" height="900" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request. Dark theme."></a>
+  <a class="dt-light-only" href="/screenshots/ice/action-approval.png"><img src="/screenshots/ice/action-approval.png" width="1440" height="836" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request."></a><a class="dt-dark-only" href="/screenshots/ice/action-approval-dark.png"><img src="/screenshots/ice/action-approval-dark.png" width="1440" height="836" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request. Dark theme."></a>
   <figcaption><strong>Approve a change, not a description.</strong> The rendered manifest and what merging it does; approving opens a pull request — ICE has no direct write path to the cluster.</figcaption>
 </figure>
 
