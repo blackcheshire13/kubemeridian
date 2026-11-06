@@ -514,3 +514,7 @@
 .dt-dark-only { display: none !important; }
 .dark .dt-light-only { display: none !important; }
 .dark .dt-dark-only { display: block !important; }
+
+/* screenshot lightbox (ShotLightbox.vue): the page behind it does not scroll */
+html.dt-lightbox-open { overflow: hidden; }
+.vp-doc .dt-shot a { cursor: zoom-in; }

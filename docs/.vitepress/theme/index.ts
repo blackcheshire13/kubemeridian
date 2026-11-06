@@ -13,6 +13,7 @@ import NavCta from './components/NavCta.vue';
 import NavBrandSuffix from './components/NavBrandSuffix.vue';
 import SectionNav from './components/SectionNav.vue';
 import NotFound from './components/NotFound.vue';
+import ShotLightbox from './components/ShotLightbox.vue';
 import ArchivedNotice from './components/ArchivedNotice.vue';
 import { isKubeMeridianPage } from '../kubemeridian.mjs';
 import './custom.css';
@@ -31,6 +32,8 @@ export default {
       'doc-before': () => (isKubeMeridianPage(rel()) ? h(ArchivedNotice) : h(SectionNav)),
       'home-hero-before': () => (isKubeMeridianPage(rel()) ? h(ArchivedNotice, { wide: true }) : null),
       'not-found': () => h(NotFound),
+      // screenshots open over the page, not as a bare PNG with no way back
+      'layout-bottom': () => h(ShotLightbox),
     });
   },
   enhanceApp({ app }) {
