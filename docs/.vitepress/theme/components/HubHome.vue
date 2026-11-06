@@ -28,12 +28,21 @@ const latest = posts.slice(0, 4);
 
       <figure class="intro-shot">
         <a href="/ice/#what-it-looks-like">
-          <picture>
-            <!-- on a phone the whole console is a blur: show the one card that matters -->
-            <source media="(max-width: 640px)" srcset="/screenshots/ice/action-approval-card.png" width="788" height="244" />
+          <!-- the console in the site's theme; on a phone, the one card that matters instead of a blur -->
+          <picture class="dt-light-only">
+            <source media="(max-width: 640px)" srcset="/screenshots/ice/action-approval-card.png" width="816" height="233" />
             <img
               src="/screenshots/ice/action-approval.png"
               alt="ICE console: a proposed remediation waiting for approval, with Approve and Deny"
+              width="1440"
+              height="900"
+            />
+          </picture>
+          <picture class="dt-dark-only">
+            <source media="(max-width: 640px)" srcset="/screenshots/ice/action-approval-card-dark.png" width="816" height="233" />
+            <img
+              src="/screenshots/ice/action-approval-dark.png"
+              alt="ICE console in its dark theme: a proposed remediation waiting for approval, with Approve and Deny"
               width="1440"
               height="900"
             />
@@ -201,7 +210,6 @@ a:hover { text-decoration-thickness: 2px; }
   display: block;
   width: 100%;
   height: auto;
-  background: #fff;
   border: 1px solid var(--vp-c-divider);
   border-radius: var(--dt-radius-card);
   box-shadow: 0 8px 24px rgb(0 0 0 / 0.08);
