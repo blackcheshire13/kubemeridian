@@ -1,5 +1,6 @@
 import { h } from 'vue';
-import DefaultTheme from 'vitepress/theme';
+// without-fonts: the site sets its own faces; the default theme would preload Inter on every page
+import DefaultTheme from 'vitepress/theme-without-fonts';
 import { useData, type Theme } from 'vitepress';
 import HubHome from './components/HubHome.vue';
 import IceLoop from './components/IceLoop.vue';

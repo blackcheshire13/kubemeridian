@@ -1,5 +1,6 @@
 // Build-time helpers for devopstech.net: per-page social meta, RSS feed, social-card check.
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { HeadConfig, PageData } from 'vitepress';
 import { DOCS, blogPosts, isoDate, readFrontmatter } from './blog.mjs';
@@ -253,4 +254,58 @@ ${items}
 </rss>
 `;
   writeFileSync(join(outDir, 'feed.xml'), feed);
+}
+
+// Cloudflare Pages response headers (dist/_headers), written after the build because the CSP
+// pins VitePress's inline scripts by hash and one of them (the page hash map) changes with
+// every build. Long caching for hashed assets; security headers on every page.
+export function writeHeaders(outDir: string) {
+  const html: string[] = [];
+  const walk = (dir: string) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, e.name);
+      if (e.isDirectory()) {
+        walk(p);
+      } else if (e.name.endsWith('.html')) {
+        html.push(readFileSync(p, 'utf8'));
+      }
+    }
+  };
+  walk(outDir);
+  const hashes = new Set<string>();
+  for (const page of html) {
+    for (const m of page.matchAll(/<script(?![^>]*\bsrc=)([^>]*)>([\s\S]*?)<\/script>/g)) {
+      if (/type="(?!module|text\/javascript)[^"]+"/.test(m[1])) {
+        continue; // JSON-LD and other data blocks are never executed
+      }
+      hashes.add(`'sha256-${createHash('sha256').update(m[2]).digest('base64')}'`);
+    }
+  }
+  const csp = [
+    "default-src 'self'",
+    `script-src 'self' ${[...hashes].sort().join(' ')} https://static.cloudflareinsights.com`,
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data:",
+    "connect-src 'self' https://cloudflareinsights.com",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    'upgrade-insecure-requests',
+  ].join('; ');
+  const rules = [
+    ['/*', [
+      'Strict-Transport-Security: max-age=31536000; includeSubDomains',
+      'X-Frame-Options: DENY',
+      'Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()',
+      `Content-Security-Policy: ${csp}`,
+    ]],
+    // content-hashed file names never change: cache for a year
+    ['/assets/*', ['Cache-Control: public, max-age=31536000, immutable']],
+    ['/screenshots/*', ['Cache-Control: public, max-age=604800']],
+    ['/og/*', ['Cache-Control: public, max-age=604800']],
+  ] as const;
+  const out = rules.map(([path, lines]) => [path, ...lines.map((l) => `  ${l}`)].join('\n')).join('\n');
+  writeFileSync(join(outDir, '_headers'), out + '\n');
 }
