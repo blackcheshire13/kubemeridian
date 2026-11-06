@@ -21,7 +21,10 @@ defineProps<{
     </ol>
     <figcaption><span class="back" aria-hidden="true">↺</span>{{ back }}</figcaption>
     <p v-if="steps.some((s) => s.gate)" class="legend">
-      <span class="node mini" aria-hidden="true"></span>A dashed step is decided by a person.
+      <svg class="mini" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+        <circle cx="8" cy="8" r="6.5" fill="none" stroke="var(--rail-accent)" stroke-width="2" stroke-dasharray="3 2.2" />
+      </svg>
+      A dashed step is decided by a person.
     </p>
   </figure>
 </template>
@@ -101,13 +104,8 @@ li.gate strong { color: var(--vp-c-text-2); }
   font-size: 14px;
   color: var(--vp-c-text-2);
 }
-.legend .node.mini {
-  display: inline-block;
+.legend .mini {
   flex: none;
-  position: static;
-  width: 14px;
-  height: 14px;
-  border-style: dashed;
 }
 figcaption {
   margin-top: 14px;
