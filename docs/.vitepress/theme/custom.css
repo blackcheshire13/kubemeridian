@@ -509,3 +509,8 @@
 .vp-doc div[class*='language-'] {
   border-radius: var(--dt-radius-card) !important;
 }
+
+/* product screenshots come in light/dark pairs: show the one matching the site's theme */
+.dt-dark-only { display: none !important; }
+.dark .dt-light-only { display: none !important; }
+.dark .dt-dark-only { display: block !important; }

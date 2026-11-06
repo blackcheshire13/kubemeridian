@@ -64,17 +64,17 @@ person approved, the action fails instead of shipping something nobody reviewed.
 company, acme-corp — not a production estate.</p>
 
 <figure class="dt-shot">
-  <a href="/screenshots/ice/action-approval.png"><img src="/screenshots/ice/action-approval.png" width="1440" height="900" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request."></a>
+  <a class="dt-light-only" href="/screenshots/ice/action-approval.png"><img src="/screenshots/ice/action-approval.png" width="1440" height="900" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request."></a><a class="dt-dark-only" href="/screenshots/ice/action-approval-dark.png"><img src="/screenshots/ice/action-approval-dark.png" width="1440" height="900" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request. Dark theme."></a>
   <figcaption><strong>Approve a change, not a description.</strong> The rendered manifest and what merging it does; approving opens a pull request — ICE has no direct write path to the cluster.</figcaption>
 </figure>
 
 <figure class="dt-shot">
-  <a href="/screenshots/ice/cases.png"><img src="/screenshots/ice/cases.png" width="1440" height="900" loading="lazy" alt="ICE console, Cases: one case verified after a re-check, one merged and deployed but not verified because the requirement has not been measured since the merge."></a>
+  <a class="dt-light-only" href="/screenshots/ice/cases.png"><img src="/screenshots/ice/cases.png" width="1440" height="900" loading="lazy" alt="ICE console, Cases: one case verified after a re-check, one merged and deployed but not verified because the requirement has not been measured since the merge."></a><a class="dt-dark-only" href="/screenshots/ice/cases-dark.png"><img src="/screenshots/ice/cases-dark.png" width="1440" height="900" loading="lazy" alt="ICE console, Cases: one case verified after a re-check, one merged and deployed but not verified because the requirement has not been measured since the merge. Dark theme."></a>
   <figcaption><strong>Merged is not fixed.</strong> A case reaches <em>verified</em> only after a re-check; the second one stays <em>deployed, not verified</em> until the requirement is measured again.</figcaption>
 </figure>
 
 <figure class="dt-shot">
-  <a href="/screenshots/ice/posture.png"><img src="/screenshots/ice/posture.png" width="1440" height="900" loading="lazy" alt="ICE console, Posture: compliance score with met, unmet, not checked and not applicable requirements per environment."></a>
+  <a class="dt-light-only" href="/screenshots/ice/posture.png"><img src="/screenshots/ice/posture.png" width="1440" height="900" loading="lazy" alt="ICE console, Posture: compliance score with met, unmet, not checked and not applicable requirements per environment."></a><a class="dt-dark-only" href="/screenshots/ice/posture-dark.png"><img src="/screenshots/ice/posture-dark.png" width="1440" height="900" loading="lazy" alt="ICE console, Posture: compliance score with met, unmet, not checked and not applicable requirements per environment. Dark theme."></a>
   <figcaption><strong>Posture as requirements.</strong> Not checked counts against the score; not applicable is left out of it.</figcaption>
 </figure>
 
