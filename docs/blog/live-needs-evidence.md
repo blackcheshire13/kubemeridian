@@ -2,8 +2,9 @@
 date: 2026-10-18
 title: "Live needs evidence: how ICE keeps its own feature list honest"
 sidebarTitle: Live needs evidence
-description: A security product that promises to call the unverified unverified has to apply the rule to itself. Five capability statuses, a dated evidence mark that CI enforces, and the five rows that lost their live status the day after the gate landed.
+description: "A security product that calls the unverified unverified must apply the rule to itself: five capability statuses and a CI gate that demands dated evidence."
 tags: [ice, engineering-process, testing, honesty]
+seoTitle: "Live needs evidence: keeping ICE's feature list honest"
 ---
 
 # Live needs evidence

@@ -1,6 +1,8 @@
 ---
 title: How ICE works — Kubernetes operator, agent and GitOps remediation
-description: The components of ICE — operator, API, console, agent and scan pipeline — the trust path from a read-only agent to a GitOps pull request, posture states and the response catalogue.
+description: "How ICE works: a read-only agent, an operator that writes only through pull requests, a console for approvals, and a re-measurement after every merge."
+seoTitle: "How ICE works: operator, agent, GitOps remediation"
+updated: 2026-11-06
 ---
 
 # How ICE works

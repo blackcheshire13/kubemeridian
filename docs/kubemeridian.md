@@ -29,6 +29,8 @@ features:
     details: Estimate cost from requests (or OpenCost), surface waste, and find over- and under-provisioned workloads.
   - title: RED & SLOs for any stack
     details: Rate / errors / latency / error-budget burn rate from Istio, Linkerd, Cilium, NGINX, Traefik, Envoy, Kong and more — pick or auto-detect your stack.
+seoTitle: "KubeMeridian: Kubernetes observability for Grafana"
+updated: 2026-11-06
 ---
 
 ## Why KubeMeridian

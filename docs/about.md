@@ -1,6 +1,7 @@
 ---
 title: About — Artur Stepanchenko
 description: Artur Stepanchenko, the DevOps and platform engineer behind devopstech — ICE, active defence for Kubernetes, and deusex, an autonomous development loop.
+updated: 2026-11-06
 ---
 
 # About

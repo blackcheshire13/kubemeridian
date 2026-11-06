@@ -1,6 +1,8 @@
 ---
 title: Blog
 description: Field notes on Kubernetes, security, autonomous development and observability — the problems behind ICE, deusex and KubeMeridian.
+seoTitle: "Blog: Kubernetes, security, autonomous development"
+updated: 2026-11-06
 ---
 
 # Blog

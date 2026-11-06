@@ -2,8 +2,9 @@
 date: 2026-06-27
 title: "Vault HA on Kubernetes: auto-unseal, dynamic secrets, and a DR runbook"
 sidebarTitle: Vault HA on Kubernetes
-description: A production-minded HashiCorp Vault setup on Kubernetes — HA storage, auto-unseal via cloud KMS, Kubernetes auth, dynamic secrets and a disaster-recovery runbook.
+description: "A production-minded HashiCorp Vault on Kubernetes: HA storage, auto-unseal via cloud KMS, Kubernetes auth, dynamic secrets and a disaster-recovery runbook."
 tags: [vault, kubernetes, security, secrets-management]
+seoTitle: "Vault HA on Kubernetes: auto-unseal, dynamic secrets, DR"
 ---
 
 # Vault HA on Kubernetes: auto-unseal, dynamic secrets, and a DR runbook

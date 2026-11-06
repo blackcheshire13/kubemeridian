@@ -2,8 +2,9 @@
 date: 2026-10-18
 title: "The bottleneck is the human: a week when every agent worked and nothing shipped"
 sidebarTitle: The bottleneck is the human
-description: An autonomous development loop where every role behaved as designed — and two green one-line fixes waited six days. Why refusals by category never expire, and what deusex changed.
+description: "Every role in an autonomous development loop behaved as designed, yet two green one-line fixes waited six days. Why refusals by category never expire."
 tags: [deusex, autonomous-development, agents, engineering-process]
+seoTitle: "The bottleneck is the human: a stalled AI dev loop"
 ---
 
 # The bottleneck is the human

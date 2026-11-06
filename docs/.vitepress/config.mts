@@ -1,5 +1,5 @@
 import { defineConfig, type MarkdownRenderer } from 'vitepress';
-import { SITE_DESCRIPTION, checkOgCards, pageHead, writeFeed } from './site-meta';
+import { SITE_DESCRIPTION, checkOgCards, pageHead, sitemapLastmod, writeFeed } from './site-meta';
 
 // Tables keep their semantics and their column names when CSS stacks them on phones:
 // explicit ARIA roles, and each cell carries its column header as data-label.
@@ -81,6 +81,16 @@ export default defineConfig({
   },
   transformPageData(pageData) {
     const rel = pageData.relativePath;
+    // search results show ~60 characters of a title: a page may carry a shorter `seoTitle`,
+    // and the " | devopstech" suffix is dropped where it would push the title past that
+    if (typeof pageData.frontmatter.seoTitle === 'string') {
+      pageData.title = pageData.frontmatter.seoTitle;
+    }
+    // VitePress reads the template from pageData.titleTemplate (copied from front matter earlier)
+    if (pageData.frontmatter.titleTemplate === undefined && `${pageData.title} | devopstech`.length > 60) {
+      pageData.titleTemplate = false;
+      pageData.frontmatter.titleTemplate = false;
+    }
     // product pages navigate with their section tabs, the blog index is already a list of posts
     if (/^(ice|deusex|news)\//.test(rel) || rel === 'about.md') {
       pageData.frontmatter.prev = false;
@@ -93,7 +103,7 @@ export default defineConfig({
     writeFeed(outDir);
   },
   themeConfig: {
-    logo: { light: '/ice-mark.svg', dark: '/ice-mark-dark.svg', alt: '' },
+    logo: { light: '/ice-mark.svg', dark: '/ice-mark-dark.svg', alt: 'ICE logo' },
     siteTitle: 'ICE',
     nav: [
       { text: 'ICE', link: '/ice/', activeMatch: '^/ice/' },
@@ -108,5 +118,5 @@ export default defineConfig({
     },
     // no site search until the ICE documentation section exists; it will search that
   },
-  sitemap: { hostname: 'https://devopstech.net' },
+  sitemap: { hostname: 'https://devopstech.net', transformItems: sitemapLastmod },
 });
