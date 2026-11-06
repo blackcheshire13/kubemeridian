@@ -3,7 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { HeadConfig, PageData } from 'vitepress';
 import { DOCS, blogPosts, isoDate } from './blog.mjs';
-import { cardSpecs } from './og-specs.mjs';
+import { cardSpecs, templateHash } from './og-specs.mjs';
 import { KM_LAST_RELEASE, isKubeMeridianPage } from './kubemeridian.mjs';
 
 export const SITE = 'https://devopstech.net';
@@ -133,14 +133,17 @@ export function pageHead(pageData: PageData): HeadConfig[] {
 }
 
 // The cards are rendered by hand and committed, so the build refuses to ship a page whose
-// card is missing, orphaned, or drawn from inputs (title, date, accent…) that have changed.
+// card is missing, orphaned, or drawn from inputs (title, date, accent…, or the renderer and
+// its mark files) that have changed.
 export function checkOgCards() {
   const manifestFile = join(OG_DIR, 'manifest.json');
   const manifest: Record<string, unknown> = existsSync(manifestFile)
     ? JSON.parse(readFileSync(manifestFile, 'utf8'))
     : {};
   const specs = cardSpecs();
+  const template = manifest.__template === templateHash() ? [] : ['the card template or a mark file changed since the cards were drawn'];
   const problems = [
+    ...template,
     ...specs.flatMap((spec) => {
       if (!existsSync(join(OG_DIR, `${spec.slug}.png`))) {
         return [`og/${spec.slug}.png is missing`];
@@ -151,7 +154,7 @@ export function checkOgCards() {
       return [];
     }),
     ...Object.keys(manifest)
-      .filter((slug) => !specs.some((s) => s.slug === slug))
+      .filter((slug) => slug !== '__template' && !specs.some((s) => s.slug === slug))
       .map((slug) => `og/${slug}.png belongs to a page that no longer exists — delete it`),
   ];
   if (problems.length) {

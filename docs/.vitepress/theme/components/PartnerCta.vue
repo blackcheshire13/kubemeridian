@@ -69,7 +69,7 @@ async function copy() {
 <template>
   <div class="cta" :class="variant">
     <p v-if="lead" class="lead">{{ lead }}</p>
-    <a v-if="variant !== 'address'" class="btn" :href="mailHref" @click="onMail">{{ LABEL[topic] }}</a>
+    <a v-if="variant !== 'address'" class="dt-btn" :href="mailHref" @click="onMail">{{ LABEL[topic] }}</a>
     <p class="mail">
       <span class="addr">{{ EMAIL }}</span>
       <button type="button" class="copy" @click="copy">{{ state === 'copied' ? 'Copied' : 'Copy' }}</button>
@@ -100,24 +100,6 @@ async function copy() {
   line-height: 1.55;
   color: var(--vp-c-text-1);
 }
-.btn {
-  display: inline-flex;
-  align-items: center;
-  min-height: 46px;
-  padding: 0 20px;
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.2;
-  text-decoration: none !important;
-  border-radius: 3px;
-  background: var(--dt-ink);
-  color: var(--dt-paper) !important;
-  transition: background-color 0.15s ease;
-}
-.btn:hover {
-  background: var(--vp-c-brand-1);
-}
-.btn:focus-visible,
 .copy:focus-visible,
 .web:focus-visible {
   outline: 2px solid var(--vp-c-brand-1);
@@ -143,7 +125,7 @@ async function copy() {
   font-size: 14px;
   color: var(--vp-c-text-1);
   border: 1px solid var(--vp-c-border);
-  border-radius: 3px;
+  border-radius: var(--dt-radius-control);
   background: var(--vp-c-bg);
   cursor: pointer;
 }
@@ -168,9 +150,6 @@ async function copy() {
 }
 
 @media (max-width: 640px) {
-  .btn {
-    width: 100%;
-  }
   .copy,
   .web {
     min-height: 44px;

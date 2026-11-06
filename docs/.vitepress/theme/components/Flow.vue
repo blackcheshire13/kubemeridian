@@ -68,7 +68,7 @@ li:not(:last-child)::after {
 li.human { border-top-style: dashed; }
 li.measure { border-top-color: var(--vp-c-text-1); }
 strong {
-  font-family: var(--dt-font-display);
+  font-family: var(--vp-font-family-base);
   font-size: 16px;
   line-height: 1.3;
 }

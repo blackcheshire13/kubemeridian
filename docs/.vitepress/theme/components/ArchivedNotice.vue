@@ -35,9 +35,8 @@ defineProps<{ wide?: boolean }>();
   align-items: center;
   gap: 10px;
   margin: 0 0 6px;
-  font-family: var(--dt-font-display);
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
 }
 .mark {
   width: 9px;

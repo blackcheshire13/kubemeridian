@@ -1,8 +1,10 @@
 {
+  "__template": "8c4258f91caf198c",
   "home": {
     "slug": "home",
     "kicker": "devopstech · ICE",
     "accent": "#2675a9",
+    "mark": "ice",
     "title": "Kubernetes security fixes that prove they worked.",
     "sub": "ICE · in development, Apache-2.0 at release"
   },
@@ -11,21 +13,24 @@
     "kicker": "devopstech · ICE",
     "accent": "#2675a9",
     "title": "ICE",
-    "sub": "Kubernetes active defence with GitOps remediation"
+    "sub": "Kubernetes active defence with GitOps remediation",
+    "mark": "ice"
   },
   "ice-how-it-works": {
     "slug": "ice-how-it-works",
     "kicker": "devopstech · ICE",
     "accent": "#2675a9",
     "title": "How ICE works",
-    "sub": "Operator, agent, trust path, posture and responses"
+    "sub": "Operator, agent, trust path, posture and responses",
+    "mark": "ice"
   },
   "ice-design-partners": {
     "slug": "ice-design-partners",
     "kicker": "devopstech · ICE",
     "accent": "#2675a9",
     "title": "ICE design partners",
-    "sub": "Run the loop on your cluster early"
+    "sub": "Run the loop on your cluster early",
+    "mark": "ice"
   },
   "deusex": {
     "slug": "deusex",

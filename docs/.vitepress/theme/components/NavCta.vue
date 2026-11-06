@@ -20,7 +20,7 @@ defineProps<{ screen?: boolean }>();
   color: var(--vp-c-text-1);
   background: transparent;
   border: 1.5px solid var(--vp-c-text-1);
-  border-radius: 3px;
+  border-radius: var(--dt-radius-control);
   transition: color 0.15s ease, border-color 0.15s ease;
 }
 /* outlined, so the one solid button on a page is that page's own closing call to action */

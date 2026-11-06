@@ -91,6 +91,8 @@ const fmt = (iso: string) =>
   padding: 14px 0;
 }
 .compact .title {
+  font-family: var(--vp-font-family-base);
+  font-weight: 600;
   font-size: 18px;
   color: var(--vp-c-text-1);
   text-decoration: none;

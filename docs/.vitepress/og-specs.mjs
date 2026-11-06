@@ -1,7 +1,24 @@
 // What each social card shows, resolved from the page sources. scripts/og-cards.mjs draws
 // these specs and stores them in public/og/manifest.json; the docs build recomputes them and
 // fails if any card is missing, orphaned or drawn from different inputs.
-import { blogPosts, readFrontmatter } from './blog.mjs';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { DOCS, blogPosts, readFrontmatter } from './blog.mjs';
+
+// The brand mark drawn on a card: ICE's pages carry the ICE core sample, everything else
+// (the blog included) devopstech's ring. Both are read from public/, the site's icons.
+export const MARK_FILES = { devopstech: 'public/devopstech.svg', ice: 'public/favicon.svg' };
+
+// What a card looks like depends on the renderer and the mark files too, not only on its
+// spec; the manifest stores this hash so the build notices when they change.
+export function templateHash() {
+  const h = createHash('sha256');
+  for (const f of ['scripts/og-cards.mjs', ...Object.values(MARK_FILES)]) {
+    h.update(readFileSync(join(DOCS, f)));
+  }
+  return h.digest('hex').slice(0, 16);
+}
 
 const ACCENT = {
   ice: '#2675a9',
@@ -16,17 +33,17 @@ function split(title) {
   return m ? [m[1], m[2].charAt(0).toUpperCase() + m[2].slice(1)] : [title, ''];
 }
 
-function fromPage(slug, file, kicker, accent, sub) {
+function fromPage(slug, file, kicker, accent, sub, mark) {
   const [title, rest] = split(String(readFrontmatter(file).title));
-  return { slug, kicker, accent, title, sub: sub ?? rest };
+  return { slug, kicker, accent, title, sub: sub ?? rest, ...(mark ? { mark } : {}) };
 }
 
 export function cardSpecs() {
   return [
-    { slug: 'home', kicker: 'devopstech · ICE', accent: ACCENT.ice, title: 'Kubernetes security fixes that prove they worked.', sub: 'ICE · in development, Apache-2.0 at release' },
-    fromPage('ice', 'ice/index.md', 'devopstech · ICE', ACCENT.ice),
-    fromPage('ice-how-it-works', 'ice/how-it-works.md', 'devopstech · ICE', ACCENT.ice, 'Operator, agent, trust path, posture and responses'),
-    fromPage('ice-design-partners', 'ice/design-partners.md', 'devopstech · ICE', ACCENT.ice),
+    { slug: 'home', kicker: 'devopstech · ICE', accent: ACCENT.ice, mark: 'ice', title: 'Kubernetes security fixes that prove they worked.', sub: 'ICE · in development, Apache-2.0 at release' },
+    fromPage('ice', 'ice/index.md', 'devopstech · ICE', ACCENT.ice, undefined, 'ice'),
+    fromPage('ice-how-it-works', 'ice/how-it-works.md', 'devopstech · ICE', ACCENT.ice, 'Operator, agent, trust path, posture and responses', 'ice'),
+    fromPage('ice-design-partners', 'ice/design-partners.md', 'devopstech · ICE', ACCENT.ice, undefined, 'ice'),
     fromPage('deusex', 'deusex/index.md', 'devopstech · deusex', ACCENT.deusex),
     fromPage('deusex-method', 'deusex/method.md', 'devopstech · deusex', ACCENT.deusex),
     { slug: 'kubemeridian', kicker: 'devopstech · archived', accent: ACCENT.km, title: 'KubeMeridian', sub: 'Kubernetes observability for Grafana in one app plugin — archived' },

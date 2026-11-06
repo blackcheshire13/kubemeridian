@@ -1,6 +1,9 @@
 /*
  * devopstech — "engineering notebook": warm paper, ink, a brass mark.
  * Rules: nothing smaller than 13px, no large red surfaces, left-aligned everything.
+ * Shared with the ICE console (ICE repo docs/DESIGN.md): Geologica for text, JetBrains Mono
+ * for code, the ICE ice ramp; Bricolage Grotesque only for large English display headings;
+ * brass belongs to devopstech and never to the product; radius 6px on controls, 4px on cards.
  */
 :root {
   --dt-paper: oklch(0.975 0.008 85);
@@ -17,9 +20,11 @@
   --dt-deusex: oklch(0.6 0.13 70);
   --dt-km: #326ce5;
 
-  --dt-font-display: 'Bricolage Grotesque', 'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, sans-serif;
-  --vp-font-family-base: 'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --vp-font-family-mono: 'Atkinson Hyperlegible Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --dt-font-display: 'Bricolage Grotesque', 'Geologica', ui-sans-serif, system-ui, sans-serif;
+  --vp-font-family-base: 'Geologica', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --vp-font-family-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --dt-radius-control: 6px;
+  --dt-radius-card: 4px;
 
   --vp-c-bg: var(--dt-paper);
   --vp-c-bg-alt: var(--dt-paper-2);
@@ -66,17 +71,22 @@
 }
 
 /* ---------- typography ---------- */
+/* Bricolage Grotesque only for large English display headings (h1, h2, heroes); smaller
+   headings, labels and the ICE wordmark use the text face, as in the ICE console */
 .vp-doc h1,
 .vp-doc h2,
-.vp-doc h3,
 .VPHero .name,
-.VPHero .text,
-.VPFeature .title,
-.VPNavBarTitle .title {
+.VPHero .text {
   font-family: var(--dt-font-display);
   letter-spacing: -0.015em;
 }
-.VPNavBarTitle .title { font-weight: 700; }
+.vp-doc h3,
+.VPFeature .title,
+.VPNavBarTitle .title {
+  font-family: var(--vp-font-family-base);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
 .vp-doc h1 { font-weight: 800; }
 .vp-doc h2 { font-weight: 700; border-top-color: var(--dt-rule); }
 .vp-doc p,
@@ -148,6 +158,7 @@
   padding: 28px 28px 22px;
   background: var(--dt-paper-2);
   border: 1px solid var(--vp-c-divider);
+  border-radius: var(--dt-radius-card);
   max-width: 620px;
 }
 .vp-doc .dt-quote {
@@ -226,9 +237,8 @@
 .vp-doc .dt-glance > div { padding: 14px 0 0; }
 .vp-doc .dt-glance dt {
   margin: 0 0 4px;
-  font-family: var(--dt-font-display);
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
 }
 .vp-doc .dt-glance dd {
   margin: 0;
@@ -343,7 +353,7 @@
   width: 100%;
   height: auto;
   border: 1px solid var(--vp-c-border);
-  border-radius: 3px;
+  border-radius: var(--dt-radius-card);
 }
 .vp-doc .dt-shot figcaption {
   margin-top: 10px;
@@ -400,7 +410,7 @@
   font-weight: 600;
   line-height: 1.2;
   text-decoration: none !important;
-  border-radius: 3px;
+  border-radius: var(--dt-radius-control);
   background: var(--dt-ink);
   color: var(--dt-paper) !important;
   transition: background-color 0.15s ease;
@@ -423,4 +433,23 @@
   margin: 28px 0 8px;
   padding-top: 24px;
   border-top: 2px solid var(--vp-c-text-1);
+}
+
+/* VitePress sets these labels at 12px (`.VPMenu[data-v] .label` and friends); the site's
+   floor is 13px. Selectors outrank VitePress's own, so bundle order does not matter. */
+.VPNav .VPNavBar .VPMenu .label,
+.VPNav .VPNavScreen .VPNavScreenAppearance .text,
+.VPNav .DocSearch-Button .DocSearch-Button-Key:first-child::after {
+  font-size: 13px;
+}
+/* VitePress's own controls and cards on the shared radii */
+.VPButton,
+.DocSearch-Button,
+.vp-doc div[class*='language-'] > button.copy {
+  border-radius: var(--dt-radius-control) !important;
+}
+.VPMenu,
+.VPFeature,
+.vp-doc div[class*='language-'] {
+  border-radius: var(--dt-radius-card) !important;
 }

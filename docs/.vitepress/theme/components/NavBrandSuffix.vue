@@ -19,4 +19,10 @@
   border-left: 1px solid var(--vp-c-divider);
   white-space: nowrap;
 }
+/* 768–959 px shows the full nav in one row; without this the bar is wider than the screen */
+@media (min-width: 768px) and (max-width: 959.98px) {
+  .brand-suffix {
+    display: none;
+  }
+}
 </style>

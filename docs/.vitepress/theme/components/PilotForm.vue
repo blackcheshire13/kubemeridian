@@ -156,7 +156,7 @@ textarea {
   color: var(--vp-c-text-1);
   background: var(--vp-c-bg);
   border: 1px solid var(--vp-c-border);
-  border-radius: 3px;
+  border-radius: var(--dt-radius-control);
 }
 textarea {
   resize: vertical;
@@ -214,9 +214,8 @@ textarea:focus-visible {
 }
 .sent .sent-title {
   margin-bottom: 4px !important;
-  font-family: var(--dt-font-display);
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
 }
 .alt {
   margin-top: 28px;
