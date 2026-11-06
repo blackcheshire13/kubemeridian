@@ -116,7 +116,7 @@ export default defineConfig({
         'ICE and deusex are in active development · <a href="/kubemeridian">KubeMeridian</a> is archived (Apache-2.0) · <a href="/feed.xml">RSS</a>',
       copyright: '© 2026 devopstech · devopstech.net',
     },
-    search: { provider: 'local' },
+    // no site search until the ICE documentation section exists; it will search that
   },
   sitemap: { hostname: 'https://devopstech.net' },
 });

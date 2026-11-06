@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// Home of ICE: what it is and who it is for in the first screen, one call to action,
-// then how a case closes, what the console looks like, how ICE is built, news and writing.
+// Home of ICE: the first screen says what it is, for whom, shows the console and offers one
+// action; then where ICE stands, how a case closes, how ICE is built, news and writing.
 import { data as posts } from '../posts.data';
 import NewsList from './NewsList.vue';
 import { NEWS, newsId } from '../../news.mjs';
@@ -17,14 +17,12 @@ const lastNews = NEWS.find((n) => n.status !== 'planned');
         <p class="kicker">
           <img class="kern" src="/ice-mark.svg" alt="" width="10" height="20" />
           <img class="kern dark-only" src="/ice-mark-dark.svg" alt="" width="10" height="20" />
-          <span><strong>ICE</strong> · active defence for Kubernetes · in development, Apache-2.0 at release</span>
+          <span><strong>ICE</strong> · Kubernetes security for teams without a security team</span>
         </p>
-        <h1>Kubernetes security fixes that <span class="turn">prove they worked.</span></h1>
+        <h1>Security fixes that <span class="turn">prove they worked.</span></h1>
         <p class="lede">
-          ICE turns findings from your cluster, CI image scans and runtime sensors into GitOps pull
-          requests you review and merge, then keeps each case open until a measurement taken after
-          the merge shows the fix landed. Built for teams of 5–50 engineers without a dedicated
-          security team.
+          Findings become GitOps pull requests you approve. A case closes only when the cluster
+          proves the fix.
         </p>
         <div class="actions">
           <a class="dt-btn" href="/ice/design-partners">Become a design partner</a>
@@ -32,25 +30,36 @@ const lastNews = NEWS.find((n) => n.status !== 'planned');
         </div>
       </div>
 
-      <aside class="now" aria-label="Where ICE stands">
-        <h2>Where ICE stands</h2>
-        <ul>
-          <li>
-            <span class="dt-s live" aria-hidden="true"></span>
-            <span><strong>13 capabilities live</strong> on a real cluster, 66 tested — <a href="/ice/#honest-status">what that means</a></span>
-          </li>
-          <li>
-            <span class="dt-s live" aria-hidden="true"></span>
-            <span><strong>Built by an autonomous loop</strong> — 88% of merges, 33&nbsp;min median to merge</span>
-          </li>
-          <li v-if="lastNews">
-            <span class="dt-s" aria-hidden="true"></span>
-            <span><strong>Latest</strong> — <a :href="`/news/#${newsId(lastNews)}`">{{ lastNews.title }}</a></span>
-          </li>
-        </ul>
-        <p class="asof">As of 6 November 2026 · loop figures for 19 October – 5 November</p>
-      </aside>
+      <figure class="intro-shot">
+        <a href="/ice/#what-it-looks-like">
+          <img
+            src="/screenshots/ice/action-approval.png"
+            alt="ICE console: approving a change shows the rendered manifest and what merging it does"
+            width="1440"
+            height="900"
+          />
+        </a>
+        <figcaption>The ICE console approving a change. Synthetic demo data.</figcaption>
+      </figure>
     </header>
+
+    <aside class="now" aria-label="Where ICE stands">
+      <ul>
+        <li>
+          <span class="dt-s live" aria-hidden="true"></span>
+          <span><strong>13 capabilities live</strong> on a real cluster, 66 tested · <a href="/ice/#honest-status">what that means</a></span>
+        </li>
+        <li>
+          <span class="dt-s live" aria-hidden="true"></span>
+          <span><strong>88% of merges</strong> come from an autonomous loop · <a href="/deusex/">deusex</a></span>
+        </li>
+        <li v-if="lastNews">
+          <span class="dt-s" aria-hidden="true"></span>
+          <span><strong>Latest:</strong> <a :href="`/news/#${newsId(lastNews)}`">{{ lastNews.title }}</a></span>
+        </li>
+      </ul>
+      <p class="asof">As of 6 November 2026 · loop figures for 19 October – 5 November</p>
+    </aside>
 
     <section class="projects" aria-label="How ICE works">
       <article class="project ice">
@@ -71,19 +80,6 @@ const lastNews = NEWS.find((n) => n.status !== 'planned');
         <div class="figure"><IceLoop /></div>
       </article>
 
-      <figure class="shot">
-        <img
-          src="/screenshots/ice/action-approval.png"
-          alt="ICE console: approving a change shows the rendered manifest and what merging it does"
-          width="1440"
-          height="900"
-          loading="lazy"
-        />
-        <figcaption>
-          Approving a change in the ICE console: the rendered manifest and what merging it does.
-          Synthetic demo data. <a href="/ice/#what-it-looks-like">More screenshots</a>
-        </figcaption>
-      </figure>
 
       <article class="built">
         <p class="meta"><span class="dot" aria-hidden="true"></span>How ICE is built</p>
@@ -157,12 +153,12 @@ a {
 }
 a:hover { text-decoration-thickness: 2px; }
 
-/* intro: what ICE is, for whom, one action on the left; a dated status panel on the right */
+/* intro: what ICE is and one action on the left, the console on the right; status strip below */
 .intro {
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
-  gap: 40px clamp(32px, 6vw, 88px);
-  align-items: end;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 40px clamp(32px, 5vw, 72px);
+  align-items: center;
 }
 .kicker {
   display: flex;
@@ -179,7 +175,7 @@ a:hover { text-decoration-thickness: 2px; }
 :global(.dark .hub .kern) { display: none; }
 :global(.dark .hub .kern.dark-only) { display: block; }
 .intro h1 {
-  font-size: clamp(38px, 6vw, 72px);
+  font-size: clamp(38px, 5.4vw, 66px);
   line-height: 1;
   font-weight: 800;
   text-wrap: balance;
@@ -193,8 +189,8 @@ a:hover { text-decoration-thickness: 2px; }
   background-image: linear-gradient(transparent 88%, var(--dt-brass) 88%, var(--dt-brass) 94%, transparent 94%);
 }
 .lede {
-  margin: 28px 0 28px;
-  max-width: 600px;
+  margin: 24px 0 28px;
+  max-width: 480px;
   font-size: clamp(18px, 1.6vw, 20px);
   line-height: 1.6;
   color: var(--vp-c-text-1);
@@ -207,41 +203,55 @@ a:hover { text-decoration-thickness: 2px; }
   gap: 12px 28px;
 }
 .actions .dt-next { margin: 0 !important; }
+.intro-shot {
+  margin: 0;
+}
+.intro-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: var(--dt-radius-card);
+  box-shadow: 0 18px 40px -24px color-mix(in oklch, var(--dt-ink) 45%, transparent);
+}
+.intro-shot figcaption {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+}
 
 .now {
-  padding-top: 14px;
+  margin-top: clamp(40px, 6vw, 64px);
+  padding-top: 16px;
   border-top: 2px solid var(--vp-c-text-1);
-}
-.now h2 {
-  font-size: 18px;
-  font-weight: 700;
 }
 .now ul {
   list-style: none;
-  margin: 10px 0 0;
+  margin: 0;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 32px;
 }
 .now li {
   display: flex;
   gap: 10px;
-  padding: 10px 0;
   font-size: 15px;
   line-height: 1.5;
   color: var(--vp-c-text-2);
-  border-top: 1px solid var(--vp-c-divider);
 }
 .now li strong { color: var(--vp-c-text-1); }
 .now li .dt-s { padding-top: 1px; }
 .now li .dt-s::before { margin-right: 0; }
 .asof {
-  margin: 8px 0 0;
+  margin: 12px 0 0;
   font-size: 13px;
   color: var(--vp-c-text-2);
 }
 
 /* projects */
 .projects {
-  margin-top: clamp(56px, 9vw, 104px);
+  margin-top: clamp(48px, 7vw, 88px);
   border-top: 2px solid var(--vp-c-text-1);
 }
 .project {
@@ -326,24 +336,6 @@ a:hover { text-decoration-thickness: 2px; }
   min-height: 44px;
 }
 .go a:first-child::after { content: ' →'; white-space: pre; }
-.shot {
-  margin: 0;
-  padding: clamp(28px, 4vw, 48px) 0;
-  border-bottom: 1px solid var(--vp-c-divider);
-}
-.shot img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: var(--dt-radius-card);
-}
-.shot figcaption {
-  margin-top: 12px;
-  font-size: 15px;
-  line-height: 1.5;
-  color: var(--vp-c-text-2);
-}
 .built {
   padding: clamp(28px, 4vw, 48px) 0;
   border-bottom: 1px solid var(--vp-c-divider);
@@ -451,7 +443,7 @@ a:hover { text-decoration-thickness: 2px; }
   .project {
     animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
-  .intro .now { animation-delay: 0.12s; }
+  .intro .intro-shot { animation-delay: 0.12s; }
   .project.ice { animation-delay: 0.2s; }
 }
 @keyframes rise {
@@ -462,6 +454,7 @@ a:hover { text-decoration-thickness: 2px; }
 /* narrow screens */
 @media (max-width: 960px) {
   .intro { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .now ul { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 860px) {
   .project { grid-template-columns: minmax(0, 1fr); }
