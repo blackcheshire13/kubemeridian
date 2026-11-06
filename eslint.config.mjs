@@ -1,39 +1,20 @@
-import { defineConfig } from 'eslint/config';
-import baseConfig from './.config/eslint.config.mjs';
+// Lints the site's own JavaScript: VitePress config helpers and scripts (docs/.vitepress,
+// docs/scripts), the Pages Functions (functions/) and the pilot form worker (workers/).
+// Vue and TypeScript files are compiled by the VitePress build, which runs in CI too.
+import js from '@eslint/js';
+import globals from 'globals';
 
-export default defineConfig([
+export default [
+  { ignores: ['**/node_modules/**', '**/dist/**', 'docs/.vitepress/cache/**', '**/.wrangler/**'] },
+  js.configs.recommended,
   {
-    ignores: [
-      '**/logs',
-      '**/*.log',
-      '**/npm-debug.log*',
-      '**/yarn-debug.log*',
-      '**/yarn-error.log*',
-      '**/.pnpm-debug.log*',
-      '**/node_modules/',
-      '.yarn/cache',
-      '.yarn/unplugged',
-      '.yarn/build-state.yml',
-      '.yarn/install-state.gz',
-      '**/.pnp.*',
-      '**/pids',
-      '**/*.pid',
-      '**/*.seed',
-      '**/*.pid.lock',
-      '**/lib-cov',
-      '**/coverage',
-      '**/dist/',
-      '**/artifacts/',
-      '**/work/',
-      '**/ci/',
-      'test-results/',
-      'playwright-report/',
-      'blob-report/',
-      'playwright/.cache/',
-      'playwright/.auth/',
-      '**/.idea',
-      '**/.eslintcache',
-    ],
+    files: ['**/*.{js,mjs}'],
+    languageOptions: { ecmaVersion: 2024, sourceType: 'module', globals: { ...globals.node } },
+    rules: { curly: 'error', eqeqeq: ['error', 'smart'] },
   },
-  ...baseConfig,
-]);
+  {
+    // Workers runtime: fetch, Response, crypto, btoa… but no Node globals
+    files: ['functions/**/*.js', 'workers/**/*.js'],
+    languageOptions: { globals: { ...globals.serviceworker } },
+  },
+];

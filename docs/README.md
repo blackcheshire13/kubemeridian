@@ -1,45 +1,56 @@
-# KubeMeridian docs
+# devopstech.net — site
 
-VitePress documentation site for [devopstech.net](https://devopstech.net).
+VitePress site for [devopstech.net](https://devopstech.net). This file is excluded from the
+site itself (`srcExclude` in `.vitepress/config.mts`).
 
 ## Local
 
 ```bash
 cd docs
-npm install
+npm ci
 npm run docs:dev      # http://localhost:5173
 npm run docs:build    # -> .vitepress/dist
 ```
 
-## Deploy — Cloudflare Pages (devopstech.net)
+`vitepress preview` caches the file list when it starts: restart it after every rebuild.
 
-The domain is on Cloudflare. Create a Pages project connected to this repo:
-
-| Setting | Value |
-|---|---|
-| Production branch | `main` |
-| Root directory | `docs` |
-| Build command | `npm run docs:build` |
-| Build output directory | `.vitepress/dist` |
-| Node version | `20` (env var `NODE_VERSION=20`) |
-
-Then add **devopstech.net** (and `www`) as a custom domain on the Pages project —
-Cloudflare wires the DNS automatically since the zone is already on the account.
-
-Every push to `main` redeploys. Preview deployments are created for PRs.
-
-### Deployed
-
-Live as Cloudflare Pages project **`kubemeridian-docs`** → `https://kubemeridian-docs.pages.dev`,
-custom domains **devopstech.net** + **www.devopstech.net**.
-
-Manual redeploy (direct upload, no git integration needed):
+Social cards (`public/og/*.png`) are drawn by hand and committed. The build fails when one is
+missing, orphaned or stale, including after a change to `scripts/og-cards.mjs` or to the mark
+files it reads (`public/favicon.svg`, `public/devopstech.svg`). Redraw them with:
 
 ```bash
-cd docs && npm ci && npm run docs:build
-CLOUDFLARE_API_TOKEN=<your-token> CLOUDFLARE_ACCOUNT_ID=<your-account-id> \
-  npx wrangler@latest pages deploy .vitepress/dist \
-    --project-name=kubemeridian-docs --branch=main --commit-dirty=true
+CHROME_BIN=/path/to/chrome node scripts/og-cards.mjs
 ```
 
-(Or connect the GitHub repo in the Cloudflare Pages dashboard for push-to-deploy.)
+## Deploy — Cloudflare Pages
+
+Project **`kubemeridian-docs`** (direct upload, not git-connected), custom domains
+**devopstech.net** and **www.devopstech.net**. Deploy from the **repository root**, so the
+Pages Functions in `functions/` (the `devopstech.net/ice` go-import) go up with the site:
+
+```bash
+npm ci --prefix docs && npm run build
+CLOUDFLARE_API_TOKEN=<token> CLOUDFLARE_ACCOUNT_ID=<account-id> \
+  npx wrangler@4 pages deploy docs/.vitepress/dist \
+    --project-name=kubemeridian-docs --branch=main
+```
+
+Without `--branch=main`, wrangler uses the current git branch and the upload becomes a
+preview, not production. Afterwards, check that
+`curl 'https://devopstech.net/ice?go-get=1'` still returns the `go-import` meta tag.
+
+`public/_redirects` sends the old KubeMeridian guide URLs (`/guide/*`) to the archive page.
+
+Keep Cloudflare's **Email Address Obfuscation** off for the zone: it rewrites `mailto:` links
+into `/cdn-cgi/l/email-protection#…`, which the VitePress router turns into the 404.
+
+## The pilot form worker
+
+`workers/pilot` receives the design-partner form on `devopstech.net/api/pilot` and mails it
+through Cloudflare Email Routing. Deploy it with the verified destination address, which stays
+out of the repository:
+
+```bash
+PILOT_TO=<verified-destination> CLOUDFLARE_API_TOKEN=<token> CLOUDFLARE_ACCOUNT_ID=<account-id> \
+  ./workers/pilot/deploy.sh
+```
