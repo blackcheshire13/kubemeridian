@@ -171,7 +171,7 @@ no tagged releases; one trust domain per installation, no multi-tenancy.
 <p>On any Kubernetes cluster, with a collector for plain servers. A local trial on <code>kind</code> takes 15–20 minutes.</p>
 </details>
 
-## Become a design partner
+## Pilot it on your cluster
 
 I'm looking for teams running Kubernetes in production that want the loop on their estate
 before the public release — and will tell me where it hurts.

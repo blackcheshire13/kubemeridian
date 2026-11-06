@@ -46,5 +46,13 @@ defineProps<{ screen?: boolean }>();
   height: 48px;
   margin: 0 0 16px;
   font-size: 16px;
+  color: var(--dt-paper);
+  background: var(--dt-ink);
+  border-color: var(--dt-ink);
+}
+.nav-cta.screen:hover {
+  color: var(--dt-paper);
+  background: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
 }
 </style>

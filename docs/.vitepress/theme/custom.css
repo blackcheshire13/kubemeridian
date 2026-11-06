@@ -270,12 +270,12 @@
 .vp-doc .dt-strip {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 22px;
+  gap: 8px 28px;
   margin: 16px 0 0;
   font-size: 15px;
   color: var(--vp-c-text-2);
 }
-.dt-strip strong { color: var(--vp-c-text-1); }
+.dt-strip strong { color: var(--vp-c-text-1); font-weight: 700; }
 
 /* ---------- "at a glance": three short answers before the long read ---------- */
 .vp-doc .dt-glance {
@@ -518,3 +518,34 @@
 /* screenshot lightbox (ShotLightbox.vue): the page behind it does not scroll */
 html.dt-lightbox-open { overflow: hidden; }
 .vp-doc .dt-shot a { cursor: zoom-in; }
+
+/* 6: less empty paper between a page's last block and the footer (VitePress leaves 128px) */
+@media (min-width: 768px) {
+  .VPDoc { padding-bottom: 64px !important; }
+}
+@media (min-width: 960px) {
+  .VPDoc .content { padding-bottom: 0 !important; }
+}
+
+/* 3: the KubeMeridian archive page in the site's own patterns; only its name keeps the blue */
+.km-page .VPButton.brand {
+  color: var(--dt-paper) !important;
+  background: var(--dt-ink) !important;
+  border-color: var(--dt-ink) !important;
+}
+.km-page .VPButton.brand:hover {
+  background: var(--vp-c-brand-1) !important;
+  border-color: var(--vp-c-brand-1) !important;
+}
+.km-page .VPButton.alt {
+  color: var(--vp-c-text-1) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  padding-left: 4px !important;
+}
+.km-page .VPButton.alt::after { content: ' →'; white-space: pre; }
+.km-page .VPButton.alt:hover { text-decoration: underline; text-underline-offset: 4px; }
+.km-page .VPFeature {
+  background: var(--dt-card) !important;
+  border: 1px solid var(--dt-card-edge) !important;
+}

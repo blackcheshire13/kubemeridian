@@ -113,7 +113,7 @@ export default defineConfig({
     ],
     footer: {
       message:
-        'ICE is built by <a href="/deusex/">deusex</a> · <a href="/news/">News</a> · <a href="/feed.xml">RSS</a> · <a href="https://www.linkedin.com/in/black-cmd-devops">LinkedIn</a> · <a href="https://github.com/blackcheshire13">GitHub</a> · <a href="/kubemeridian">KubeMeridian</a> (archived)',
+        'ICE is built by <a href="/deusex/">deusex</a> · <a href="/news/">News</a> · <a href="/blog/">Blog</a> · <a href="/feed.xml">RSS</a> · <a href="https://www.linkedin.com/in/black-cmd-devops">LinkedIn</a> · <a href="https://github.com/blackcheshire13">GitHub</a> · <a href="/kubemeridian">KubeMeridian</a> (archived)',
       copyright: '© 2026 devopstech · devopstech.net',
     },
     // no site search until the ICE documentation section exists; it will search that
