@@ -35,7 +35,7 @@ const latest = posts.slice(0, 4);
               src="/screenshots/ice/action-approval.png"
               alt="ICE console: a proposed remediation waiting for approval, with Approve and Deny"
               width="1440"
-              height="900"
+              height="836"
             />
           </picture>
           <picture class="dt-dark-only">
@@ -44,7 +44,7 @@ const latest = posts.slice(0, 4);
               src="/screenshots/ice/action-approval-dark.png"
               alt="ICE console in its dark theme: a proposed remediation waiting for approval, with Approve and Deny"
               width="1440"
-              height="900"
+              height="836"
             />
           </picture>
         </a>
