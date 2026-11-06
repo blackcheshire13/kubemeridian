@@ -14,11 +14,7 @@ const latest = posts.slice(0, 4);
   <div class="hub">
     <header class="intro">
       <div class="intro-main">
-        <p class="kicker">
-          <img class="kern" src="/ice-mark.svg" alt="" width="10" height="20" />
-          <img class="kern dark-only" src="/ice-mark-dark.svg" alt="" width="10" height="20" />
-          <span><strong>ICE</strong> · Kubernetes security for teams without a security team</span>
-        </p>
+        <p class="kicker"><strong>ICE</strong> · Kubernetes security for teams without a security team</p>
         <h1>Security fixes that prove they worked.</h1>
         <p class="lede">
           Findings become GitOps pull requests you approve. A case closes only when the cluster
@@ -69,9 +65,9 @@ const latest = posts.slice(0, 4);
     </section>
 
     <section class="block" aria-labelledby="loop-h">
-      <h2 id="loop-h">A case closes on proof, not on merge</h2>
       <div class="two">
         <div class="copy">
+          <h2 id="loop-h">A case closes on proof, not on merge</h2>
           <p class="pitch">
             Every signal has to say what the action is, who performs it and why ICE is sure before it
             enters the system. Changes reach your workloads only as pull requests to your GitOps
@@ -171,20 +167,14 @@ a:hover { text-decoration-thickness: 2px; }
   /* top-aligned, so the title sits where it sits on every other page */
   align-items: start;
 }
+/* eyebrow: the category and the audience, in text only (the navbar carries the mark) */
 .kicker {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   margin: 0 0 20px;
-  font-size: 15px;
+  font-size: 14px;
+  letter-spacing: 0.02em;
   color: var(--vp-c-text-2);
 }
 .kicker strong { color: var(--vp-c-text-1); }
-.kern { flex: none; width: 10px; height: 20px; }
-.kern.dark-only { display: none; }
-/* :global() must wrap the whole selector: `:global(.dark) .x` compiles to a bare `.dark` rule */
-:global(.dark .hub .kern) { display: none; }
-:global(.dark .hub .kern.dark-only) { display: block; }
 .intro h1 {
   font-size: var(--dt-h1);
   line-height: 1.05;
@@ -228,7 +218,8 @@ a:hover { text-decoration-thickness: 2px; }
 .block {
   margin-top: var(--dt-section-gap);
 }
-.block > h2 { margin-bottom: 32px; }
+.block > h2,
+.copy > h2 { margin-bottom: 32px; }
 
 .stats dl {
   display: grid;
@@ -304,8 +295,8 @@ a:hover { text-decoration-thickness: 2px; }
 .block .dt-next { margin: 24px 0 0 !important; }
 .figure {
   padding: 28px 28px 24px;
-  background: var(--dt-paper-2);
-  border: 1px solid var(--vp-c-divider);
+  background: var(--dt-card);
+  border: 1px solid var(--dt-card-edge);
   border-radius: var(--dt-radius-card);
 }
 
@@ -373,9 +364,6 @@ a:hover { text-decoration-thickness: 2px; }
 }
 @media (max-width: 767px) {
   .hub { padding-left: 24px; padding-right: 24px; }
-  /* the navbar already carries the mark */
-  .kern,
-  :global(.dark .hub .kern.dark-only) { display: none; }
   .stats dl { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .stats dd { max-width: none; }
 }

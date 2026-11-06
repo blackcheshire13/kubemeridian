@@ -66,7 +66,7 @@ const fmt = (iso: string) =>
   font-weight: 600;
 }
 .prod.ice {
-  color: var(--dt-ice);
+  color: var(--dt-ice-ink);
 }
 .prod.deusex {
   /* the darker brass: the label is 13px text and needs 4.5:1 */
