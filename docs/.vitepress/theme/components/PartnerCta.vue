@@ -109,7 +109,7 @@ async function copy() {
   font-weight: 600;
   line-height: 1.2;
   text-decoration: none !important;
-  border-radius: 3px;
+  border-radius: var(--dt-radius-control);
   background: var(--dt-ink);
   color: var(--dt-paper) !important;
   transition: background-color 0.15s ease;
@@ -143,7 +143,7 @@ async function copy() {
   font-size: 14px;
   color: var(--vp-c-text-1);
   border: 1px solid var(--vp-c-border);
-  border-radius: 3px;
+  border-radius: var(--dt-radius-control);
   background: var(--vp-c-bg);
   cursor: pointer;
 }

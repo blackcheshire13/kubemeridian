@@ -18,12 +18,12 @@ function split(title) {
 
 function fromPage(slug, file, kicker, accent, sub) {
   const [title, rest] = split(String(readFrontmatter(file).title));
-  return { slug, kicker, accent, title, sub: sub ?? rest };
+  return { slug, kicker, accent, title, sub: sub ?? rest, ...(accent === ACCENT.ice ? { mark: 'ice' } : {}) };
 }
 
 export function cardSpecs() {
   return [
-    { slug: 'home', kicker: 'devopstech · ICE', accent: ACCENT.ice, title: 'Kubernetes security fixes that prove they worked.', sub: 'ICE · in development, Apache-2.0 at release' },
+    { slug: 'home', kicker: 'devopstech · ICE', accent: ACCENT.ice, mark: 'ice', title: 'Kubernetes security fixes that prove they worked.', sub: 'ICE · in development, Apache-2.0 at release' },
     fromPage('ice', 'ice/index.md', 'devopstech · ICE', ACCENT.ice),
     fromPage('ice-how-it-works', 'ice/how-it-works.md', 'devopstech · ICE', ACCENT.ice, 'Operator, agent, trust path, posture and responses'),
     fromPage('ice-design-partners', 'ice/design-partners.md', 'devopstech · ICE', ACCENT.ice),

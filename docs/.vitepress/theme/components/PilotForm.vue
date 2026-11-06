@@ -156,7 +156,7 @@ textarea {
   color: var(--vp-c-text-1);
   background: var(--vp-c-bg);
   border: 1px solid var(--vp-c-border);
-  border-radius: 3px;
+  border-radius: var(--dt-radius-control);
 }
 textarea {
   resize: vertical;

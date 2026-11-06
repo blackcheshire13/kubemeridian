@@ -336,7 +336,7 @@ a:hover { text-decoration-thickness: 2px; }
   width: 100%;
   height: auto;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 4px;
+  border-radius: var(--dt-radius-card);
 }
 .shot figcaption {
   margin-top: 12px;
@@ -360,6 +360,7 @@ a:hover { text-decoration-thickness: 2px; }
   padding: 28px 28px 24px;
   background: var(--dt-paper-2);
   border: 1px solid var(--vp-c-divider);
+  border-radius: var(--dt-radius-card);
 }
 
 

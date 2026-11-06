@@ -1,6 +1,9 @@
 /*
  * devopstech — "engineering notebook": warm paper, ink, a brass mark.
  * Rules: nothing smaller than 13px, no large red surfaces, left-aligned everything.
+ * Shared with the ICE console (ICE repo docs/DESIGN.md): Geologica for text, JetBrains Mono
+ * for code, the ICE ice ramp; Bricolage Grotesque only for large English display headings;
+ * brass belongs to devopstech and never to the product; radius 6px on controls, 4px on cards.
  */
 :root {
   --dt-paper: oklch(0.975 0.008 85);
@@ -17,9 +20,11 @@
   --dt-deusex: oklch(0.6 0.13 70);
   --dt-km: #326ce5;
 
-  --dt-font-display: 'Bricolage Grotesque', 'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, sans-serif;
-  --vp-font-family-base: 'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --vp-font-family-mono: 'Atkinson Hyperlegible Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --dt-font-display: 'Bricolage Grotesque', 'Geologica', ui-sans-serif, system-ui, sans-serif;
+  --vp-font-family-base: 'Geologica', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --vp-font-family-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --dt-radius-control: 6px;
+  --dt-radius-card: 4px;
 
   --vp-c-bg: var(--dt-paper);
   --vp-c-bg-alt: var(--dt-paper-2);
@@ -148,6 +153,7 @@
   padding: 28px 28px 22px;
   background: var(--dt-paper-2);
   border: 1px solid var(--vp-c-divider);
+  border-radius: var(--dt-radius-card);
   max-width: 620px;
 }
 .vp-doc .dt-quote {
@@ -343,7 +349,7 @@
   width: 100%;
   height: auto;
   border: 1px solid var(--vp-c-border);
-  border-radius: 3px;
+  border-radius: var(--dt-radius-card);
 }
 .vp-doc .dt-shot figcaption {
   margin-top: 10px;
@@ -400,7 +406,7 @@
   font-weight: 600;
   line-height: 1.2;
   text-decoration: none !important;
-  border-radius: 3px;
+  border-radius: var(--dt-radius-control);
   background: var(--dt-ink);
   color: var(--dt-paper) !important;
   transition: background-color 0.15s ease;
@@ -423,4 +429,10 @@
   margin: 28px 0 8px;
   padding-top: 24px;
   border-top: 2px solid var(--vp-c-text-1);
+}
+
+/* VitePress sets these menu labels at 12px (`.VPMenu[data-v] .label`); the site's floor is 13px */
+.VPNav .VPNavBarExtra .VPMenu .label,
+.VPNavScreenAppearance .text {
+  font-size: 13px;
 }
