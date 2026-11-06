@@ -1,5 +1,5 @@
 import { defineConfig, type MarkdownRenderer } from 'vitepress';
-import { SITE_DESCRIPTION, checkOgCards, pageHead, sitemapLastmod, writeFeed } from './site-meta';
+import { SITE_DESCRIPTION, checkOgCards, pageHead, sitemapLastmod, writeFeed, writeHeaders } from './site-meta';
 
 // Tables keep their semantics and their column names when CSS stacks them on phones:
 // explicit ARIA roles, and each cell carries its column header as data-label.
@@ -67,7 +67,7 @@ export default defineConfig({
       'link',
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Geologica:slnt,wght@-12..0,400..700&family=JetBrains+Mono:wght@400;500;600;700&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Geologica:slnt,wght@-12..0,400..700&family=JetBrains+Mono:wght@400;600&display=swap',
       },
     ],
     ['meta', { property: 'og:site_name', content: 'devopstech' }],
@@ -101,6 +101,7 @@ export default defineConfig({
   buildEnd: ({ outDir }) => {
     checkOgCards();
     writeFeed(outDir);
+    writeHeaders(outDir);
   },
   themeConfig: {
     logo: { light: '/ice-mark.svg', dark: '/ice-mark-dark.svg', alt: 'ICE logo' },

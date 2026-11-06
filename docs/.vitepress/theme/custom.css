@@ -549,3 +549,9 @@ html.dt-lightbox-open { overflow: hidden; }
   background: var(--dt-card) !important;
   border: 1px solid var(--dt-card-edge) !important;
 }
+
+/* a visible focus ring everywhere a component does not draw its own (zero specificity) */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--dt-ice);
+  outline-offset: 2px;
+}
