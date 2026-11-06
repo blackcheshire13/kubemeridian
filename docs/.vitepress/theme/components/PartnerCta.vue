@@ -1,31 +1,25 @@
 <script setup lang="ts">
-// The site's one call to action, in three sizes: a block in the page flow, a card in the
-// outline column, and a bare button row. The address is always visible and copyable,
-// so the CTA still works for readers without a mail client.
+// The site's one call to action, used once per page at most, at the end of it.
+// mailto: alone fails silently in a browser with no mail app (most of desktop Chrome), so a
+// click also copies the address and says what to do next; the address, Copy and a web-mail
+// link stay visible for readers who never press the button.
 import { computed, ref } from 'vue';
-import { EMAIL, mailto } from '../../contact.mjs';
+import { EMAIL, gmail, mailto } from '../../contact.mjs';
 
 const props = withDefaults(
   defineProps<{
     topic?: 'ice' | 'deusex' | 'general';
-    variant?: 'block' | 'aside' | 'buttons' | 'plain';
+    variant?: 'block' | 'plain';
     lead?: string;
-    secondary?: { text: string; href: string };
   }>(),
   { topic: 'ice', variant: 'block' },
 );
 
-const label = computed(
-  () =>
-    ({
-      ice: props.variant === 'aside' ? 'Become a design partner' : 'Become an ICE design partner',
-      deusex: 'Talk to me about deusex',
-      general: 'Write to me',
-    })[props.topic],
-);
-const TITLE = { ice: 'ICE design partners', deusex: 'deusex', general: 'Get in touch' } as const;
-const href = computed(() => mailto(props.topic));
-const state = ref<'idle' | 'copied' | 'failed'>('idle');
+const LABEL = { ice: 'Become a design partner', deusex: 'Talk to me about deusex', general: 'Write to me' } as const;
+const mailHref = computed(() => mailto(props.topic));
+const webHref = computed(() => gmail(props.topic));
+// idle → after a button click: 'sent' (address copied) or 'nocopy'; after Copy: 'copied' or 'failed'
+const state = ref<'idle' | 'sent' | 'nocopy' | 'copied' | 'failed'>('idle');
 let reset: ReturnType<typeof setTimeout> | undefined;
 
 function legacyCopy(): boolean {
@@ -36,47 +30,62 @@ function legacyCopy(): boolean {
   field.style.opacity = '0';
   document.body.appendChild(field);
   field.select();
-  const ok = document.execCommand('copy');
+  let ok = false;
+  try {
+    ok = document.execCommand('copy');
+  } catch {
+    ok = false;
+  }
   field.remove();
   return ok;
 }
 
-async function copy() {
-  let ok = false;
+async function writeAddress(): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(EMAIL);
-    ok = true;
+    return true;
   } catch {
-    ok = legacyCopy(); // no Clipboard API (plain http, some webviews) or permission denied
+    return legacyCopy(); // no Clipboard API (plain http, some webviews) or permission denied
   }
-  state.value = ok ? 'copied' : 'failed';
+}
+
+function show(next: typeof state.value, ms: number) {
+  state.value = next;
   clearTimeout(reset);
-  reset = setTimeout(() => (state.value = 'idle'), 2500);
+  reset = setTimeout(() => (state.value = 'idle'), ms);
+}
+
+// Not preventDefault: a reader with a mail app still gets the draft.
+async function onMail() {
+  show((await writeAddress()) ? 'sent' : 'nocopy', 12000);
+}
+
+async function copy() {
+  show((await writeAddress()) ? 'copied' : 'failed', 2500);
 }
 </script>
 
 <template>
   <div class="cta" :class="variant">
-    <p v-if="variant === 'aside'" class="title">{{ TITLE[topic] }}</p>
     <p v-if="lead" class="lead">{{ lead }}</p>
-    <div class="row">
-      <a class="btn" :href="href">{{ label }}</a>
-      <a v-if="secondary" class="btn-alt" :href="secondary.href">{{ secondary.text }}</a>
-    </div>
-    <p v-if="variant !== 'buttons'" class="mail">
-      or write to <span class="addr">{{ EMAIL }}</span>
+    <a class="btn" :href="mailHref" @click="onMail">{{ LABEL[topic] }}</a>
+    <p class="mail">
+      <span class="addr">{{ EMAIL }}</span>
       <button type="button" class="copy" @click="copy">{{ state === 'copied' ? 'Copied' : 'Copy' }}</button>
-      <span v-if="state === 'failed'" class="hint" role="status">Couldn't copy — select the address instead</span>
+      <a class="web" :href="webHref" target="_blank" rel="noopener">Open in Gmail</a>
     </p>
+    <p v-if="state === 'sent' || state === 'nocopy'" class="hint" role="status">
+      <template v-if="state === 'sent'">Address copied.</template>
+      No mail app opened? Paste <span class="addr">{{ EMAIL }}</span> into your mail, or
+      <a :href="webHref" target="_blank" rel="noopener">write from Gmail</a>.
+    </p>
+    <p v-else-if="state === 'failed'" class="hint" role="status">Couldn't copy — select the address instead.</p>
   </div>
 </template>
 
 <style scoped>
 .cta {
   margin: 0;
-}
-.cta.buttons {
-  margin: 22px 0 8px;
 }
 .cta.block {
   margin: 32px 0;
@@ -90,14 +99,7 @@ async function copy() {
   line-height: 1.55;
   color: var(--vp-c-text-1);
 }
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 20px;
-}
-.btn,
-.btn-alt {
+.btn {
   display: inline-flex;
   align-items: center;
   min-height: 46px;
@@ -107,28 +109,16 @@ async function copy() {
   line-height: 1.2;
   text-decoration: none !important;
   border-radius: 3px;
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-.btn {
   background: var(--dt-ink);
   color: var(--dt-paper) !important;
+  transition: background-color 0.15s ease;
 }
 .btn:hover {
   background: var(--vp-c-brand-1);
 }
-.btn-alt {
-  padding: 0 4px;
-  color: var(--vp-c-brand-1) !important;
-  text-decoration: underline !important;
-  text-underline-offset: 4px;
-}
-.btn-alt::after {
-  content: ' →';
-  white-space: pre;
-}
 .btn:focus-visible,
-.btn-alt:focus-visible,
-.copy:focus-visible {
+.copy:focus-visible,
+.web:focus-visible {
   outline: 2px solid var(--vp-c-brand-1);
   outline-offset: 3px;
 }
@@ -136,7 +126,7 @@ async function copy() {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px 10px;
+  gap: 6px 14px;
   margin: 14px 0 0 !important;
   font-size: 15px;
   color: var(--vp-c-text-2);
@@ -156,55 +146,35 @@ async function copy() {
   background: var(--vp-c-bg);
   cursor: pointer;
 }
-.hint {
-  font-size: 14px;
-  color: var(--vp-c-text-2);
-}
 .copy:hover {
   border-color: var(--vp-c-text-2);
 }
-
-/* outline-column card */
-.cta.aside {
-  margin-top: 28px;
-  padding: 16px 0 0;
-  border-top: 2px solid var(--vp-c-text-1);
+.web {
+  font-size: 15px;
+  color: var(--vp-c-brand-1);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
-.aside .title {
-  margin: 0 0 6px;
-  font-family: var(--dt-font-display);
-  font-size: 16px;
-  font-weight: 700;
+.hint {
+  max-width: 640px;
+  margin: 12px 0 0 !important;
+  font-size: 15px;
+  line-height: 1.5;
   color: var(--vp-c-text-1);
 }
-.aside .lead {
+.hint .addr {
   font-size: 14px;
-  margin-bottom: 12px !important;
-}
-.aside .btn {
-  width: 100%;
-  min-height: 44px;
-  padding: 0 14px;
-  font-size: 15px;
-}
-.aside .mail {
-  font-size: 13px;
-}
-.aside .addr {
-  font-size: 13px;
 }
 
 @media (max-width: 640px) {
   .btn {
     width: 100%;
-    justify-content: flex-start;
   }
-  .btn-alt {
-    padding: 0;
-  }
-  .btn-alt,
-  .copy {
+  .copy,
+  .web {
     min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
 }
 </style>

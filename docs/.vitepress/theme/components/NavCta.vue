@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Persistent call to action at the right end of the navbar (and first in the mobile menu).
+// Persistent, quiet link to the pilot page at the right end of the navbar (and first in the mobile menu).
 defineProps<{ screen?: boolean }>();
 </script>
 
@@ -17,13 +17,16 @@ defineProps<{ screen?: boolean }>();
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
-  color: var(--dt-paper);
-  background: var(--dt-ink);
+  color: var(--vp-c-text-1);
+  background: transparent;
+  border: 1.5px solid var(--vp-c-text-1);
   border-radius: 3px;
-  transition: background-color 0.15s ease;
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
+/* outlined, so the one solid button on a page is that page's own closing call to action */
 .nav-cta:hover {
-  background: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
 }
 .nav-cta:focus-visible {
   outline: 2px solid var(--vp-c-brand-1);

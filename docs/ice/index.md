@@ -16,7 +16,7 @@ person approves, and calls a problem fixed only when a measurement taken <em>aft
 
 <p class="dt-strip"><span class="dt-s live"><strong>10</strong>&nbsp;live</span><span class="dt-s tested"><strong>63</strong>&nbsp;tested</span><span class="dt-s implemented"><strong>3</strong>&nbsp;implemented</span><span class="dt-s"><strong>1</strong>&nbsp;contract</span><span>capabilities as of 18 October 2026 · <a href="#honest-status">what that means</a></span></p>
 
-<PartnerCta variant="buttons" :secondary="{ text: 'How ICE works', href: '/ice/how-it-works' }" />
+<p class="dt-next"><a href="/ice/how-it-works">How ICE works</a><a href="/ice/design-partners">What a pilot involves</a></p>
 
 ## Why another security tool
 

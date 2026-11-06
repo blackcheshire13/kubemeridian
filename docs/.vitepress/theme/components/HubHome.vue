@@ -18,7 +18,7 @@ const latest = posts.slice(0, 4);
           fixed once the cluster proves it — and <a href="/deusex/">deusex</a>, the autonomous
           development loop that builds it.
         </p>
-        <PartnerCta variant="buttons" :secondary="{ text: 'ICE overview', href: '/ice/' }" />
+        <p class="dt-next"><a href="/ice/">ICE overview</a><a href="/deusex/">How deusex works</a></p>
       </div>
 
       <aside class="now" aria-label="Where things stand">

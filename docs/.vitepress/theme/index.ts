@@ -19,22 +19,10 @@ export default {
   Layout() {
     const { page } = useData();
     const rel = () => page.value.relativePath;
-    const product = () => (rel().startsWith('ice/') ? 'ice' : rel().startsWith('deusex/') ? 'deusex' : null);
     return h(DefaultTheme.Layout, null, {
-      // one call to action, always reachable
+      // the navbar link is the only call to action outside a page's own closing block
       'nav-bar-content-after': () => h(NavCta),
       'nav-screen-content-before': () => h(NavCta, { screen: true }),
-      'aside-outline-after': () =>
-        product()
-          ? h(PartnerCta, {
-              topic: product(),
-              variant: 'aside',
-              lead:
-                product() === 'ice'
-                  ? 'Run the loop on your cluster before the public release.'
-                  : 'See it run on a codebase of yours.',
-            })
-          : null,
       // product pages navigate with tabs; KubeMeridian is archived
       'doc-before': () => (isKubeMeridianPage(rel()) ? h(ArchivedNotice) : h(SectionNav)),
       'home-hero-before': () => (isKubeMeridianPage(rel()) ? h(ArchivedNotice, { wide: true }) : null),
