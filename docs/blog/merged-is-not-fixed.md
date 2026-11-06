@@ -2,7 +2,7 @@
 date: 2026-10-18
 title: "Merged is not deployed, deployed is not fixed"
 sidebarTitle: Merged is not fixed
-description: Why ICE closes a security finding only on a measurement taken after the merge — and how Argo CD's sync revision, freshness cadences and Unknown-as-unmet keep the loop honest.
+description: "Why ICE closes a security finding only on a measurement taken after the merge, and how Argo CD's sync revision and freshness cadences keep the loop honest."
 tags: [ice, kubernetes, gitops, security]
 ---
 

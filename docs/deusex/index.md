@@ -1,6 +1,7 @@
 ---
 title: deusex — an autonomous development loop
 description: deusex turns a vision document into working, merged code. Agents plan, build, review and merge on a schedule; a person decides only the concept.
+updated: 2026-11-06
 ---
 
 # deusex

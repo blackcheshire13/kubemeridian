@@ -1,6 +1,7 @@
 ---
 title: ICE design partners — run the loop on your cluster early
 description: The ICE design-partner pilot — up to five teams, eight weeks, free. Who it fits, what you get and commit to, what leaves your cluster, and a short application.
+updated: 2026-11-06
 ---
 
 # Design partners

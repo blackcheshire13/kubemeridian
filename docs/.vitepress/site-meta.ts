@@ -2,7 +2,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { HeadConfig, PageData } from 'vitepress';
-import { DOCS, blogPosts, isoDate } from './blog.mjs';
+import { DOCS, blogPosts, isoDate, readFrontmatter } from './blog.mjs';
 import { cardSpecs, templateHash } from './og-specs.mjs';
 import { KM_LAST_RELEASE, isKubeMeridianPage } from './kubemeridian.mjs';
 
@@ -28,6 +28,12 @@ function ogImage(relativePath: string): string {
 }
 
 const PUBLISHER = { '@type': 'Organization', name: SITE_TITLE, url: `${SITE}/`, logo: `${SITE}/apple-touch-icon.png` };
+// The organization behind the site, with the profiles search engines can tie it to.
+const ORGANIZATION = {
+  ...PUBLISHER,
+  '@id': `${SITE}/#organization`,
+  sameAs: ['https://github.com/devopstech-net', 'https://www.linkedin.com/in/black-cmd-devops'],
+};
 // The posts are first-person writing by the engineer behind devopstech.
 const AUTHOR = {
   '@type': 'Person',
@@ -43,6 +49,19 @@ const PRODUCT: Record<string, Record<string, unknown>> = {
   'deusex/index.md': { '@type': 'Thing', name: 'deusex' },
   'ice/how-it-works.md': { '@type': 'Thing', name: 'ICE' },
   'deusex/method.md': { '@type': 'Thing', name: 'deusex' },
+  'ice/design-partners.md': { '@type': 'Thing', name: 'ICE' },
+};
+// Other pages' types: an about page about a person, collections of updates and posts.
+const PAGE_TYPE: Record<string, string> = {
+  'about.md': 'AboutPage',
+  'news/index.md': 'CollectionPage',
+  'blog/index.md': 'CollectionPage',
+};
+// Breadcrumb trail: home, then the section, then the page itself.
+const SECTION: Record<string, { name: string; path: string }> = {
+  ice: { name: 'ICE', path: '/ice/' },
+  deusex: { name: 'deusex', path: '/deusex/' },
+  blog: { name: 'Blog', path: '/blog/' },
 };
 const KUBEMERIDIAN = {
   '@type': 'SoftwareApplication',
@@ -62,15 +81,32 @@ function isPost(relativePath: string) {
 function structuredData(pageData: PageData, title: string, description: string, url: string, image: string) {
   const rel = pageData.relativePath;
   const base = { '@context': 'https://schema.org', url, image, publisher: PUBLISHER };
+  const modified = pageData.frontmatter.updated ? { dateModified: isoDate(pageData.frontmatter.updated) } : {};
   if (rel === 'index.md') {
-    return { ...base, '@type': 'WebSite', name: SITE_TITLE, url: `${SITE}/`, description };
+    return {
+      '@context': 'https://schema.org',
+      '@graph': [
+        { '@type': 'WebSite', '@id': `${SITE}/#website`, name: SITE_TITLE, url: `${SITE}/`, description, image, publisher: { '@id': ORGANIZATION['@id'] } },
+        ORGANIZATION,
+      ],
+    };
+  }
+  if (PAGE_TYPE[rel]) {
+    return {
+      ...base,
+      '@type': PAGE_TYPE[rel],
+      name: title,
+      description,
+      ...modified,
+      ...(rel === 'about.md' ? { mainEntity: AUTHOR } : {}),
+    };
   }
   if (rel === 'kubemeridian.md') {
     return { ...base, ...KUBEMERIDIAN, description };
   }
   if (PRODUCT[rel]) {
-    const type = rel.endsWith('index.md') ? 'WebPage' : 'TechArticle';
-    return { ...base, '@type': type, name: title, headline: title, description, about: PRODUCT[rel], author: AUTHOR };
+    const type = rel.endsWith('index.md') || rel === 'ice/design-partners.md' ? 'WebPage' : 'TechArticle';
+    return { ...base, '@type': type, name: title, headline: title, description, about: PRODUCT[rel], author: AUTHOR, ...modified };
   }
   if (isPost(rel) && pageData.frontmatter.date) {
     return {
@@ -112,12 +148,46 @@ export function pageHead(pageData: PageData): HeadConfig[] {
     ['meta', { name: 'twitter:description', content: description }],
     ['meta', { name: 'twitter:image', content: image }],
   ];
-  const data = structuredData(pageData, title, description, url, image);
-  if (data) {
-    // `<` escaped so a title can never close the script element
-    head.push(['script', { type: 'application/ld+json' }, JSON.stringify(data).replace(/</g, '\\u003c')]);
+  // `<` escaped so a title can never close the script element
+  for (const data of [structuredData(pageData, title, description, url, image), breadcrumbs(pageData.relativePath, title, url)]) {
+    if (data) {
+      head.push(['script', { type: 'application/ld+json' }, JSON.stringify(data).replace(/</g, '\\u003c')]);
+    }
   }
   return head;
+}
+
+function breadcrumbs(rel: string, title: string, url: string) {
+  if (rel === 'index.md') {
+    return null;
+  }
+  const trail = [{ name: SITE_TITLE, item: `${SITE}/` }];
+  const section = SECTION[rel.split('/')[0]];
+  if (section && SITE + section.path !== url) {
+    trail.push({ name: section.name, item: SITE + section.path });
+  }
+  trail.push({ name: title, item: url });
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: trail.map((t, i) => ({ '@type': 'ListItem', position: i + 1, name: t.name, item: t.item })),
+  };
+}
+
+// Sitemap <lastmod> from front matter (`updated:`, or a post's `date:`), never from git.
+export function sitemapLastmod(items: { url: string; lastmod?: string }[]) {
+  return items.map((item) => {
+    const path = item.url.replace(/^https?:\/\/[^/]+\//, '').replace(/^\//, '');
+    const file = path === '' ? 'index.md' : path.endsWith('/') ? `${path}index.md` : `${path}.md`;
+    let data: Record<string, unknown> = {};
+    try {
+      data = readFrontmatter(file);
+    } catch {
+      return item;
+    }
+    const date = data.updated || data.date;
+    return date ? { ...item, lastmod: isoDate(date) } : item;
+  });
 }
 
 // The cards are rendered by hand and committed, so the build refuses to ship a page whose

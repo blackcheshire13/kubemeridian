@@ -1,6 +1,7 @@
 ---
 title: ICE — Kubernetes active defence with GitOps remediation
-description: ICE is active defence for Kubernetes. Findings and drift become GitOps pull requests a person approves, and a case closes only when a fresh measurement proves the fix.
+description: "ICE is active defence for Kubernetes: findings and drift become GitOps pull requests a person approves; a case closes only when a new measurement proves it."
+updated: 2026-11-06
 ---
 
 # ICE: active defence for Kubernetes
@@ -64,17 +65,17 @@ person approved, the action fails instead of shipping something nobody reviewed.
 company, acme-corp — not a production estate.</p>
 
 <figure class="dt-shot">
-  <a class="dt-light-only" href="/screenshots/ice/action-approval.png"><img src="/screenshots/ice/action-approval.png" width="1440" height="836" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request."></a><a class="dt-dark-only" href="/screenshots/ice/action-approval-dark.png"><img src="/screenshots/ice/action-approval-dark.png" width="1440" height="836" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request. Dark theme."></a>
+  <a class="dt-light-only" href="/screenshots/ice/action-approval.png"><picture><source type="image/webp" srcset="/screenshots/ice/action-approval.webp"><img src="/screenshots/ice/action-approval.png" width="1440" height="836" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request."></picture></a><a class="dt-dark-only" href="/screenshots/ice/action-approval-dark.png"><picture><source type="image/webp" srcset="/screenshots/ice/action-approval-dark.webp"><img src="/screenshots/ice/action-approval-dark.png" width="1440" height="836" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request. Dark theme."></picture></a>
   <figcaption><strong>Approve a change, not a description.</strong> The rendered manifest and what merging it does; approving opens a pull request — ICE has no direct write path to the cluster.</figcaption>
 </figure>
 
 <figure class="dt-shot">
-  <a class="dt-light-only" href="/screenshots/ice/cases.png"><img src="/screenshots/ice/cases.png" width="1440" height="900" loading="lazy" alt="ICE console, Cases: one case verified after a re-check, one merged and deployed but not verified because the requirement has not been measured since the merge."></a><a class="dt-dark-only" href="/screenshots/ice/cases-dark.png"><img src="/screenshots/ice/cases-dark.png" width="1440" height="900" loading="lazy" alt="ICE console, Cases: one case verified after a re-check, one merged and deployed but not verified because the requirement has not been measured since the merge. Dark theme."></a>
+  <a class="dt-light-only" href="/screenshots/ice/cases.png"><picture><source type="image/webp" srcset="/screenshots/ice/cases.webp"><img src="/screenshots/ice/cases.png" width="1440" height="900" loading="lazy" alt="ICE console, Cases: one case verified after a re-check, one merged and deployed but not verified because the requirement has not been measured since the merge."></picture></a><a class="dt-dark-only" href="/screenshots/ice/cases-dark.png"><picture><source type="image/webp" srcset="/screenshots/ice/cases-dark.webp"><img src="/screenshots/ice/cases-dark.png" width="1440" height="900" loading="lazy" alt="ICE console, Cases: one case verified after a re-check, one merged and deployed but not verified because the requirement has not been measured since the merge. Dark theme."></picture></a>
   <figcaption><strong>Merged is not fixed.</strong> A case reaches <em>verified</em> only after a re-check; the second one stays <em>deployed, not verified</em> until the requirement is measured again.</figcaption>
 </figure>
 
 <figure class="dt-shot">
-  <a class="dt-light-only" href="/screenshots/ice/posture.png"><img src="/screenshots/ice/posture.png" width="1440" height="900" loading="lazy" alt="ICE console, Posture: compliance score with met, unmet, not checked and not applicable requirements per environment."></a><a class="dt-dark-only" href="/screenshots/ice/posture-dark.png"><img src="/screenshots/ice/posture-dark.png" width="1440" height="900" loading="lazy" alt="ICE console, Posture: compliance score with met, unmet, not checked and not applicable requirements per environment. Dark theme."></a>
+  <a class="dt-light-only" href="/screenshots/ice/posture.png"><picture><source type="image/webp" srcset="/screenshots/ice/posture.webp"><img src="/screenshots/ice/posture.png" width="1440" height="900" loading="lazy" alt="ICE console, Posture: compliance score with met, unmet, not checked and not applicable requirements per environment."></picture></a><a class="dt-dark-only" href="/screenshots/ice/posture-dark.png"><picture><source type="image/webp" srcset="/screenshots/ice/posture-dark.webp"><img src="/screenshots/ice/posture-dark.png" width="1440" height="900" loading="lazy" alt="ICE console, Posture: compliance score with met, unmet, not checked and not applicable requirements per environment. Dark theme."></picture></a>
   <figcaption><strong>Posture as requirements.</strong> Not checked counts against the score; not applicable is left out of it.</figcaption>
 </figure>
 
