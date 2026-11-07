@@ -33,13 +33,14 @@ const whoLabel = computed(() => ({ human: 'person', machine: props.machine, meas
 <style scoped>
 .flow {
   --flow-accent: var(--dt-brass);
-  margin: 24px 0 28px;
+  margin-block: 1.5rem 1.75rem;
+  margin-inline: 0;
   container-type: inline-size;
 }
 ol {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px 0;
+  gap: 0.625rem 0;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -48,76 +49,77 @@ li {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  min-width: 128px;
-  max-width: 220px;
-  flex: 1 1 128px;
+  gap: 0.125rem;
+  min-inline-size: 8rem;
+  max-inline-size: 13.75rem;
+  flex: 1 1 8rem;
   margin: 0 !important;
-  padding: 10px 26px 12px 12px;
-  border-top: 3px solid var(--flow-accent);
+  padding-block: 0.625rem 0.75rem;
+  padding-inline: 0.75rem 1.625rem;
+  border-block-start: 3px solid var(--flow-accent);
   background: var(--dt-paper-2);
 }
 li:not(:last-child)::after {
   content: '→';
   position: absolute;
-  right: 6px;
-  top: 9px;
-  font-size: 15px;
-  color: var(--vp-c-text-2);
+  inset-inline-end: 0.375rem;
+  inset-block-start: 0.5625rem;
+  font-size: 0.9375rem;
+  color: var(--dt-ink-2);
 }
-li.human { border-top-style: dashed; }
-li.measure { border-top-color: var(--vp-c-text-1); }
+li.human { border-block-start-style: dashed; }
+li.measure { border-block-start-color: var(--dt-ink); }
 strong {
-  font-family: var(--vp-font-family-base);
-  font-size: 16px;
+  font-family: var(--dt-font-text);
+  font-size: 1rem;
   line-height: 1.3;
 }
 .who:empty { display: none; }
 .who {
-  font-family: var(--vp-font-family-mono);
-  font-size: 13px;
-  color: var(--vp-c-text-2);
+  font-family: var(--dt-font-mono);
+  font-size: 0.8125rem;
+  color: var(--dt-ink-2);
 }
 .note {
-  margin-top: 4px;
-  font-size: 14px;
+  margin-block-start: 0.25rem;
+  font-size: 0.875rem;
   line-height: 1.45;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 /* too narrow for one row: stages become a timeline (stage · who · note) instead of breaking 5 + 2 */
-@container (max-width: 900px) {
-  ol { flex-direction: column; gap: 0; border-left: 3px solid var(--flow-accent); }
+@container (inline-size <= 56.25rem) {
+  ol { flex-direction: column; gap: 0; border-inline-start: 3px solid var(--flow-accent); }
   li {
     display: grid;
-    grid-template-columns: minmax(96px, 140px) minmax(88px, 116px) minmax(0, 1fr);
+    grid-template-columns: minmax(6rem, 8.75rem) minmax(5.5rem, 7.25rem) minmax(0, 1fr);
     align-items: baseline;
-    gap: 2px 16px;
-    max-width: none;
+    gap: 0.125rem 1rem;
+    max-inline-size: none;
     flex: none;
-    padding: 9px 12px;
-    border-top: 0;
+    padding: 0.5625rem 0.75rem;
+    border-block-start: 0;
     background: none;
   }
   li + li,
   li.human + li,
   li + li.human,
-  li + li.measure { border-top: 1px solid var(--vp-c-divider); }
+  li + li.measure { border-block-start: 1px solid var(--dt-rule); }
   li:not(:last-child)::after { content: none; }
-  .note { margin-top: 0; }
+  .note { margin-block-start: 0; }
   /* keep the three columns even when a stage has no actor */
   .who:empty { display: block; }
 }
-@container (max-width: 480px) {
+@container (inline-size <= 30rem) {
   li { grid-template-columns: minmax(0, 1fr) auto; }
   .note { grid-column: 1 / -1; }
 }
 figcaption {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 18px;
-  margin-top: 12px;
-  font-size: 14px;
-  color: var(--vp-c-text-2);
+  gap: 0.5rem 1.125rem;
+  margin-block-start: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--dt-ink-2);
 }
 .exit::before {
   content: '↳ ';

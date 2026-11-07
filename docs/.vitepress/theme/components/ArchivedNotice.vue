@@ -20,45 +20,44 @@ defineProps<{ wide?: boolean }>();
 
 <style scoped>
 .archived {
-  margin: 0 0 32px;
-  padding: 16px 20px 18px;
+  margin-block: 0 2rem;
+  margin-inline: 0;
+  padding-block: 1rem 1.125rem;
+  padding-inline: 1.25rem;
   background: var(--dt-paper-3);
-  border-top: 2px solid var(--vp-c-text-2);
-  color: var(--vp-c-text-1);
+  border-block-start: 2px solid var(--dt-ink-2);
+  color: var(--dt-ink);
 }
+/* above the home hero: the site's container between the site's gutter, like the hero */
 .archived.wide {
-  max-width: 1104px;
-  margin: 24px auto 0;
+  inline-size: min(var(--dt-container), 100% - 2 * var(--dt-gutter));
+  margin-block: 1.5rem 0;
+  margin-inline: auto;
 }
 .label {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 0 0 6px;
-  font-size: 16px;
+  gap: 0.625rem;
+  margin-block: 0 0.375rem;
+  margin-inline: 0;
+  font-size: 1rem;
   font-weight: 600;
 }
 .mark {
-  width: 9px;
-  height: 9px;
+  inline-size: 0.5625rem;
+  block-size: 0.5625rem;
   border-radius: 50%;
-  background: var(--vp-c-text-2);
+  background: var(--dt-ink-2);
 }
 .archived p:last-child {
   margin: 0;
-  max-width: 760px;
-  font-size: 15px;
+  max-inline-size: 47.5rem;
+  font-size: 0.9375rem;
   line-height: 1.6;
 }
 .archived a {
-  color: var(--vp-c-brand-1);
+  color: var(--dt-link);
   text-decoration: underline;
   text-underline-offset: 3px;
-}
-@media (max-width: 1200px) {
-  .archived.wide { margin-left: 24px; margin-right: 24px; }
-}
-@media (max-width: 640px) {
-  .archived.wide { margin-left: 16px; margin-right: 16px; }
 }
 </style>

@@ -34,44 +34,47 @@ defineProps<{
   --rail-accent: var(--dt-brass);
   position: relative;
   margin: 0;
-  padding: 4px 0 0 0;
+  padding-block: 0.25rem 0;
+  padding-inline: 0;
 }
 ol {
   list-style: none;
   margin: 0;
-  padding: 0 0 0 30px;
+  padding-block: 0;
+  padding-inline: 1.875rem 0;
   position: relative;
 }
 /* the rail */
 ol::before {
   content: '';
   position: absolute;
-  left: 11px;
-  top: 12px;
-  bottom: 12px;
-  width: 2px;
+  inset-inline-start: 0.6875rem;
+  inset-block-start: 0.75rem;
+  inset-block-end: 0.75rem;
+  inline-size: 0.125rem;
   background: var(--rail-accent);
   opacity: 0.55;
 }
 li {
   position: relative;
   display: flex;
-  gap: 12px;
-  padding: 0 0 18px 0;
+  gap: 0.75rem;
+  padding-block: 0 1.125rem;
+  padding-inline: 0;
   margin: 0;
 }
-li:last-child { padding-bottom: 0; }
+li:last-child { padding-block-end: 0; }
 .node {
   position: absolute;
-  left: -30px;
-  top: 0;
-  width: 24px;
-  height: 24px;
+  inset-inline-start: -1.875rem;
+  inset-block-start: 0;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
   border-radius: 50%;
-  background: var(--vp-c-bg);
+  background: var(--dt-paper);
   border: 2px solid var(--rail-accent);
-  color: var(--vp-c-text-1);
-  font: 600 13px/20px var(--vp-font-family-mono);
+  color: var(--dt-ink);
+  font: 600 0.8125rem/1.25rem var(--dt-font-mono);
   text-align: center;
 }
 li.gate .node {
@@ -81,41 +84,44 @@ li.gate .node {
 .body {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0.125rem;
   line-height: 1.45;
 }
 .body strong {
-  font-family: var(--vp-font-family-base);
-  font-size: 16px;
+  font-family: var(--dt-font-text);
+  font-size: 1rem;
   font-weight: 700;
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
 }
 .detail {
-  font-size: 15px;
-  color: var(--vp-c-text-2);
+  font-size: 0.9375rem;
+  color: var(--dt-ink-2);
 }
-li.gate strong { color: var(--vp-c-text-2); }
+li.gate strong { color: var(--dt-ink-2); }
 .legend {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 10px 0 0;
-  padding-left: 30px;
-  font-size: 14px;
-  color: var(--vp-c-text-2);
+  gap: 0.5rem;
+  margin-block: 0.625rem 0;
+  margin-inline: 0;
+  padding-inline-start: 1.875rem;
+  font-size: 0.875rem;
+  color: var(--dt-ink-2);
 }
 .legend .mini {
   flex: none;
+  inline-size: 1rem;
+  block-size: 1rem;
 }
 figcaption {
-  margin-top: 14px;
-  padding-left: 30px;
-  font-size: 14px;
-  color: var(--vp-c-text-2);
+  margin-block-start: 0.875rem;
+  padding-inline-start: 1.875rem;
+  font-size: 0.875rem;
+  color: var(--dt-ink-2);
 }
 .back {
   display: inline-block;
-  margin-right: 8px;
+  margin-inline-end: 0.5rem;
   color: var(--rail-accent);
   font-weight: 700;
 }

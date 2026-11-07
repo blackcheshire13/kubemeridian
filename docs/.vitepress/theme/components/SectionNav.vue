@@ -41,35 +41,36 @@ const isPost = computed(() => section.value === 'blog' && page.value.relativePat
 .section-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 28px;
-  margin: 0 0 28px;
-  border-bottom: 1px solid var(--vp-c-divider);
+  gap: 0 1.75rem;
+  margin-block: 0 1.75rem;
+  margin-inline: 0;
+  border-block-end: 1px solid var(--dt-rule);
 }
 /* same height as a row of tabs: 44px links + the 1px rule */
 .section-nav.spacer {
-  height: 45px;
-  border-bottom-color: transparent;
+  block-size: calc(2.75rem + 1px);
+  border-block-end-color: transparent;
 }
 .section-nav a {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  font-size: 15px;
+  min-block-size: 2.75rem;
+  font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
   text-decoration: none;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -1px;
+  border-block-end: 3px solid transparent;
+  margin-block-end: -0.0625rem;
 }
 .section-nav a:hover {
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
 }
 .section-nav a[aria-current='page'] {
-  color: var(--vp-c-text-1);
-  border-bottom-color: var(--dt-brass);
+  color: var(--dt-ink);
+  border-block-end-color: var(--dt-brass);
 }
 .section-nav a:focus-visible {
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid var(--dt-link);
   outline-offset: 2px;
 }
 </style>

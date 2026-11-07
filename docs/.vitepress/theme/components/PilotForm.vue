@@ -119,43 +119,46 @@ async function submit(event: Event) {
 
 <style scoped>
 .pilot {
-  margin: 24px 0 8px;
-  padding: 24px 0 0;
-  border-top: 1px solid var(--vp-c-divider);
+  margin-block: 1.5rem 0.5rem;
+  margin-inline: 0;
+  padding-block: 1.5rem 0;
+  padding-inline: 0;
+  border-block-start: 1px solid var(--dt-rule);
 }
 form {
   display: grid;
-  gap: 18px;
+  gap: 1.125rem;
 }
+/* two fields a row where two 15rem fields fit, one where they do not (no breakpoint) */
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1.125rem 1.25rem;
 }
 .field {
   display: grid;
-  gap: 6px;
-  font-size: 15px;
+  gap: 0.375rem;
+  font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
 }
 .field em {
   font-style: normal;
   font-weight: 400;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 input,
 select,
 textarea {
-  width: 100%;
-  min-height: 44px;
-  padding: 10px 12px;
+  inline-size: 100%;
+  min-block-size: 2.75rem;
+  padding: 0.625rem 0.75rem;
   font: inherit;
   font-weight: 400;
-  font-size: 16px;
-  color: var(--vp-c-text-1);
-  background: var(--vp-c-bg);
-  border: 1px solid var(--vp-c-border);
+  font-size: 1rem;
+  color: var(--dt-ink);
+  background: var(--dt-paper);
+  border: 1px solid var(--dt-border);
   border-radius: var(--dt-radius-control);
 }
 textarea {
@@ -165,22 +168,24 @@ textarea {
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid var(--dt-link);
   outline-offset: 1px;
   border-color: transparent;
 }
 .hp {
   position: absolute;
-  left: -10000px;
-  width: 1px;
-  height: 1px;
+  inset-inline-start: -625rem;
+  inline-size: 0.0625rem;
+  block-size: 0.0625rem;
   overflow: hidden;
 }
+/* an inline-size container: the button takes the whole row when the row is narrow (styles/site.css) */
 .submit {
+  container-type: inline-size;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px 20px;
+  gap: 0.625rem 1.25rem;
 }
 .submit .dt-btn {
   border: 0;
@@ -192,46 +197,41 @@ textarea:focus-visible {
 }
 .note {
   margin: 0 !important;
-  font-size: 14px;
-  color: var(--vp-c-text-2);
+  font-size: 0.875rem;
+  color: var(--dt-ink-2);
 }
 .error {
   margin: 0 !important;
-  padding: 12px 14px;
-  font-size: 15px;
+  padding: 0.75rem 0.875rem;
+  font-size: 0.9375rem;
   line-height: 1.5;
-  border-left: 3px solid var(--dt-brass);
+  border-inline-start: 3px solid var(--dt-brass);
   background: var(--dt-paper-2);
 }
 .sent {
-  padding: 16px 18px;
+  padding: 1rem 1.125rem;
   background: var(--dt-paper-2);
-  border-left: 3px solid var(--dt-ice);
+  border-inline-start: 3px solid var(--dt-ice);
 }
 .sent p {
   margin: 0 !important;
   line-height: 1.55;
 }
 .sent .sent-title {
-  margin-bottom: 4px !important;
-  font-size: 20px;
+  margin-block-end: 0.25rem !important;
+  font-size: 1.25rem;
   font-weight: 600;
 }
 .alt {
-  margin-top: 28px;
+  margin-block-start: 1.75rem;
 }
 .alt > p {
   margin: 0 !important;
-  font-size: 15px;
-  color: var(--vp-c-text-2);
+  font-size: 0.9375rem;
+  color: var(--dt-ink-2);
 }
 .alt :deep(.mail) {
-  margin-top: 6px !important;
+  margin-block-start: 0.375rem !important;
 }
 
-@media (max-width: 640px) {
-  .grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
 </style>
