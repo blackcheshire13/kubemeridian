@@ -85,18 +85,22 @@ async function copy() {
 </template>
 
 <style scoped>
+/* an inline-size container: the button takes the whole row when the row is narrow (custom.css) */
 .cta {
+  container-type: inline-size;
   margin: 0;
 }
 .cta.block {
-  margin: 32px 0;
-  padding: 24px 0 0;
-  border-top: 1px solid var(--vp-c-divider);
+  margin: 2rem 0;
+  padding-block: 1.5rem 0;
+  padding-inline: 0;
+  border-block-start: 1px solid var(--vp-c-divider);
 }
 .lead {
-  margin: 0 0 16px !important;
-  max-width: 640px;
-  font-size: 18px;
+  margin-block: 0 1rem !important;
+  margin-inline: 0 !important;
+  max-inline-size: 40rem;
+  font-size: 1.125rem;
   line-height: 1.55;
   color: var(--vp-c-text-1);
 }
@@ -109,9 +113,10 @@ async function copy() {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px 14px;
-  margin: 14px 0 0 !important;
-  font-size: 15px;
+  gap: 0.375rem 0.875rem;
+  margin-block: 0.875rem 0 !important;
+  margin-inline: 0 !important;
+  font-size: 0.9375rem;
   color: var(--vp-c-text-2);
 }
 .addr {
@@ -120,9 +125,9 @@ async function copy() {
   user-select: all;
 }
 .copy {
-  min-height: 32px;
-  padding: 0 10px;
-  font-size: 14px;
+  min-block-size: 2rem;
+  padding: 0 0.625rem;
+  font-size: 0.875rem;
   color: var(--vp-c-text-1);
   border: 1px solid var(--vp-c-border);
   border-radius: var(--dt-radius-control);
@@ -133,26 +138,28 @@ async function copy() {
   border-color: var(--vp-c-text-2);
 }
 .web {
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--vp-c-brand-1);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 .hint {
-  max-width: 640px;
-  margin: 12px 0 0 !important;
-  font-size: 15px;
+  max-inline-size: 40rem;
+  margin-block: 0.75rem 0 !important;
+  margin-inline: 0 !important;
+  font-size: 0.9375rem;
   line-height: 1.5;
   color: var(--vp-c-text-1);
 }
 .hint .addr {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
-@media (max-width: 640px) {
+/* touch screens: 44px tap targets (an input feature, not a width) */
+@media (pointer: coarse) {
   .copy,
   .web {
-    min-height: 44px;
+    min-block-size: 2.75rem;
     display: inline-flex;
     align-items: center;
   }

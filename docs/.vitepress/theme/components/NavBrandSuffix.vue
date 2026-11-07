@@ -10,17 +10,18 @@
 .brand-suffix {
   display: inline-flex;
   align-items: center;
-  margin-left: 10px;
-  padding-left: 10px;
-  height: 20px;
-  font-size: 14px;
+  margin-inline-start: 0.625rem;
+  padding-inline-start: 0.625rem;
+  block-size: 1.25rem;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--vp-c-text-2);
-  border-left: 1px solid var(--vp-c-divider);
+  border-inline-start: 1px solid var(--vp-c-divider);
   white-space: nowrap;
 }
-/* 768–959 px shows the full nav in one row; without this the bar is wider than the screen */
-@media (min-width: 768px) and (max-width: 959.98px) {
+/* from the nav switch (48em = 768px at the default font, custom.css) to 60em (960px) the full
+   nav and the actions need the room the suffix would take; in em it follows the font setting */
+@media (48em <= width < 60em) {
   .brand-suffix {
     display: none;
   }
