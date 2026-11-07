@@ -1,0 +1,306 @@
+/* Markdown content (.dt-prose): headings, text, lists, tables, quotes, inline code and code
+   blocks. The page's own blocks (dt-*) are in site.css. */
+
+/* code blocks reach the screen edge where the column is a phone's width (see below) */
+.dt-prose {
+  container: prose / inline-size;
+}
+
+/* ---------- headings ---------- */
+.dt-prose :is(h1, h2, h3, h4) {
+  position: relative;
+  font-weight: 600;
+  outline: none;
+}
+/* Bricolage Grotesque only for large English display headings; smaller ones in the text face */
+.dt-prose h1 {
+  font-family: var(--dt-font-display);
+  font-size: var(--dt-h1);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+.dt-prose h2 {
+  margin-block: 3rem 1rem;
+  padding-block-start: 1.5rem;
+  border-block-start: 1px solid var(--dt-rule);
+  font-family: var(--dt-font-display);
+  font-size: var(--dt-h2);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+.dt-prose h3 {
+  margin-block-start: 2rem;
+  font-size: var(--dt-h3);
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+}
+.dt-prose h4 {
+  margin-block-start: 1.5rem;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+/* the "#" permalink, outside the column on the left, shown on hover or focus */
+.dt-prose .header-anchor {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  margin-inline-start: -0.87em;
+  font-weight: 500;
+  color: var(--dt-link);
+  text-decoration: none;
+  user-select: none;
+  opacity: 0;
+  transition: color 0.25s, opacity 0.25s;
+}
+.dt-prose .header-anchor::before {
+  content: '#';
+}
+.dt-prose h2 .header-anchor {
+  inset-block-start: 1.5rem;
+}
+.dt-prose :is(h1, h2, h3, h4):hover .header-anchor,
+.dt-prose .header-anchor:focus {
+  opacity: 1;
+}
+.dt-prose :is(h1, h2, h3, h4) > code {
+  font-size: 0.9em;
+}
+
+/* ---------- text ---------- */
+.dt-prose :is(p, summary) {
+  margin-block: 1rem;
+}
+.dt-prose :is(p, li) {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+.dt-prose a {
+  font-weight: 500;
+  color: var(--dt-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.25s, opacity 0.25s;
+}
+.dt-prose a:hover {
+  color: var(--dt-link-2);
+}
+.dt-prose strong {
+  font-weight: 600;
+}
+.dt-prose small {
+  font-size: 0.8125rem;
+}
+.dt-prose blockquote {
+  margin-block: 1rem;
+  padding-inline-start: 1rem;
+  border-inline-start: 2px solid var(--dt-rule);
+  color: var(--dt-ink-2);
+}
+.dt-prose blockquote > p {
+  margin: 0;
+  font-size: 1rem;
+}
+.dt-prose hr {
+  margin-block: 1rem;
+  border: 0;
+  border-block-start: 1px solid var(--dt-rule);
+}
+.dt-prose img {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+/* ---------- lists ---------- */
+.dt-prose :is(ul, ol) {
+  margin-block: 1rem;
+  padding-inline-start: 1.25rem;
+}
+.dt-prose ul {
+  list-style: disc;
+}
+.dt-prose ol {
+  list-style: decimal;
+}
+.dt-prose li + li {
+  margin-block-start: 0.5rem;
+}
+.dt-prose li > :is(ul, ol) {
+  margin-block: 0.5rem 0;
+}
+
+/* ---------- tables ---------- */
+.dt-prose table {
+  display: block;
+  margin-block: 1.25rem;
+  overflow-x: auto;
+}
+.dt-prose tr {
+  background-color: var(--dt-paper);
+  border-block-start: 1px solid var(--dt-rule);
+}
+.dt-prose tr:nth-child(2n) {
+  background-color: var(--dt-paper-2);
+}
+.dt-prose :is(th, td) {
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  border: 1px solid var(--dt-rule);
+  font-size: 0.875rem;
+}
+.dt-prose th {
+  text-align: start;
+  font-weight: 600;
+  color: var(--dt-ink-2);
+  background-color: var(--dt-paper-2);
+}
+/* numbers in tables sit on the right and never wrap */
+.dt-prose :is(td, th)[style*='right'] {
+  white-space: nowrap;
+}
+
+/* ---------- inline code ---------- */
+.dt-prose :not(pre, h1, h2, h3, h4) > code {
+  font-size: 0.875em;
+  color: var(--dt-link);
+}
+.dt-prose :not(pre) > code {
+  padding-block: 0.1875rem;
+  padding-inline: 0.375rem;
+  border-radius: 0.25rem;
+  background-color: var(--dt-code-inline-bg);
+}
+.dt-prose a > code {
+  color: var(--dt-link);
+}
+/* in a table cell 0.875em would land under 13px */
+.dt-prose :is(td, th) code {
+  font-size: 0.8125rem;
+}
+
+/* ---------- code blocks ----------
+   Markdown renders <div class="language-x"> with a copy button, a language label and a Shiki
+   <pre> in two themes; VitePress's runtime copies the code on click (button.copy). */
+.dt-prose div[class*='language-'] {
+  position: relative;
+  margin-block: 1rem;
+  overflow-x: auto;
+  background-color: var(--dt-code-bg);
+  border-radius: var(--dt-radius-card);
+}
+.dt-prose [class*='language-'] :is(pre, code) {
+  direction: ltr;
+  text-align: start;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+  tab-size: 4;
+  hyphens: none;
+}
+.dt-prose [class*='language-'] pre {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding-block: 1.25rem;
+  background: transparent;
+  overflow-x: auto;
+}
+.dt-prose [class*='language-'] code {
+  display: block;
+  inline-size: fit-content;
+  min-inline-size: 100%;
+  padding-inline: 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--dt-ink-2);
+}
+/* Shiki writes both themes' colours on every token; the page's theme picks one */
+html:not(.dark) .shiki span {
+  color: var(--shiki-light, inherit);
+}
+.dark .shiki span {
+  color: var(--shiki-dark, inherit);
+}
+.dt-prose [class*='language-'] > span.lang {
+  position: absolute;
+  inset-block-start: 0.125rem;
+  inset-inline-end: 0.5rem;
+  z-index: 2;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--dt-ink-3);
+  user-select: none;
+  transition: color 0.4s, opacity 0.4s;
+}
+.dt-prose [class*='language-'] > button.copy {
+  --copy: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='rgba(128,128,128,1)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3C/svg%3E");
+  --copied: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='rgba(128,128,128,1)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3Cpath d='m9 14 2 2 4-4'/%3E%3C/svg%3E");
+  position: absolute;
+  inset-block-start: 0.75rem;
+  inset-inline-end: 0.75rem;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  direction: ltr;
+  border: 1px solid var(--dt-rule);
+  border-radius: var(--dt-radius-control);
+  background: var(--dt-paper-2) var(--copy) center / 1.25rem no-repeat;
+  opacity: 0;
+  cursor: pointer;
+  transition: border-color 0.25s, background-color 0.25s, opacity 0.25s;
+}
+.dt-prose [class*='language-']:hover > button.copy,
+.dt-prose [class*='language-'] > button.copy:focus-visible {
+  opacity: 1;
+}
+.dt-prose [class*='language-']:hover > button.copy + span.lang,
+.dt-prose [class*='language-'] > button.copy:focus-visible + span.lang {
+  opacity: 0;
+}
+.dt-prose [class*='language-'] > button.copy:hover,
+.dt-prose [class*='language-'] > button.copy.copied {
+  background-color: var(--dt-paper);
+}
+.dt-prose [class*='language-'] > button.copy.copied {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  background-image: var(--copied);
+}
+/* "Copied" grows out of the button to the left */
+.dt-prose [class*='language-'] > button.copy.copied::before {
+  content: 'Copied';
+  position: absolute;
+  inset-inline-end: calc(100% - 1px);
+  inset-block: -1px;
+  display: flex;
+  align-items: center;
+  padding-inline: 0.625rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--dt-ink-2);
+  background-color: var(--dt-paper);
+  border: 1px solid var(--dt-rule);
+  border-inline-end: 0;
+  border-start-start-radius: var(--dt-radius-control);
+  border-end-start-radius: var(--dt-radius-control);
+}
+
+/* on a phone-wide column the block runs to the screen edges, so long lines get the width */
+@container prose (inline-size < 36rem) {
+  .dt-prose > div > div[class*='language-'] {
+    margin-inline: calc(-1 * var(--dt-gutter));
+    border-radius: 0;
+  }
+  /* the code itself stays on the text's left edge. Only blocks at the top of the text (the
+     markdown renders inside one wrapper div) are bled: inside a list item, a quote or a
+     <details> they keep their inset */
+  .dt-prose > div > div[class*='language-'] code {
+    padding-inline: var(--dt-gutter);
+  }
+}

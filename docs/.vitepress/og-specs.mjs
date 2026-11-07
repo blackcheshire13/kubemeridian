@@ -28,11 +28,16 @@ const ACCENT = {
 };
 
 // "ICE — active defence…" / "Live needs evidence: how ICE…" → big title + subtitle
+/** @param {string} title @returns {[string, string]} */
 function split(title) {
   const m = title.match(/^(.+?)(?: — |: )(.+)$/);
   return m ? [m[1], m[2].charAt(0).toUpperCase() + m[2].slice(1)] : [title, ''];
 }
 
+/**
+ * @param {string} slug @param {string} file @param {string} kicker @param {string} accent
+ * @param {string} [sub] @param {string} [mark]
+ */
 function fromPage(slug, file, kicker, accent, sub, mark) {
   const [title, rest] = split(String(readFrontmatter(file).title));
   return { slug, kicker, accent, title, sub: sub ?? rest, ...(mark ? { mark } : {}) };

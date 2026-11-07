@@ -1,0 +1,293 @@
+/*
+ * devopstech — "engineering notebook": warm paper, ink, a brass mark. The site's own theme:
+ * VitePress is only the engine (markdown, build, router); every style here is ours.
+ * Rules: nothing smaller than 13px, no large red surfaces, left-aligned everything.
+ * Units: rem for sizes (they follow the reader's font-size setting), clamp() for fluid ones,
+ * logical properties, intrinsic layouts and container queries. A media query only for a
+ * decision about the whole window (the nav), in em and range syntax; px only for hairlines
+ * and shadows.
+ * Shared with the ICE console (ICE repo docs/DESIGN.md): Geologica for text, JetBrains Mono
+ * for code, the ICE ice ramp; Bricolage Grotesque only for large English display headings;
+ * brass belongs to devopstech and never to the product; radius 6px on controls, 4px on cards.
+ */
+
+/* ---------- tokens ---------- */
+:root {
+  /* one grid for every band (navbar, page, footer, mobile menu): a fluid gutter (24px up to
+     512px, growing to 32px at 768px) around one container (1104px at the default font size) */
+  --dt-gutter: clamp(1.5rem, 0.5rem + 3.125vw, 2rem);
+  --dt-container: 69rem;
+  --dt-nav-height: 4rem;
+  /* one type scale and one section rhythm; rem + vw so they also follow the font setting
+     (36→56px, 26→34px, 64→96px at the default font) */
+  --dt-h1: clamp(2.25rem, 0.25rem + 4.1vw, 3.5rem);
+  --dt-h2: clamp(1.625rem, 0.25rem + 2.2vw, 2.125rem);
+  --dt-h3: 1.25rem;
+  --dt-section-gap: clamp(4rem, 0.5rem + 7.3vw, 6rem);
+
+  --dt-paper: oklch(0.975 0.008 85);
+  --dt-paper-2: oklch(0.955 0.011 85);
+  --dt-paper-3: oklch(0.925 0.014 85);
+  --dt-elv: oklch(0.985 0.006 85);
+  /* figure cards (the steppers): a touch lighter than the page, with a firm edge */
+  --dt-card: oklch(0.99 0.004 85);
+  --dt-card-edge: rgb(0 0 0 / 0.14);
+  --dt-ink: oklch(0.25 0.03 252);
+  --dt-ink-2: oklch(0.4 0.025 252);
+  --dt-ink-3: oklch(0.46 0.02 252); /* tertiary text, 4.8:1 on paper (AA for small text) */
+  --dt-rule: oklch(0.86 0.015 85);
+  --dt-border: oklch(0.82 0.018 85);
+  --dt-link: oklch(0.45 0.12 255);
+  --dt-link-2: oklch(0.5 0.13 255);
+  --dt-link-soft: oklch(0.45 0.12 255 / 0.12);
+  --dt-brass: oklch(0.74 0.135 78);
+  --dt-brass-ink: oklch(0.5 0.11 70);
+  --dt-code-bg: oklch(0.985 0.004 85);
+  --dt-code-inline-bg: rgb(142 150 170 / 0.14);
+  --dt-shadow-1: 0 1px 2px rgb(0 0 0 / 0.04), 0 1px 2px rgb(0 0 0 / 0.06);
+
+  --dt-ice: #2675a9; /* ICE console ramp t4, the mark's middle layer */
+  --dt-ice-ink: #1c5284; /* ramp t5: ICE-coloured small text, 7:1 on paper */
+  --dt-deusex: oklch(0.6 0.13 70);
+  --dt-km: #326ce5;
+
+  --dt-font-display: 'Bricolage Grotesque', 'Geologica', ui-sans-serif, system-ui, sans-serif;
+  --dt-font-text: 'Geologica', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --dt-font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --dt-radius-control: 0.375rem;
+  --dt-radius-card: 0.25rem;
+}
+
+.dark {
+  --dt-paper: oklch(0.205 0.018 252);
+  --dt-paper-2: oklch(0.235 0.02 252);
+  --dt-paper-3: oklch(0.27 0.022 252);
+  --dt-elv: oklch(0.25 0.02 252);
+  --dt-card: var(--dt-paper-2);
+  --dt-card-edge: oklch(0.38 0.02 252);
+  --dt-ink: oklch(0.93 0.012 85);
+  --dt-ink-2: oklch(0.8 0.015 85);
+  --dt-ink-3: oklch(0.7 0.015 85);
+  --dt-rule: oklch(0.33 0.02 252);
+  --dt-border: oklch(0.38 0.02 252);
+  --dt-link: oklch(0.78 0.1 255);
+  --dt-link-2: oklch(0.72 0.11 255);
+  --dt-link-soft: oklch(0.72 0.11 255 / 0.16);
+  --dt-brass: oklch(0.8 0.12 80);
+  --dt-brass-ink: oklch(0.82 0.11 80);
+  --dt-code-bg: oklch(0.24 0.02 252);
+  --dt-code-inline-bg: rgb(101 117 133 / 0.16);
+  --dt-shadow-1: 0 1px 2px rgb(0 0 0 / 0.3), 0 1px 2px rgb(0 0 0 / 0.4);
+  --dt-ice: #6edbfc; /* console ramp t5 on dark */
+  --dt-ice-ink: #6edbfc;
+  --dt-deusex: oklch(0.8 0.12 78);
+  --dt-km: #6f9bf2;
+}
+
+/* ---------- reset ---------- */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+/* 100% is 16px by default and follows the reader's browser font-size setting */
+html {
+  font-size: 100%;
+  line-height: 1.4;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+html.dark {
+  color-scheme: dark;
+}
+body {
+  margin: 0;
+  min-block-size: 100dvh;
+  font-family: var(--dt-font-text);
+  font-size: 1rem;
+  font-weight: 400;
+  /* a length, not a ratio: every block that sets no line-height of its own keeps 1.5rem
+     (24px at the default font), whatever its font size; the components are drawn on it */
+  line-height: 1.5rem;
+  color: var(--dt-ink);
+  background-color: var(--dt-paper);
+  font-synthesis: style;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+p,
+figure,
+blockquote,
+fieldset {
+  margin: 0;
+}
+fieldset {
+  padding: 0;
+}
+strong,
+b {
+  font-weight: 600;
+}
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+a,
+button,
+input,
+label,
+select,
+summary,
+textarea {
+  touch-action: manipulation;
+}
+ol,
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+pre,
+code,
+kbd,
+samp {
+  font-family: var(--dt-font-mono);
+}
+img,
+svg,
+video,
+canvas,
+iframe {
+  display: block;
+}
+img,
+video {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  border: 0;
+  padding: 0;
+  line-height: inherit;
+  color: inherit;
+}
+button {
+  font-family: inherit;
+  background: none;
+}
+button:enabled {
+  cursor: pointer;
+}
+input {
+  background-color: transparent;
+}
+::placeholder {
+  color: var(--dt-ink-3);
+}
+textarea {
+  resize: vertical;
+}
+/* a select draws no native arrow (the form draws its own look) and keeps the page's
+   line-height, which a native menulist would ignore */
+select {
+  appearance: none;
+}
+input[type='number'] {
+  appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+table {
+  border-collapse: collapse;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+p {
+  overflow-wrap: break-word;
+}
+::selection {
+  background: color-mix(in oklch, var(--dt-brass) 35%, transparent);
+}
+
+/* a visible focus ring everywhere a component does not draw its own (zero specificity) */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--dt-ice);
+  outline-offset: 2px;
+}
+:where([tabindex='-1']):focus {
+  outline: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- one grid ----------
+   Every band (navbar, page, footer, mobile menu, the home page, the 404) sits in the same
+   container between the same fluid gutter, so the logo, the H1 and the footer share one left
+   edge at every width: 24px on a phone, 168px at 1440px. */
+.dt-wrap {
+  max-inline-size: calc(var(--dt-container) + 2 * var(--dt-gutter));
+  margin-inline: auto;
+  padding-inline: var(--dt-gutter);
+}
+
+/* an external link: a small grey arrow after the text */
+.dt-ext::after {
+  content: '';
+  color: var(--dt-ink-3);
+  display: inline-block;
+  flex: none;
+  inline-size: 0.6875rem;
+  block-size: 0.6875rem;
+  margin-inline-start: 0.25rem;
+  background: currentColor;
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z'/%3E%3C/svg%3E");
+  mask: var(--icon) center / contain no-repeat;
+}
+
+/* the open mobile menu (SiteNav) and the screenshot lightbox hold the page behind them still */
+html.dt-scroll-lock {
+  overflow: hidden;
+}

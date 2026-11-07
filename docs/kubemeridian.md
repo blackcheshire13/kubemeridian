@@ -1,6 +1,5 @@
 ---
 layout: home
-pageClass: km-page
 title: KubeMeridian
 description: Archived — Kubernetes observability for Grafana in one Apache-2.0 app plugin. Not in the Grafana catalog; v2.5.2 remains available as an unsigned plugin.
 

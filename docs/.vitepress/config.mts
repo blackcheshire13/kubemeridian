@@ -1,4 +1,5 @@
-import { defineConfig, type MarkdownRenderer } from 'vitepress';
+import { defineConfigWithTheme, type MarkdownRenderer } from 'vitepress';
+import type { SiteTheme } from './theme/types';
 import { SITE_DESCRIPTION, checkOgCards, pageHead, sitemapLastmod, writeFeed, writeHeaders } from './site-meta';
 
 // Tables keep their semantics and their column names when CSS stacks them on phones:
@@ -48,7 +49,7 @@ function tableLabels(md: MarkdownRenderer) {
 }
 
 // devopstech.net — the home of ICE; deusex (how ICE is built), news, blog, and the KubeMeridian archive page
-export default defineConfig({
+export default defineConfigWithTheme<SiteTheme>({
   lang: 'en-US',
   title: 'devopstech',
   description: SITE_DESCRIPTION,
@@ -80,7 +81,6 @@ export default defineConfig({
     config: tableLabels,
   },
   transformPageData(pageData) {
-    const rel = pageData.relativePath;
     // search results show ~60 characters of a title: a page may carry a shorter `seoTitle`,
     // and the " | devopstech" suffix is dropped where it would push the title past that
     if (typeof pageData.frontmatter.seoTitle === 'string') {
@@ -90,11 +90,6 @@ export default defineConfig({
     if (pageData.frontmatter.titleTemplate === undefined && `${pageData.title} | devopstech`.length > 60) {
       pageData.titleTemplate = false;
       pageData.frontmatter.titleTemplate = false;
-    }
-    // product pages navigate with their section tabs, the blog index is already a list of posts
-    if (/^(ice|deusex|news)\//.test(rel) || rel === 'about.md') {
-      pageData.frontmatter.prev = false;
-      pageData.frontmatter.next = false;
     }
   },
   transformHead: ({ pageData }) => pageHead(pageData),

@@ -44,23 +44,23 @@ const fmt = (iso: string) =>
 }
 .news li {
   display: grid;
-  gap: 6px;
+  gap: 0.375rem;
   margin: 0;
-  padding: 20px 0;
-  border-top: 1px solid var(--vp-c-divider);
+  padding: 1.25rem 0;
+  border-block-start: 1px solid var(--dt-rule);
 }
 .news li:first-child {
-  border-top: 1px solid var(--vp-c-divider);
+  border-block-start: 1px solid var(--dt-rule);
 }
 .meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px 14px;
+  gap: 0.25rem 0.875rem;
   margin: 0 !important;
-  font-family: var(--vp-font-family-mono);
-  font-size: 13px;
-  color: var(--vp-c-text-2);
+  font-family: var(--dt-font-mono);
+  font-size: 0.8125rem;
+  color: var(--dt-ink-2);
 }
 .prod {
   font-weight: 600;
@@ -70,36 +70,37 @@ const fmt = (iso: string) =>
 }
 .prod.deusex {
   /* the darker brass: the label is 13px text and needs 4.5:1 */
-  color: var(--dt-brass-ink, var(--vp-c-text-1));
+  color: var(--dt-brass-ink, var(--dt-ink));
 }
 .title {
   margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
   font-family: var(--dt-font-display);
-  font-size: 22px;
+  font-size: 1.375rem;
   font-weight: 700;
   line-height: 1.25;
   letter-spacing: -0.01em;
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
 }
 .body {
-  margin: 4px 0 0 !important;
-  max-width: 68ch;
+  margin-block: 0.25rem 0 !important;
+  margin-inline: 0 !important;
+  max-inline-size: 68ch;
   line-height: 1.65;
 }
 .compact li {
-  padding: 14px 0;
+  padding: 0.875rem 0;
 }
 .compact .title {
-  font-family: var(--vp-font-family-base);
+  font-family: var(--dt-font-text);
   font-weight: 600;
-  font-size: 18px;
-  color: var(--vp-c-text-1);
+  font-size: 1.125rem;
+  color: var(--dt-ink);
   text-decoration: none;
 }
 .compact .title:hover {
-  color: var(--vp-c-brand-1);
+  color: var(--dt-link);
   text-decoration: underline;
   text-underline-offset: 4px;
 }

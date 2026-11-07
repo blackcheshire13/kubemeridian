@@ -7,15 +7,18 @@ import matter from 'gray-matter';
 
 export const DOCS = join(dirname(fileURLToPath(import.meta.url)), '..');
 
+/** @param {string} relativePath path under docs/ @returns {Record<string, any>} */
 export function readFrontmatter(relativePath) {
   return matter(readFileSync(join(DOCS, relativePath), 'utf8')).data;
 }
 
+/** @param {unknown} d a frontmatter date (YAML gives a Date) @returns {string} YYYY-MM-DD */
 export function isoDate(d) {
   return d instanceof Date ? d.toISOString().slice(0, 10) : String(d).slice(0, 10);
 }
 
 // newest first; same-day posts in title order
+/** @param {{ date: string, title: string }} a @param {{ date: string, title: string }} b */
 export function comparePosts(a, b) {
   return b.date.localeCompare(a.date) || a.title.localeCompare(b.title);
 }

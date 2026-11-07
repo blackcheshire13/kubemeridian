@@ -1,7 +1,11 @@
-import { h } from 'vue';
-// without-fonts: the site sets its own faces; the default theme would preload Inter on every page
-import DefaultTheme from 'vitepress/theme-without-fonts';
-import { useData, type Theme } from 'vitepress';
+// devopstech.net's own theme: VitePress is the engine (markdown, build, router, dark-mode
+// state, copy buttons); the layout, navbar, pages and every style are the site's.
+import type { Theme } from 'vitepress';
+// the site's styles first: a component's own (scoped) rules come later and win a tie
+import './styles/base.css';
+import './styles/prose.css';
+import './styles/site.css';
+import Layout from './Layout.vue';
 import HubHome from './components/HubHome.vue';
 import IceLoop from './components/IceLoop.vue';
 import DeusexCycle from './components/DeusexCycle.vue';
@@ -10,33 +14,10 @@ import PostList from './components/PostList.vue';
 import PartnerCta from './components/PartnerCta.vue';
 import NewsList from './components/NewsList.vue';
 import PilotForm from './components/PilotForm.vue';
-import NavCta from './components/NavCta.vue';
-import NavBrandSuffix from './components/NavBrandSuffix.vue';
-import SectionNav from './components/SectionNav.vue';
-import NotFound from './components/NotFound.vue';
-import ShotLightbox from './components/ShotLightbox.vue';
-import ArchivedNotice from './components/ArchivedNotice.vue';
-import { isKubeMeridianPage } from '../kubemeridian.mjs';
-import './custom.css';
 
 export default {
-  extends: DefaultTheme,
-  Layout() {
-    const { page } = useData();
-    const rel = () => page.value.relativePath;
-    return h(DefaultTheme.Layout, null, {
-      // the navbar link is the only call to action outside a page's own closing block
-      'nav-bar-title-after': () => h(NavBrandSuffix),
-      'nav-bar-content-after': () => h(NavCta),
-      'nav-screen-content-before': () => h(NavCta, { screen: true }),
-      // product pages navigate with tabs; KubeMeridian is archived
-      'doc-before': () => (isKubeMeridianPage(rel()) ? h(ArchivedNotice) : h(SectionNav)),
-      'home-hero-before': () => (isKubeMeridianPage(rel()) ? h(ArchivedNotice, { wide: true }) : null),
-      'not-found': () => h(NotFound),
-      // screenshots open over the page, not as a bare PNG with no way back
-      'layout-bottom': () => h(ShotLightbox),
-    });
-  },
+  Layout,
+  // components used by name inside markdown pages
   enhanceApp({ app }) {
     app.component('HubHome', HubHome);
     app.component('IceLoop', IceLoop);

@@ -5,7 +5,18 @@
     "moduleResolution": "Bundler",
     "strict": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": true,
+    "types": [
+      "node",
+      "vite/client"
+    ]
   },
-  "include": [".vitepress/**/*.ts", ".vitepress/**/*.vue", ".vitepress/**/*.mts"]
+  "include": [
+    ".vitepress/**/*.ts",
+    ".vitepress/**/*.mts",
+    ".vitepress/**/*.mjs",
+    ".vitepress/**/*.vue"
+  ]
 }

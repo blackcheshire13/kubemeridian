@@ -13,61 +13,61 @@
 </template>
 
 <style scoped>
+/* the site's container between the site's gutter (styles/base.css), like every other page */
 .nf {
-  max-width: 1152px;
-  margin: 0 auto;
-  padding: clamp(48px, 8vw, 96px) 24px 96px;
+  box-sizing: border-box;
+  max-inline-size: calc(var(--dt-container) + 2 * var(--dt-gutter));
+  margin-inline: auto;
+  padding-block: clamp(3rem, 1rem + 6vw, 6rem) 6rem;
+  padding-inline: var(--dt-gutter);
 }
 .code {
-  margin: 0 0 12px;
-  font-family: var(--vp-font-family-mono);
-  font-size: 16px;
-  color: var(--vp-c-text-2);
+  margin-block: 0 0.75rem;
+  margin-inline: 0;
+  font-family: var(--dt-font-mono);
+  font-size: 1rem;
+  color: var(--dt-ink-2);
 }
 h1 {
   margin: 0;
   font-family: var(--dt-font-display);
-  font-size: clamp(36px, 6vw, 64px);
+  font-size: clamp(2.25rem, 6vw, 4rem);
   font-weight: 800;
   line-height: 1.02;
   letter-spacing: -0.02em;
 }
 .lede {
-  margin: 20px 0 0;
-  max-width: 560px;
-  font-size: 18px;
+  margin-block: 1.25rem 0;
+  margin-inline: 0;
+  max-inline-size: 35rem;
+  font-size: 1.125rem;
   line-height: 1.6;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 ul {
-  margin: 24px 0 0;
+  margin-block: 1.5rem 0;
+  margin-inline: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--vp-c-divider);
-  max-width: 560px;
+  border-block-start: 1px solid var(--dt-rule);
+  max-inline-size: 35rem;
 }
 li {
   display: flex;
   align-items: center;
-  gap: 8px;
-  min-height: 48px;
-  font-size: 17px;
-  color: var(--vp-c-text-2);
-  border-bottom: 1px solid var(--vp-c-divider);
+  gap: 0.5rem;
+  min-block-size: 3rem;
+  font-size: 1.0625rem;
+  color: var(--dt-ink-2);
+  border-block-end: 1px solid var(--dt-rule);
 }
 a {
   display: inline-flex;
   align-items: center;
-  min-height: 48px;
+  min-block-size: 3rem;
   font-weight: 600;
-  color: var(--vp-c-brand-1);
+  color: var(--dt-link);
   text-decoration: underline;
   text-underline-offset: 3px;
-}
-@media (max-width: 520px) {
-  .nf {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
 }
 </style>

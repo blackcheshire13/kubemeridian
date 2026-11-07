@@ -22,7 +22,9 @@ jobs:
             docs/package-lock.json
       - name: Lint
         run: npm ci && npm run lint
+      - name: Type-check the theme and build config (vue-tsc)
+        run: npm ci --prefix docs && npm run typecheck
       - name: Build the site (fails on missing or stale social cards)
-        run: npm ci --prefix docs && npm run build
+        run: npm run build
       - name: Bundle the pilot form worker
         run: PILOT_TO=ci@example.invalid ./workers/pilot/deploy.sh --dry-run --outdir "$RUNNER_TEMP/pilot"

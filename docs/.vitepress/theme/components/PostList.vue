@@ -18,44 +18,47 @@ import { data as posts } from '../posts.data';
 <style scoped>
 .posts {
   list-style: none;
-  margin: 24px 0 0;
+  margin-block: 1.5rem 0;
+  margin-inline: 0;
   padding: 0;
 }
 .posts li {
   margin: 0;
-  padding: 22px 0;
-  border-top: 1px solid var(--vp-c-divider);
+  padding: 1.375rem 0;
+  border-block-start: 1px solid var(--dt-rule);
 }
-.posts li:first-child { border-top: 1px solid var(--vp-c-divider); }
+.posts li:first-child { border-block-start: 1px solid var(--dt-rule); }
 .meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 16px;
+  gap: 0.25rem 1rem;
   margin: 0 !important;
-  font-size: 14px;
-  color: var(--vp-c-text-2);
+  font-size: 0.875rem;
+  color: var(--dt-ink-2);
 }
-time { font-family: var(--vp-font-family-mono); }
+time { font-family: var(--dt-font-mono); }
 .posts h2 {
-  margin: 6px 0 0 !important;
+  margin-block: 0.375rem 0 !important;
+  margin-inline: 0 !important;
   padding: 0 !important;
   border: 0 !important;
-  font-size: 22px;
+  font-size: 1.375rem;
   line-height: 1.3;
 }
 .posts h2 a {
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
   text-decoration: none;
 }
 .posts h2 a:hover {
-  color: var(--vp-c-brand-1);
+  color: var(--dt-link);
   text-decoration: underline;
 }
 .desc {
-  margin: 8px 0 0 !important;
-  max-width: 680px;
-  font-size: 16px;
+  margin-block: 0.5rem 0 !important;
+  margin-inline: 0 !important;
+  max-inline-size: 42.5rem;
+  font-size: 1rem;
   line-height: 1.6;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 </style>
