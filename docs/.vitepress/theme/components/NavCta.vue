@@ -54,14 +54,15 @@ const DEMO_URL = 'https://demo.devopstech.net/';
 }
 
 /* navbar: the demo is a plain link, the pilot the one bordered action. The bar's actions
-   appear where VitePress shows its full nav; 768px is VitePress's own switch, mirrored. */
+   appear with the full nav: 48em, the site's em version of VitePress's 768px switch
+   (custom.css), so they follow the reader's font setting. */
 .bar-actions {
   display: none;
   align-items: center;
   gap: 0.5rem;
   margin-inline-start: 1rem;
 }
-@media (width >= 768px) {
+@media (width >= 48em) {
   .bar-actions {
     display: flex;
   }

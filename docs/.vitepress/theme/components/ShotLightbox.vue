@@ -64,13 +64,14 @@ onBeforeUnmount(() => document.removeEventListener('click', onClick, true));
 </template>
 
 <style scoped>
+/* the whole visible screen: 100% of the top layer, dynamic viewport height (mobile bars) */
 .lightbox {
-  width: 100vw;
-  height: 100dvh;
-  max-width: none;
-  max-height: none;
+  inline-size: 100%;
+  block-size: 100dvh;
+  max-inline-size: none;
+  max-block-size: none;
   margin: 0;
-  padding: clamp(16px, 4vw, 48px);
+  padding: clamp(1rem, 4vw, 3rem);
   border: 0;
   background: rgb(10 14 18 / 0.92);
   color: #f1ede6;
@@ -85,34 +86,35 @@ onBeforeUnmount(() => document.removeEventListener('click', onClick, true));
 }
 figure {
   margin: 0;
-  max-width: min(1440px, 100%);
+  max-inline-size: min(90rem, 100%);
   cursor: default;
 }
 img {
   display: block;
-  max-width: 100%;
-  max-height: calc(100dvh - 140px);
-  width: auto;
-  height: auto;
+  max-inline-size: 100%;
+  max-block-size: calc(100dvh - 8.75rem);
+  inline-size: auto;
+  block-size: auto;
   margin: 0 auto;
   border-radius: var(--dt-radius-card);
   box-shadow: 0 16px 48px rgb(0 0 0 / 0.5);
 }
 figcaption {
-  max-width: 72ch;
-  margin: 14px auto 0;
-  font-size: 15px;
+  max-inline-size: 72ch;
+  margin-block: 0.875rem 0;
+  margin-inline: auto;
+  font-size: 0.9375rem;
   line-height: 1.5;
-  text-align: left;
+  text-align: start;
   color: #d9d4cc;
 }
 .close {
   position: fixed;
-  top: max(12px, env(safe-area-inset-top, 0px));
-  right: max(12px, env(safe-area-inset-right, 0px));
-  width: 44px;
-  height: 44px;
-  font-size: 28px;
+  inset-block-start: max(0.75rem, env(safe-area-inset-top, 0px));
+  inset-inline-end: max(0.75rem, env(safe-area-inset-right, 0px));
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  font-size: 1.75rem;
   line-height: 1;
   color: #f1ede6;
   background: rgb(255 255 255 / 0.08);
