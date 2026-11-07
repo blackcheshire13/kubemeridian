@@ -293,12 +293,14 @@ html:not(.dark) .shiki span {
 
 /* on a phone-wide column the block runs to the screen edges, so long lines get the width */
 @container prose (inline-size < 36rem) {
-  .dt-prose div[class*='language-'] {
+  .dt-prose > div > div[class*='language-'] {
     margin-inline: calc(-1 * var(--dt-gutter));
     border-radius: 0;
   }
-  /* the code itself stays on the text's left edge */
-  .dt-prose [class*='language-'] code {
+  /* the code itself stays on the text's left edge. Only blocks at the top of the text (the
+     markdown renders inside one wrapper div) are bled: inside a list item, a quote or a
+     <details> they keep their inset */
+  .dt-prose > div > div[class*='language-'] code {
     padding-inline: var(--dt-gutter);
   }
 }

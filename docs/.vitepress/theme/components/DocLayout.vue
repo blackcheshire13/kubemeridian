@@ -4,13 +4,10 @@
 // has room for both.
 import { computed } from 'vue';
 import { useData } from 'vitepress';
-import { isKubeMeridianPage } from '../../kubemeridian.mjs';
-import ArchivedNotice from './ArchivedNotice.vue';
 import DocOutline from './DocOutline.vue';
 import SectionNav from './SectionNav.vue';
 
-const { page, frontmatter } = useData();
-const archived = computed(() => isKubeMeridianPage(page.value.relativePath));
+const { frontmatter } = useData();
 const hasOutline = computed(() => frontmatter.value.aside !== false && frontmatter.value.outline !== false);
 </script>
 
@@ -18,8 +15,7 @@ const hasOutline = computed(() => frontmatter.value.aside !== false && frontmatt
   <div class="dt-doc dt-wrap">
     <div class="grid" :class="{ 'has-outline': hasOutline }">
       <div class="column">
-        <ArchivedNotice v-if="archived" />
-        <SectionNav v-else />
+        <SectionNav />
         <Content class="dt-prose" />
       </div>
       <aside v-if="hasOutline" class="aside">

@@ -54,6 +54,8 @@ function skip(event: MouseEvent) {
 }
 .main {
   flex-grow: 1;
+  /* the skip link scrolls here: keep the start of the page clear of the pinned navbar */
+  scroll-margin-block-start: var(--dt-nav-height);
 }
 .main:focus {
   outline: none;

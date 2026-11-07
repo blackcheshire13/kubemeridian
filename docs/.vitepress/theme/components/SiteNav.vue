@@ -17,11 +17,21 @@ const route = useRoute();
 // "/ice/how-it-works" for ice/how-it-works.md, "/ice/" for ice/index.md, "/" for index.md
 const path = computed(() => '/' + page.value.relativePath.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, ''));
 const trim = (p: string) => p.replace(/\/$/, '') || '/';
-const isActive = (item: SiteTheme['nav'][number]) =>
-  item.activeMatch ? new RegExp(item.activeMatch).test(path.value) : trim(item.link) === trim(path.value);
-// "page" on the link to this very page, "true" on the link to the section it belongs to
-const current = (item: SiteTheme['nav'][number]) =>
-  trim(item.link) === trim(path.value) ? 'page' : isActive(item) ? 'true' : undefined;
+// the patterns are compiled once; the state of every link is computed once per page, for both
+// the bar and the menu
+const matchers = computed(() =>
+  theme.value.nav.map((item) => (item.activeMatch ? new RegExp(item.activeMatch) : null)),
+);
+// active: the link is underlined; current: "page" on the link to this very page, "true" on the
+// link to the section the page belongs to
+const links = computed(() =>
+  theme.value.nav.map((item, i) => {
+    const re = matchers.value[i];
+    const self = trim(item.link) === trim(path.value);
+    const active = re ? re.test(path.value) : self;
+    return { ...item, active, current: self ? ('page' as const) : active ? ('true' as const) : undefined };
+  }),
+);
 
 const open = ref(false);
 const hamburger = ref<HTMLButtonElement | null>(null);
@@ -40,12 +50,13 @@ const onWide = (event: MediaQueryListEvent) => event.matches && close();
 // the page behind the open menu does not scroll, and Tab stays in the menu: everything next
 // to the navbar (the page, the footer) is inert while the menu covers it
 const header = ref<HTMLElement | null>(null);
-watch(open, (value) => {
+function lockPage(value: boolean) {
   document.documentElement.classList.toggle('dt-scroll-lock', value);
   for (const el of header.value?.parentElement?.children ?? []) {
     if (el !== header.value) (el as HTMLElement).inert = value;
   }
-});
+}
+watch(open, lockPage);
 watch(() => route.path, () => close());
 onMounted(() => {
   window.addEventListener('keydown', onKeydown);
@@ -53,10 +64,11 @@ onMounted(() => {
   wide.addEventListener('change', onWide);
 });
 onBeforeUnmount(() => {
-  close();
+  // the watcher stops with the component, so the page is released here, not through close()
+  open.value = false;
+  lockPage(false);
   window.removeEventListener('keydown', onKeydown);
   wide?.removeEventListener('change', onWide);
-  document.documentElement.classList.remove('dt-scroll-lock');
 });
 </script>
 
@@ -72,11 +84,11 @@ onBeforeUnmount(() => {
 
       <nav class="menu" aria-label="Main">
         <a
-          v-for="item in theme.nav"
+          v-for="item in links"
           :key="item.link"
           :href="withBase(item.link)"
-          :class="{ active: isActive(item) }"
-          :aria-current="current(item)"
+          :class="{ active: item.active }"
+          :aria-current="item.current"
         >{{ item.text }}</a>
       </nav>
       <div class="appearance">
@@ -103,11 +115,11 @@ onBeforeUnmount(() => {
           <NavCta screen />
           <nav class="screen-menu" aria-label="Main">
             <a
-              v-for="item in theme.nav"
+              v-for="item in links"
               :key="item.link"
               :href="withBase(item.link)"
-              :class="{ active: isActive(item) }"
-              :aria-current="current(item)"
+              :class="{ active: item.active }"
+              :aria-current="item.current"
             >{{ item.text }}</a>
           </nav>
           <div class="screen-appearance">
@@ -135,6 +147,12 @@ onBeforeUnmount(() => {
     position: sticky;
     inset-block-start: 0;
   }
+}
+/* the menu opens right under the bar: a bar partly scrolled away is pinned back to the top
+   while the menu is open, so the two always meet */
+.nav.open {
+  position: sticky;
+  inset-block-start: 0;
 }
 
 .bar {

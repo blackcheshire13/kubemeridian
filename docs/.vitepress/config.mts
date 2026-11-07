@@ -81,7 +81,6 @@ export default defineConfigWithTheme<SiteTheme>({
     config: tableLabels,
   },
   transformPageData(pageData) {
-    const rel = pageData.relativePath;
     // search results show ~60 characters of a title: a page may carry a shorter `seoTitle`,
     // and the " | devopstech" suffix is dropped where it would push the title past that
     if (typeof pageData.frontmatter.seoTitle === 'string') {
@@ -91,11 +90,6 @@ export default defineConfigWithTheme<SiteTheme>({
     if (pageData.frontmatter.titleTemplate === undefined && `${pageData.title} | devopstech`.length > 60) {
       pageData.titleTemplate = false;
       pageData.frontmatter.titleTemplate = false;
-    }
-    // product pages navigate with their section tabs, the blog index is already a list of posts
-    if (/^(ice|deusex|news)\//.test(rel) || rel === 'about.md') {
-      pageData.frontmatter.prev = false;
-      pageData.frontmatter.next = false;
     }
   },
   transformHead: ({ pageData }) => pageHead(pageData),

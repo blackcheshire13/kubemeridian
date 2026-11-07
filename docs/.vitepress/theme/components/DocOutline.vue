@@ -2,7 +2,7 @@
 // "On this page": the page's h2 headings (or the levels the page's `outline` front matter asks
 // for), read from the rendered content; the section being read is marked as the page scrolls.
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
-import { onContentUpdated, useData } from 'vitepress';
+import { getScrollOffset, onContentUpdated, useData } from 'vitepress';
 
 interface Heading {
   id: string;
@@ -10,7 +10,7 @@ interface Heading {
   level: number;
 }
 
-const { frontmatter, site } = useData();
+const { frontmatter } = useData();
 const headings = ref<Heading[]>([]);
 const active = ref<string | null>(null);
 const list = ref<HTMLElement | null>(null);
@@ -33,12 +33,13 @@ function collect() {
       return { id: el.id, text: copy.textContent?.trim() ?? '', level: Number(el.tagName[1]) };
     })
     .filter((h) => h.id && h.text && h.level >= high && h.level <= low);
-  onScroll();
+  if (visible) onScroll();
 }
 
 // the last heading above the reading line, or the last one at the bottom of the page
 function onScroll() {
-  const offset = typeof site.value.scrollOffset === 'number' ? site.value.scrollOffset : 134;
+  // the same reading line the router scrolls hash links to
+  const offset = getScrollOffset();
   const y = window.scrollY;
   const atBottom = Math.abs(y + window.innerHeight - document.body.offsetHeight) < 1;
   let current: string | null = null;
@@ -64,19 +65,37 @@ const onScrollFrame = () => {
   cancelAnimationFrame(frame);
   frame = requestAnimationFrame(onScroll);
 };
+// The outline is hidden where the page has no room for it (phones, tablets): there the scroll
+// listener is detached, so no heading is measured for an outline nobody sees. The observer also
+// re-places the marker when the outline's own layout changes (resize, the reader's font size,
+// the aside appearing) and long entries rewrap.
+const root = ref<HTMLElement | null>(null);
+let visible = false;
+let observer: ResizeObserver | null = null;
+function onLayout(entries: ResizeObserverEntry[]) {
+  const shown = entries.some((e) => e.contentRect.height > 0);
+  if (shown !== visible) {
+    visible = shown;
+    if (shown) window.addEventListener('scroll', onScrollFrame, { passive: true });
+    else window.removeEventListener('scroll', onScrollFrame);
+  }
+  if (shown) onScrollFrame();
+}
 onContentUpdated(collect);
 onMounted(() => {
   collect();
-  window.addEventListener('scroll', onScrollFrame, { passive: true });
+  observer = new ResizeObserver(onLayout);
+  if (root.value) observer.observe(root.value);
 });
 onBeforeUnmount(() => {
   cancelAnimationFrame(frame);
+  observer?.disconnect();
   window.removeEventListener('scroll', onScrollFrame);
 });
 </script>
 
 <template>
-  <nav v-show="headings.length" class="outline" aria-labelledby="outline-title">
+  <nav v-show="headings.length" ref="root" class="outline" aria-labelledby="outline-title">
     <p id="outline-title" class="title">On this page</p>
     <ul ref="list">
       <li v-for="h in headings" :key="h.id" :class="`level-${h.level}`">

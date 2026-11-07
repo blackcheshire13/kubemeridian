@@ -1,11 +1,18 @@
 <script setup lang="ts">
 // Light/dark switch. VitePress's runtime owns the state (useData().isDark): it reads the saved
 // choice before the first paint (no flash) and stores a change in localStorage.
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useData } from 'vitepress';
 
 const { isDark } = useData();
-const title = computed(() => (isDark.value ? 'Switch to light theme' : 'Switch to dark theme'));
+// The server renders the light state, and hydration does not patch attributes that differ, so a
+// reader whose saved theme is dark would hear "off" from a dark page. The state goes into the
+// attributes only once the component is mounted: false at hydration (matches the HTML), then
+// the real value as an ordinary update.
+const mounted = ref(false);
+onMounted(() => (mounted.value = true));
+const checked = computed(() => mounted.value && isDark.value);
+const title = computed(() => (checked.value ? 'Switch to light theme' : 'Switch to dark theme'));
 </script>
 
 <template>
@@ -14,7 +21,7 @@ const title = computed(() => (isDark.value ? 'Switch to light theme' : 'Switch t
     class="switch"
     role="switch"
     :title="title"
-    :aria-checked="isDark"
+    :aria-checked="checked"
     @click="isDark = !isDark"
   >
     <span class="visually-hidden">Dark theme</span>
