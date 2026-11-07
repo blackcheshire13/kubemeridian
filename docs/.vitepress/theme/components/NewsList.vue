@@ -47,10 +47,10 @@ const fmt = (iso: string) =>
   gap: 0.375rem;
   margin: 0;
   padding: 1.25rem 0;
-  border-block-start: 1px solid var(--vp-c-divider);
+  border-block-start: 1px solid var(--dt-rule);
 }
 .news li:first-child {
-  border-block-start: 1px solid var(--vp-c-divider);
+  border-block-start: 1px solid var(--dt-rule);
 }
 .meta {
   display: flex;
@@ -58,9 +58,9 @@ const fmt = (iso: string) =>
   align-items: center;
   gap: 0.25rem 0.875rem;
   margin: 0 !important;
-  font-family: var(--vp-font-family-mono);
+  font-family: var(--dt-font-mono);
   font-size: 0.8125rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 .prod {
   font-weight: 600;
@@ -70,7 +70,7 @@ const fmt = (iso: string) =>
 }
 .prod.deusex {
   /* the darker brass: the label is 13px text and needs 4.5:1 */
-  color: var(--dt-brass-ink, var(--vp-c-text-1));
+  color: var(--dt-brass-ink, var(--dt-ink));
 }
 .title {
   margin: 0 !important;
@@ -81,7 +81,7 @@ const fmt = (iso: string) =>
   font-weight: 700;
   line-height: 1.25;
   letter-spacing: -0.01em;
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
 }
 .body {
   margin-block: 0.25rem 0 !important;
@@ -93,14 +93,14 @@ const fmt = (iso: string) =>
   padding: 0.875rem 0;
 }
 .compact .title {
-  font-family: var(--vp-font-family-base);
+  font-family: var(--dt-font-text);
   font-weight: 600;
   font-size: 1.125rem;
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
   text-decoration: none;
 }
 .compact .title:hover {
-  color: var(--vp-c-brand-1);
+  color: var(--dt-link);
   text-decoration: underline;
   text-underline-offset: 4px;
 }

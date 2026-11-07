@@ -12,10 +12,10 @@ const DEMO_URL = 'https://demo.devopstech.net/';
   <!-- the menu puts the pilot first; the bar reads left to right to the button -->
   <div v-if="screen" class="screen-actions">
     <a class="nav-cta" href="/ice/design-partners">Become a design partner</a>
-    <a class="nav-demo vp-external-link-icon" :href="DEMO_URL" target="_blank" rel="noopener">Live demo</a>
+    <a class="nav-demo dt-ext" :href="DEMO_URL" target="_blank" rel="noopener">Live demo</a>
   </div>
   <div v-else class="bar-actions">
-    <a class="nav-demo vp-external-link-icon" :href="DEMO_URL" target="_blank" rel="noopener">Live demo</a>
+    <a class="nav-demo dt-ext" :href="DEMO_URL" target="_blank" rel="noopener">Live demo</a>
     <a class="nav-cta" href="/ice/design-partners">Become a design partner</a>
   </div>
 </template>
@@ -31,7 +31,7 @@ const DEMO_URL = 'https://demo.devopstech.net/';
   font-size: 0.875rem;
   font-weight: 600;
   white-space: nowrap;
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
   border: 1.5px solid transparent;
   border-radius: var(--dt-radius-control);
   transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
@@ -40,22 +40,18 @@ const DEMO_URL = 'https://demo.devopstech.net/';
 .nav-cta {
   border-color: currentColor;
 }
-.nav-demo::after {
-  color: currentColor;
-}
 .nav-cta:hover,
 .nav-demo:hover {
-  color: var(--vp-c-brand-1);
+  color: var(--dt-link);
 }
 .nav-cta:focus-visible,
 .nav-demo:focus-visible {
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid var(--dt-link);
   outline-offset: 3px;
 }
 
 /* navbar: the demo is a plain link, the pilot the one bordered action. The bar's actions
-   appear with the full nav: 48em, the site's em version of VitePress's 768px switch
-   (custom.css), so they follow the reader's font setting. */
+   appear with the full nav (SiteNav.vue, 48em: it follows the reader's font setting). */
 .bar-actions {
   display: none;
   align-items: center;
@@ -89,7 +85,7 @@ const DEMO_URL = 'https://demo.devopstech.net/';
 }
 .screen-actions .nav-cta:hover {
   color: var(--dt-paper);
-  background: var(--vp-c-brand-1);
-  border-color: var(--vp-c-brand-1);
+  background: var(--dt-link);
+  border-color: var(--dt-link);
 }
 </style>

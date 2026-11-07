@@ -15,11 +15,11 @@
   block-size: 1.25rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--vp-c-text-2);
-  border-inline-start: 1px solid var(--vp-c-divider);
+  color: var(--dt-ink-2);
+  border-inline-start: 1px solid var(--dt-rule);
   white-space: nowrap;
 }
-/* from the nav switch (48em = 768px at the default font, custom.css) to 60em (960px) the full
+/* from the nav switch (48em = 768px at the default font, SiteNav.vue) to 60em (960px) the full
    nav and the actions need the room the suffix would take; in em it follows the font setting */
 @media (48em <= width < 60em) {
   .brand-suffix {

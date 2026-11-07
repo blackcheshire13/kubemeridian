@@ -13,7 +13,7 @@
 </template>
 
 <style scoped>
-/* the site's container between the site's gutter (custom.css), like every other page */
+/* the site's container between the site's gutter (styles/base.css), like every other page */
 .nf {
   box-sizing: border-box;
   max-inline-size: calc(var(--dt-container) + 2 * var(--dt-gutter));
@@ -24,9 +24,9 @@
 .code {
   margin-block: 0 0.75rem;
   margin-inline: 0;
-  font-family: var(--vp-font-family-mono);
+  font-family: var(--dt-font-mono);
   font-size: 1rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 h1 {
   margin: 0;
@@ -42,14 +42,14 @@ h1 {
   max-inline-size: 35rem;
   font-size: 1.125rem;
   line-height: 1.6;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 ul {
   margin-block: 1.5rem 0;
   margin-inline: 0;
   padding: 0;
   list-style: none;
-  border-block-start: 1px solid var(--vp-c-divider);
+  border-block-start: 1px solid var(--dt-rule);
   max-inline-size: 35rem;
 }
 li {
@@ -58,15 +58,15 @@ li {
   gap: 0.5rem;
   min-block-size: 3rem;
   font-size: 1.0625rem;
-  color: var(--vp-c-text-2);
-  border-block-end: 1px solid var(--vp-c-divider);
+  color: var(--dt-ink-2);
+  border-block-end: 1px solid var(--dt-rule);
 }
 a {
   display: inline-flex;
   align-items: center;
   min-block-size: 3rem;
   font-weight: 600;
-  color: var(--vp-c-brand-1);
+  color: var(--dt-link);
   text-decoration: underline;
   text-underline-offset: 3px;
 }

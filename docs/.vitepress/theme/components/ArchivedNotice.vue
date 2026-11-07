@@ -25,8 +25,8 @@ defineProps<{ wide?: boolean }>();
   padding-block: 1rem 1.125rem;
   padding-inline: 1.25rem;
   background: var(--dt-paper-3);
-  border-block-start: 2px solid var(--vp-c-text-2);
-  color: var(--vp-c-text-1);
+  border-block-start: 2px solid var(--dt-ink-2);
+  color: var(--dt-ink);
 }
 /* above the home hero: the site's container between the site's gutter, like the hero */
 .archived.wide {
@@ -47,7 +47,7 @@ defineProps<{ wide?: boolean }>();
   inline-size: 0.5625rem;
   block-size: 0.5625rem;
   border-radius: 50%;
-  background: var(--vp-c-text-2);
+  background: var(--dt-ink-2);
 }
 .archived p:last-child {
   margin: 0;
@@ -56,7 +56,7 @@ defineProps<{ wide?: boolean }>();
   line-height: 1.6;
 }
 .archived a {
-  color: var(--vp-c-brand-1);
+  color: var(--dt-link);
   text-decoration: underline;
   text-underline-offset: 3px;
 }

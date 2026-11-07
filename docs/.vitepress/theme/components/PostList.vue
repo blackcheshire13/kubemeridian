@@ -25,18 +25,18 @@ import { data as posts } from '../posts.data';
 .posts li {
   margin: 0;
   padding: 1.375rem 0;
-  border-block-start: 1px solid var(--vp-c-divider);
+  border-block-start: 1px solid var(--dt-rule);
 }
-.posts li:first-child { border-block-start: 1px solid var(--vp-c-divider); }
+.posts li:first-child { border-block-start: 1px solid var(--dt-rule); }
 .meta {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 1rem;
   margin: 0 !important;
   font-size: 0.875rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
-time { font-family: var(--vp-font-family-mono); }
+time { font-family: var(--dt-font-mono); }
 .posts h2 {
   margin-block: 0.375rem 0 !important;
   margin-inline: 0 !important;
@@ -46,11 +46,11 @@ time { font-family: var(--vp-font-family-mono); }
   line-height: 1.3;
 }
 .posts h2 a {
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
   text-decoration: none;
 }
 .posts h2 a:hover {
-  color: var(--vp-c-brand-1);
+  color: var(--dt-link);
   text-decoration: underline;
 }
 .desc {
@@ -59,6 +59,6 @@ time { font-family: var(--vp-font-family-mono); }
   max-inline-size: 42.5rem;
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 </style>

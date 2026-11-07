@@ -44,7 +44,7 @@ const isPost = computed(() => section.value === 'blog' && page.value.relativePat
   gap: 0 1.75rem;
   margin-block: 0 1.75rem;
   margin-inline: 0;
-  border-block-end: 1px solid var(--vp-c-divider);
+  border-block-end: 1px solid var(--dt-rule);
 }
 /* same height as a row of tabs: 44px links + the 1px rule */
 .section-nav.spacer {
@@ -57,20 +57,20 @@ const isPost = computed(() => section.value === 'blog' && page.value.relativePat
   min-block-size: 2.75rem;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
   text-decoration: none;
   border-block-end: 3px solid transparent;
   margin-block-end: -0.0625rem;
 }
 .section-nav a:hover {
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
 }
 .section-nav a[aria-current='page'] {
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
   border-block-end-color: var(--dt-brass);
 }
 .section-nav a:focus-visible {
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid var(--dt-link);
   outline-offset: 2px;
 }
 </style>

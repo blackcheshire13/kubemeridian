@@ -65,26 +65,26 @@ li:not(:last-child)::after {
   inset-inline-end: 0.375rem;
   inset-block-start: 0.5625rem;
   font-size: 0.9375rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 li.human { border-block-start-style: dashed; }
-li.measure { border-block-start-color: var(--vp-c-text-1); }
+li.measure { border-block-start-color: var(--dt-ink); }
 strong {
-  font-family: var(--vp-font-family-base);
+  font-family: var(--dt-font-text);
   font-size: 1rem;
   line-height: 1.3;
 }
 .who:empty { display: none; }
 .who {
-  font-family: var(--vp-font-family-mono);
+  font-family: var(--dt-font-mono);
   font-size: 0.8125rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 .note {
   margin-block-start: 0.25rem;
   font-size: 0.875rem;
   line-height: 1.45;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 /* too narrow for one row: stages become a timeline (stage · who · note) instead of breaking 5 + 2 */
 @container (inline-size <= 56.25rem) {
@@ -103,7 +103,7 @@ strong {
   li + li,
   li.human + li,
   li + li.human,
-  li + li.measure { border-block-start: 1px solid var(--vp-c-divider); }
+  li + li.measure { border-block-start: 1px solid var(--dt-rule); }
   li:not(:last-child)::after { content: none; }
   .note { margin-block-start: 0; }
   /* keep the three columns even when a stage has no actor */
@@ -119,7 +119,7 @@ figcaption {
   gap: 0.5rem 1.125rem;
   margin-block-start: 0.75rem;
   font-size: 0.875rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 .exit::before {
   content: '↳ ';

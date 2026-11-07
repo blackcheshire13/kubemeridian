@@ -143,7 +143,7 @@ const latest = posts.slice(0, 4);
 </template>
 
 <style scoped>
-/* the site's one container between the site's one gutter (custom.css); the page is also the
+/* the site's one container between the site's one gutter (styles/base.css); the page is also the
    container its sections query, so they react to the room they have, not to the window */
 .hub {
   container: hub / inline-size;
@@ -152,7 +152,7 @@ const latest = posts.slice(0, 4);
   margin-inline: auto;
   padding-inline: var(--dt-gutter);
   padding-block: clamp(2rem, 0.5rem + 5vw, 4.5rem) var(--dt-section-gap);
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
 }
 h1,
 h2 {
@@ -169,7 +169,7 @@ h2 {
   font-weight: 700;
 }
 a {
-  color: var(--vp-c-brand-1);
+  color: var(--dt-link);
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
@@ -190,9 +190,9 @@ a:hover { text-decoration-thickness: 2px; }
   margin-inline: 0;
   font-size: 0.875rem;
   letter-spacing: 0.02em;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
-.kicker strong { color: var(--vp-c-text-1); }
+.kicker strong { color: var(--dt-ink); }
 .intro h1 {
   font-size: var(--dt-h1);
   line-height: 1.05;
@@ -205,7 +205,7 @@ a:hover { text-decoration-thickness: 2px; }
   font-size: 1.1875rem;
   line-height: 1.55;
 }
-/* an inline-size container: the button takes the whole row when the row is narrow (custom.css) */
+/* an inline-size container: the button takes the whole row when the row is narrow (styles/base.css) */
 .actions {
   container-type: inline-size;
   display: flex;
@@ -222,7 +222,7 @@ a:hover { text-decoration-thickness: 2px; }
   display: block;
   inline-size: 100%;
   block-size: auto;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid var(--dt-rule);
   border-radius: var(--dt-radius-card);
   box-shadow: 0 8px 24px rgb(0 0 0 / 0.08);
 }
@@ -230,7 +230,7 @@ a:hover { text-decoration-thickness: 2px; }
 .intro-shot figcaption {
   margin-block-start: 0.625rem;
   font-size: 0.875rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 
 /* ---------- sections: the same air above each, a heading, then content ---------- */
@@ -247,7 +247,7 @@ a:hover { text-decoration-thickness: 2px; }
   gap: 1.5rem 2.5rem;
   margin: 0;
   padding-block-start: 1.5rem;
-  border-block-start: 1px solid var(--vp-c-divider);
+  border-block-start: 1px solid var(--dt-rule);
 }
 .stats dt {
   font-family: var(--dt-font-display);
@@ -263,13 +263,13 @@ a:hover { text-decoration-thickness: 2px; }
   max-inline-size: 18.75rem;
   font-size: 0.9375rem;
   line-height: 1.5;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 .asof {
   margin-block: 1.25rem 0;
   margin-inline: 0;
   font-size: 0.875rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 .asof a { margin-inline-start: 0.25rem; }
 
@@ -299,13 +299,13 @@ a:hover { text-decoration-thickness: 2px; }
   padding-inline: 1.375rem 0;
   font-size: 1rem;
   line-height: 1.5;
-  color: var(--vp-c-text-2);
-  border-block-start: 1px solid var(--vp-c-divider);
+  color: var(--dt-ink-2);
+  border-block-start: 1px solid var(--dt-rule);
 }
 .facts code {
-  font-family: var(--vp-font-family-mono);
+  font-family: var(--dt-font-mono);
   font-size: 0.9375rem;
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
 }
 .facts li::before {
   content: '';
@@ -335,29 +335,29 @@ a:hover { text-decoration-thickness: 2px; }
   grid-template-columns: 7rem minmax(0, 1fr);
   gap: 0.25rem 1.5rem;
   padding: 1rem 0;
-  border-block-start: 1px solid var(--vp-c-divider);
+  border-block-start: 1px solid var(--dt-rule);
 }
 .posts time {
-  font-family: var(--vp-font-family-mono);
+  font-family: var(--dt-font-mono);
   font-size: 0.875rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
   padding-block-start: 0.1875rem;
 }
 .posts li a {
   font-size: var(--dt-h3);
   font-weight: 600;
   line-height: 1.35;
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
   text-decoration: none;
 }
-.posts li a:hover { color: var(--vp-c-brand-1); text-decoration: underline; }
+.posts li a:hover { color: var(--dt-link); text-decoration: underline; }
 .posts li p {
   grid-column: 2;
   margin: 0;
   max-inline-size: 40rem;
   font-size: 0.9375rem;
   line-height: 1.55;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 
 .contact .actions { margin-block-start: 1.75rem; }
@@ -367,7 +367,7 @@ a:hover { text-decoration-thickness: 2px; }
   max-inline-size: 40rem;
   font-size: 0.875rem;
   line-height: 1.55;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 .byline a { font-weight: 600; }
 

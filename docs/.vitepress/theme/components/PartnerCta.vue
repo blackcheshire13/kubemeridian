@@ -85,7 +85,7 @@ async function copy() {
 </template>
 
 <style scoped>
-/* an inline-size container: the button takes the whole row when the row is narrow (custom.css) */
+/* an inline-size container: the button takes the whole row when the row is narrow (styles/site.css) */
 .cta {
   container-type: inline-size;
   margin: 0;
@@ -94,7 +94,7 @@ async function copy() {
   margin: 2rem 0;
   padding-block: 1.5rem 0;
   padding-inline: 0;
-  border-block-start: 1px solid var(--vp-c-divider);
+  border-block-start: 1px solid var(--dt-rule);
 }
 .lead {
   margin-block: 0 1rem !important;
@@ -102,11 +102,11 @@ async function copy() {
   max-inline-size: 40rem;
   font-size: 1.125rem;
   line-height: 1.55;
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
 }
 .copy:focus-visible,
 .web:focus-visible {
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid var(--dt-link);
   outline-offset: 3px;
 }
 .mail {
@@ -117,29 +117,29 @@ async function copy() {
   margin-block: 0.875rem 0 !important;
   margin-inline: 0 !important;
   font-size: 0.9375rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 .addr {
-  font-family: var(--vp-font-family-mono);
-  color: var(--vp-c-text-1);
+  font-family: var(--dt-font-mono);
+  color: var(--dt-ink);
   user-select: all;
 }
 .copy {
   min-block-size: 2rem;
   padding: 0 0.625rem;
   font-size: 0.875rem;
-  color: var(--vp-c-text-1);
-  border: 1px solid var(--vp-c-border);
+  color: var(--dt-ink);
+  border: 1px solid var(--dt-border);
   border-radius: var(--dt-radius-control);
-  background: var(--vp-c-bg);
+  background: var(--dt-paper);
   cursor: pointer;
 }
 .copy:hover {
-  border-color: var(--vp-c-text-2);
+  border-color: var(--dt-ink-2);
 }
 .web {
   font-size: 0.9375rem;
-  color: var(--vp-c-brand-1);
+  color: var(--dt-link);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -149,7 +149,7 @@ async function copy() {
   margin-inline: 0 !important;
   font-size: 0.9375rem;
   line-height: 1.5;
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
 }
 .hint .addr {
   font-size: 0.875rem;

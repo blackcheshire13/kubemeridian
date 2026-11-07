@@ -123,7 +123,7 @@ async function submit(event: Event) {
   margin-inline: 0;
   padding-block: 1.5rem 0;
   padding-inline: 0;
-  border-block-start: 1px solid var(--vp-c-divider);
+  border-block-start: 1px solid var(--dt-rule);
 }
 form {
   display: grid;
@@ -140,12 +140,12 @@ form {
   gap: 0.375rem;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
 }
 .field em {
   font-style: normal;
   font-weight: 400;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 input,
 select,
@@ -156,9 +156,9 @@ textarea {
   font: inherit;
   font-weight: 400;
   font-size: 1rem;
-  color: var(--vp-c-text-1);
-  background: var(--vp-c-bg);
-  border: 1px solid var(--vp-c-border);
+  color: var(--dt-ink);
+  background: var(--dt-paper);
+  border: 1px solid var(--dt-border);
   border-radius: var(--dt-radius-control);
 }
 textarea {
@@ -168,7 +168,7 @@ textarea {
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid var(--dt-link);
   outline-offset: 1px;
   border-color: transparent;
 }
@@ -179,7 +179,7 @@ textarea:focus-visible {
   block-size: 0.0625rem;
   overflow: hidden;
 }
-/* an inline-size container: the button takes the whole row when the row is narrow (custom.css) */
+/* an inline-size container: the button takes the whole row when the row is narrow (styles/site.css) */
 .submit {
   container-type: inline-size;
   display: flex;
@@ -198,7 +198,7 @@ textarea:focus-visible {
 .note {
   margin: 0 !important;
   font-size: 0.875rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 .error {
   margin: 0 !important;
@@ -228,7 +228,7 @@ textarea:focus-visible {
 .alt > p {
   margin: 0 !important;
   font-size: 0.9375rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 .alt :deep(.mail) {
   margin-block-start: 0.375rem !important;

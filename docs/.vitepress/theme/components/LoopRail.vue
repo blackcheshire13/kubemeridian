@@ -71,10 +71,10 @@ li:last-child { padding-block-end: 0; }
   inline-size: 1.5rem;
   block-size: 1.5rem;
   border-radius: 50%;
-  background: var(--vp-c-bg);
+  background: var(--dt-paper);
   border: 2px solid var(--rail-accent);
-  color: var(--vp-c-text-1);
-  font: 600 0.8125rem/1.25rem var(--vp-font-family-mono);
+  color: var(--dt-ink);
+  font: 600 0.8125rem/1.25rem var(--dt-font-mono);
   text-align: center;
 }
 li.gate .node {
@@ -88,16 +88,16 @@ li.gate .node {
   line-height: 1.45;
 }
 .body strong {
-  font-family: var(--vp-font-family-base);
+  font-family: var(--dt-font-text);
   font-size: 1rem;
   font-weight: 700;
-  color: var(--vp-c-text-1);
+  color: var(--dt-ink);
 }
 .detail {
   font-size: 0.9375rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
-li.gate strong { color: var(--vp-c-text-2); }
+li.gate strong { color: var(--dt-ink-2); }
 .legend {
   display: flex;
   align-items: center;
@@ -106,7 +106,7 @@ li.gate strong { color: var(--vp-c-text-2); }
   margin-inline: 0;
   padding-inline-start: 1.875rem;
   font-size: 0.875rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 .legend .mini {
   flex: none;
@@ -117,7 +117,7 @@ figcaption {
   margin-block-start: 0.875rem;
   padding-inline-start: 1.875rem;
   font-size: 0.875rem;
-  color: var(--vp-c-text-2);
+  color: var(--dt-ink-2);
 }
 .back {
   display: inline-block;
