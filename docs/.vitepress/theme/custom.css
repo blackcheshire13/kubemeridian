@@ -555,3 +555,14 @@ html.dt-lightbox-open { overflow: hidden; }
   outline: 2px solid var(--dt-ice);
   outline-offset: 2px;
 }
+
+/* mobile menu: VitePress pads the screen 32px and caps its column at 288px (376px from
+   640px), a wide empty band on both sides of a phone. Full width instead, on the navbar's own
+   inline gutter (1.5rem = VitePress's 24px), so the menu lines up with the logo and the close
+   button. */
+.VPNav .VPNavScreen {
+  padding-inline: 1.5rem;
+}
+.VPNav .VPNavScreen .container {
+  max-inline-size: none;
+}
