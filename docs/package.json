@@ -5,10 +5,14 @@
   "scripts": {
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
+    "docs:preview": "vitepress preview",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {
+    "@types/node": "^22.20.5",
     "gray-matter": "^4.0.3",
-    "vitepress": "^1.6.4"
+    "typescript": "~6.0.3",
+    "vitepress": "^1.6.4",
+    "vue-tsc": "^3.3.14"
   }
 }

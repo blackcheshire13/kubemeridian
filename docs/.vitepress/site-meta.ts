@@ -176,7 +176,8 @@ function breadcrumbs(rel: string, title: string, url: string) {
 }
 
 // Sitemap <lastmod> from front matter (`updated:`, or a post's `date:`), never from git.
-export function sitemapLastmod(items: { url: string; lastmod?: string }[]) {
+// typed by shape: VitePress does not export its SitemapItem (lastmod: string | number | Date)
+export function sitemapLastmod<T extends { url: string; lastmod?: string | number | Date }>(items: T[]): T[] {
   return items.map((item) => {
     const path = item.url.replace(/^https?:\/\/[^/]+\//, '').replace(/^\//, '');
     const file = path === '' ? 'index.md' : path.endsWith('/') ? `${path}index.md` : `${path}.md`;
