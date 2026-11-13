@@ -1,13 +1,14 @@
 ---
-title: ICE design partners — run the loop on your cluster early
-description: The ICE design-partner pilot — up to five teams, eight weeks, free. Who it fits, what you get and commit to, what leaves your cluster, and a short application.
-updated: 2026-11-06
+title: ICE pilot — eight weeks on your cluster, free
+description: A free eight-week ICE pilot for up to five teams. Who it fits, what you get and commit to, what leaves your cluster, and a short application.
+updated: 2026-11-13
 ---
 
-# Design partners
+# Free pilot: ICE on your cluster for eight weeks
 
-<p class="dt-lede">ICE is built on real clusters, not fixtures. A design partner runs the loop on their own
-Kubernetes before the public release, and tells me where it is noisy, missing or wrong.</p>
+<p class="dt-lede">Up to five teams run ICE on their own Kubernetes before the public release and tell me
+where it is noisy, missing or wrong. In return they get fixes as pull requests early and a say in what
+gets built next.</p>
 
 <dl class="dt-glance">
   <div><dt>First cohort</dt><dd>Up to five teams.</dd></div>
@@ -17,7 +18,7 @@ Kubernetes before the public release, and tells me where it is noisy, missing or
 
 <p class="dt-next"><a href="#apply">Apply for the pilot</a><a href="/ice/">What ICE is</a></p>
 
-## A good fit
+## Who it fits
 
 - Kubernetes in production, managed or bare-metal, looked after by one or two people.
 - Workload manifests in a GitOps repository on GitHub.
@@ -26,16 +27,18 @@ Kubernetes before the public release, and tells me where it is noisy, missing or
 
 ## Not a fit yet
 
-- **Changes applied by hand, or by CI running `kubectl`, with no GitOps repository.** ICE
-  delivers every fix as a pull request, so it needs one.
-- **GitOps on GitLab only.** GitLab is tested but not yet live.
+- **No GitOps repository: changes are applied by hand or by CI running `kubectl`.** ICE
+  delivers every fix as a pull request, so it needs one. Without it, ICE can run in
+  scanner-only mode: scans and findings, no pull requests.
+- **GitOps on GitLab only.** The GitLab flow passes tests but has not been seen on a live
+  cluster yet.
 - **Several teams or customers in one installation.** There is no multi-tenancy yet.
-- **A hosted service.** ICE runs in your cluster; nothing is hosted for you.
+- **You want a hosted service.** ICE runs in your cluster; nothing is hosted for you.
 
 ## What you get
 
-- **The loop on your estate early** — findings and drift turned into pull requests you
-  review, and cases that close only when a fresh measurement proves the fix.
+- **Fixes as pull requests on your estate, early** — findings and drift become pull
+  requests you review, and a case closes only when a new measurement shows the fix worked.
 - **A direct line to the engineer building it.** Your feedback goes straight into the
   backlog.
 - **A say in what gets built next.** Capabilities move from *tested* to *live* on clusters
@@ -55,7 +58,7 @@ Kubernetes before the public release, and tells me where it is noisy, missing or
 
 - A test or staging cluster for the read-only agent first, and later the cluster you care about.
 - A GitOps repository where ICE may open pull requests. You review and merge each one.
-- A 30-minute call every two weeks, with honest notes on what is noisy, missing or wrong.
+- A 30-minute call every two weeks: what is noisy, missing or wrong.
 
 ## What leaves your cluster, and what can change it
 

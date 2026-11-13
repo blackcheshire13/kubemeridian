@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // Home of ICE. One container (--dt-container between --dt-gutter, as every other page), one
 // vertical rhythm (--dt-section-gap between sections), one type scale (--dt-h1/--dt-h2),
-// one primary action. Sections: hero, where ICE stands, how a case closes, how ICE is
-// built, news, writing, pilot.
+// one primary action. Sections: hero, where ICE stands, how a case closes, who builds ICE,
+// news, blog, pilot.
 import { data as posts } from '../posts.data';
 import NewsList from './NewsList.vue';
 import IceLoop from './IceLoop.vue';
@@ -14,14 +14,14 @@ const latest = posts.slice(0, 4);
   <div class="hub">
     <header class="intro">
       <div class="intro-main">
-        <p class="kicker"><strong>ICE</strong> · Kubernetes security for teams without a security team</p>
-        <h1>Security fixes that prove they worked.</h1>
+        <p class="kicker"><strong>ICE</strong> · for teams without a security engineer</p>
+        <h1>Kubernetes security fixes as pull requests.</h1>
         <p class="lede">
-          Findings become GitOps pull requests you approve. A case closes only when the cluster
-          proves the fix.
+          ICE turns security findings into pull requests with the fix. You approve and
+          merge them; a case closes only after ICE checks the cluster again.
         </p>
         <div class="actions">
-          <a class="dt-btn" href="/ice/design-partners">Become a design partner</a>
+          <a class="dt-btn" href="/ice/design-partners">Apply for a free pilot</a>
           <p class="dt-next"><a href="/ice/how-it-works">How ICE works</a></p>
         </div>
       </div>
@@ -52,44 +52,45 @@ const latest = posts.slice(0, 4);
             />
           </picture>
         </a>
-        <figcaption>The ICE console, a change waiting for approval. Synthetic demo data.</figcaption>
+        <figcaption>The ICE console: a fix waiting for approval. The company and data are fictional.</figcaption>
       </figure>
     </header>
 
     <section class="stats" aria-label="Where ICE stands">
       <dl>
         <div>
-          <dt>13</dt>
-          <dd>capabilities live on a real cluster</dd>
+          <dt>16</dt>
+          <dd>of 91 capabilities work on a live cluster</dd>
         </div>
         <div>
-          <dt>66</dt>
-          <dd>more covered by tests, not yet seen live</dd>
+          <dt>71</dt>
+          <dd>more pass tests but have not been seen on a cluster yet</dd>
         </div>
         <div>
-          <dt>88%</dt>
-          <dd>of ICE's merges come from deusex, the loop that builds it</dd>
+          <dt>0</dt>
+          <dd>external teams run ICE yet: the pilot is the first step</dd>
         </div>
       </dl>
       <p class="asof">
-        As of 6 November 2026; loop figures for 19 October – 5 November.
-        <a href="/ice/#honest-status">What live and tested mean</a>
+        As of 13 November 2026, from ICE's capability register.
+        <a href="/ice/#status">What live and tested mean</a>
       </p>
     </section>
 
     <section class="block" aria-labelledby="loop-h">
       <div class="two">
         <div class="copy">
-          <h2 id="loop-h">A case closes on proof, not on merge</h2>
+          <h2 id="loop-h">A fix counts only after the cluster is checked again</h2>
           <p class="pitch">
-            Every signal has to say what the action is, who performs it and why ICE is sure before it
-            enters the system. Changes reach your workloads only as pull requests to your GitOps
-            repository, and a merged fix stays open until the cluster is measured again.
+            ICE collects findings from your scanners, runtime sensors and policy tools. For a problem it
+            can fix, it prepares the change and shows it to a person. Approving opens a pull request in
+            your GitOps repository, and your pipeline applies it. The case stays open until ICE measures
+            the cluster again after the merge.
           </p>
           <ul class="facts">
-            <li>Writes only through pull requests — the operator has no write rights outside its own resources</li>
-            <li><code>Unknown</code> counts as unmet; a failed source reports <em>unmeasured</em>, never <em>clean</em></li>
-            <li>Three different detectors must agree before it proposes a runtime response</li>
+            <li>ICE cannot change your workloads directly: the operator has no write rights outside its own resources</li>
+            <li>If a check could not run, ICE shows <em>not measured</em>, never <em>clean</em></li>
+            <li>One alert does not trigger a response: three different detectors have to agree</li>
           </ul>
           <p class="dt-next"><a href="/ice/how-it-works">How ICE works</a></p>
         </div>
@@ -98,12 +99,13 @@ const latest = posts.slice(0, 4);
     </section>
 
     <section class="block" aria-labelledby="built-h">
-      <h2 id="built-h">How ICE is built</h2>
+      <h2 id="built-h">Who builds ICE</h2>
       <p class="pitch">
-        ICE is developed by <a href="/deusex/">deusex</a>, an autonomous loop: agents plan, build,
-        review and merge on a schedule, and a person decides the concept. From 19 October to
-        5 November, 88% of ICE's merges came from the loop, with a 33-minute median from opened to
-        merged.
+        One engineer, <a href="/about">Artur Stepanchenko</a>, with <a href="/deusex/">deusex</a>, an
+        autonomous development loop: AI agents on models from four providers write, review and merge
+        code on a schedule, and the engineer sets the goal and decides disputed changes. From
+        19 October to 5 November, 88% of ICE's merges came from the loop, with a 33-minute median from
+        opened to merged. The weak spot: every product decision rests with one person.
       </p>
       <p class="dt-next"><a href="/deusex/">How deusex works</a></p>
     </section>
@@ -115,7 +117,7 @@ const latest = posts.slice(0, 4);
     </section>
 
     <section class="block" aria-labelledby="writing-h">
-      <h2 id="writing-h">Writing</h2>
+      <h2 id="writing-h">Blog</h2>
       <ol class="posts">
         <li v-for="p in latest" :key="p.url">
           <time :datetime="p.date">{{ p.date }}</time>
@@ -127,16 +129,16 @@ const latest = posts.slice(0, 4);
     </section>
 
     <section class="block contact" aria-labelledby="contact-h">
-      <h2 id="contact-h">Pilot ICE</h2>
+      <h2 id="contact-h">Free pilot: eight weeks on your cluster</h2>
       <p class="pitch">
-        Running Kubernetes in production without a security team? Run the loop on your cluster
-        before the public release, and tell me where it is noisy, missing or wrong. Up to five teams,
-        eight weeks, free: the button opens a short form, and I reply within two working days.
+        For teams running Kubernetes in production without a security engineer. Up to five teams run
+        ICE on their own cluster before the public release and tell me where it is noisy, missing or
+        wrong. The button opens a short form; I reply within two working days.
       </p>
-      <p class="actions"><a class="dt-btn" href="/ice/design-partners#apply">Become a design partner</a></p>
+      <p class="actions"><a class="dt-btn" href="/ice/design-partners#apply">Apply for a free pilot</a></p>
       <p class="byline">
-        ICE is built by <a href="/about">Artur Stepanchenko</a>, who also takes contract work on
-        Kubernetes platforms, observability and cost.
+        I'm <a href="/about">Artur Stepanchenko</a>. Besides ICE, I take contract work on Kubernetes
+        platforms, observability and cost.
       </p>
     </section>
   </div>

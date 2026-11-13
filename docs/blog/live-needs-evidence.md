@@ -92,5 +92,5 @@ the README.
 
 ---
 
-*ICE is looking for design partners — see [the overview](/ice/) or write to
-[hello@devopstech.net](mailto:hello@devopstech.net?subject=ICE%20design%20partner).*
+*ICE has a free pilot for up to five teams — see [what it involves](/ice/design-partners) or write to
+[hello@devopstech.net](mailto:hello@devopstech.net?subject=ICE%20pilot).*

@@ -1,50 +1,49 @@
 ---
-title: ICE — Kubernetes active defence with GitOps remediation
-description: "ICE is active defence for Kubernetes: findings and drift become GitOps pull requests a person approves; a case closes only when a new measurement proves it."
-updated: 2026-11-06
+title: ICE — Kubernetes security fixes as GitOps pull requests
+description: "ICE turns Kubernetes findings and drift into GitOps pull requests a person approves, and closes a case only on a measurement newer than the merge."
+updated: 2026-11-13
 ---
 
-# ICE: active defence for Kubernetes
+# ICE: Kubernetes security fixes as pull requests
 
-<p class="dt-lede">Not a scanner — a loop. ICE turns findings and drift into GitOps pull requests a
-person approves, and calls a problem fixed only when a measurement taken <em>after</em> the merge says so.</p>
+<p class="dt-lede">ICE collects findings from your scanners, runtime sensors and policy tools, turns each
+one it can fix into a pull request to your GitOps repository, and closes the case only after it measures
+the cluster again.</p>
 
 <dl class="dt-glance">
-  <div><dt>Who it's for</dt><dd>Teams of 5–50 engineers where one or two people own the infrastructure and there is no dedicated security team.</dd></div>
-  <div><dt>What you get</dt><dd>Findings that arrive as reviewable pull requests, and cases that close only when the cluster proves the fix.</dd></div>
-  <div><dt>Where it stands</dt><dd>In development since July 2026, to be open-sourced under Apache-2.0. Looking for design partners.</dd></div>
+  <div><dt>Who it's for</dt><dd>Teams of 5–50 engineers where one or two people run the infrastructure and nobody works on security full-time.</dd></div>
+  <div><dt>What you get</dt><dd>A pull request with the fix instead of a report, and a case that closes only when the cluster shows the fix worked.</dd></div>
+  <div><dt>Where it stands</dt><dd>In development since July 2026; 16 of 91 capabilities work on a live cluster. No external teams run it yet. Apache-2.0 at release.</dd></div>
 </dl>
 
-<p class="dt-strip"><span class="dt-s live"><strong>13</strong>&nbsp;live</span><span class="dt-s tested"><strong>66</strong>&nbsp;tested</span><span class="dt-s implemented"><strong>3</strong>&nbsp;implemented</span><span class="dt-s"><strong>1</strong>&nbsp;contract</span><span>capabilities as of 6 November 2026 · <a href="#honest-status">what that means</a></span></p>
+<p class="dt-strip"><span class="dt-s live"><strong>16</strong>&nbsp;live</span><span class="dt-s tested"><strong>71</strong>&nbsp;tested</span><span class="dt-s implemented"><strong>3</strong>&nbsp;implemented</span><span class="dt-s"><strong>1</strong>&nbsp;contract</span><span>capabilities as of 13 November 2026 · <a href="#status">what that means</a></span></p>
 
-<p class="dt-next"><a href="/ice/how-it-works">How ICE works</a><a href="/ice/design-partners">What a pilot involves</a></p>
+<p class="dt-next"><a href="/ice/how-it-works">How ICE works</a><a href="/ice/design-partners">The free pilot</a></p>
 
-## Why another security tool
+## Scanners find problems; small teams have no one to fix them
 
-You switch a scanner on, and nobody reads its reports. The channel with 400 findings is
-muted by day three. The CI gate is ripped out during the first hotfix. What is left is
-security on paper.
+A common path: the team connects scanners, the reports pile up, nobody has time to triage
+them, and the CI gate is switched off to ship an urgent release. The scanners keep running;
+nothing gets fixed.
 
-ICE starts from the other end — from the **action**. Every signal has to answer three
-questions before it is allowed into the system:
+ICE starts from the fix. A detector's signal enters ICE only if it answers three questions:
 
 1. **What** is the action?
 2. **Who** performs it?
 3. **Why** are we sure?
 
-A detector that cannot answer all three is rejected when its signal arrives, and the reason
-shows up on its pack. A missing component is never reported as a broken requirement:
-"you don't run a service mesh" and "your mesh is configured insecurely" are different
-statements, and ICE keeps them apart.
+A detector that cannot answer all three is rejected, and its pack shows the reason. ICE also
+keeps "missing" apart from "broken": if you don't run a service mesh, ICE says so — it does
+not report your mesh as insecure.
 
-The estate can be mixed: managed Kubernetes, bare-metal Kubernetes and plain servers.
+ICE works across managed Kubernetes, bare-metal Kubernetes and plain servers.
 
-## The loop
+## How a case closes
 
 <div class="dt-figure ice"><IceLoop /></div>
 
-**Merged is not deployed, and deployed is not fixed.** A remediation case walks through
-explicit states, and the last two are earned, not declared:
+**Merged is not deployed, and deployed is not fixed.** A case moves through fixed states. The
+last two are set by a measurement, not by anyone's word:
 
 <Flow accent="var(--dt-ice)" :steps="[
   { label: 'open', who: 'machine', note: 'a requirement is unmet' },
@@ -57,12 +56,12 @@ explicit states, and the last two are earned, not declared:
 ]" :exits="['rejected — stays on record', 'drift — the case reopens', 'not measured since the merge — not verified']" />
 
 Before a change is applied, ICE renders it again. If the digest no longer matches what the
-person approved, the action fails instead of shipping something nobody reviewed.
+person approved, the action fails instead of shipping a change nobody reviewed.
 
 ## What it looks like
 
-<p class="dt-shots-note">The real ICE console, running against <strong>synthetic demo data</strong> for a fictional
-company, acme-corp — not a production estate.</p>
+<p class="dt-shots-note">The real ICE console with <strong>fictional data</strong> for a made-up company, acme-corp.
+<a class="dt-ext" href="https://demo.devopstech.net" target="_blank" rel="noopener">Open the demo console</a> and click through it yourself.</p>
 
 <figure class="dt-shot">
   <a class="dt-light-only" href="/screenshots/ice/action-approval.png"><picture><source type="image/webp" srcset="/screenshots/ice/action-approval.webp"><img src="/screenshots/ice/action-approval.png" width="1440" height="836" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request."></picture></a><a class="dt-dark-only" href="/screenshots/ice/action-approval-dark.png"><picture><source type="image/webp" srcset="/screenshots/ice/action-approval-dark.webp"><img src="/screenshots/ice/action-approval-dark.png" width="1440" height="836" loading="lazy" alt="ICE console, Actions: a posture remediation awaiting approval, with the evidence, the rendered NetworkPolicy and what merging it does; Approve opens a pull request. Dark theme."></picture></a>
@@ -79,39 +78,39 @@ company, acme-corp — not a production estate.</p>
   <figcaption><strong>Posture as requirements.</strong> Not checked counts against the score; not applicable is left out of it.</figcaption>
 </figure>
 
-## Principles enforced by code, not by discipline
+## Guarantees held by code, not by promises
 
-- **Writes go through pull requests — because there is nothing else.** Outside its own
-  resources the operator can only `get` and `list`; tests check that matrix against a real
-  kube-apiserver authorizer — no secrets, no `pods/exec`, no impersonation.
-- **`Unknown` counts as unmet.** A verdict older than its cadence drops to `Unknown`; a
-  failed source reports *unmeasured*, never *clean*.
-- **A rule whose alert cannot be delivered is not loaded** — and the pack's status says why.
-- **One signal is not an action.** A runtime response needs three *different* detectors to
-  agree, only for assets you marked as crown jewels; acting on a client IP needs the "client
-  IP is trusted" precondition measured as met.
-- **The model advises; it has no hands.** An optional LLM explains entities; it has no tools,
+- **ICE cannot change your workloads directly.** Every change is a pull request you merge.
+  Outside its own resources the operator can only `get` and `list`; tests check that against
+  a real kube-apiserver authorizer — no secrets, no `pods/exec`, no impersonation.
+- **"Not measured" is never shown as "clean".** A verdict older than its cadence drops to
+  `Unknown`, which counts as unmet; a failed source reports *unmeasured*.
+- **A rule whose alert cannot be delivered is not loaded**, and the pack's status says why.
+- **One alert does not trigger a response.** A runtime response needs three *different*
+  detectors to agree, and only for assets you marked as crown jewels; acting on a client IP
+  needs the "client IP is trusted" precondition measured as met.
+- **The model explains; it cannot act.** An optional LLM explains entities. It has no tools,
   PII redaction cannot be turned off, and it never changes a detector's weight. The MCP
   interface is read-only, off by default, and marks every answer as untrusted data.
-- **No Black ICE.** The name is cyberpunk's *intrusion countermeasures electronics*,
-  popularised by William Gibson's *Neuromancer* — minus the counter-attack. Every response
-  targets the estate it protects.
-- **The product does not know its test clusters.** A CI gate keeps proving-ground names out
-  of the product; portability is checked against a synthetic company.
+- **Responses change only the estate ICE protects.** Each response type names what it
+  changes — your edge config, your telemetry or your workloads — and a test fails on any
+  other target. There is no counter-attack. Live since 12 November 2026.
+- **Nothing is tailored to the clusters ICE is tested on.** A CI gate keeps their names out
+  of the product, and portability is checked against a fictional company.
 
-[The detail behind each principle →](/ice/how-it-works)
+[How each guarantee is enforced →](/ice/how-it-works)
 
 ## Works with the stack you already run
 
-ICE does not replace your detection or policy tools — it takes their output and decides
-what to do with it, then proves whether it worked.
+ICE does not replace your detection or policy tools. It takes their output, decides what to
+do with it and checks whether the fix worked.
 
 <div class="dt-stack integrations">
 
 | Your tool | What ICE does with it | Status |
 | --- | --- | --- |
 | Falco, Tetragon | receives syscall events as runtime signals | <span class="dt-s live">live (Falco)</span> |
-| Trivy, Grype | scheduled image scans with a delta to the accepted baseline; CycloneDX SBOMs | <span class="dt-s live">live (scans)</span> |
+| Trivy, Grype | scheduled image scans with a delta to the accepted baseline; CycloneDX SBOMs from Trivy | <span class="dt-s live">live</span> |
 | GitHub | remediation pull requests opened from a console approval | <span class="dt-s live">live</span> |
 | GitLab | the same pull-request flow on a second forge | <span class="dt-s tested">tested</span> |
 | Argo CD | a case is `deployed` only when the application is Synced on the merge revision | <span class="dt-s tested">tested</span> |
@@ -124,34 +123,39 @@ what to do with it, then proves whether it worked.
 
 </div>
 
-*live* means observed on a running cluster with dated evidence; *tested* means covered by
-tests but not yet seen on a cluster — the same scale as in [Honest status](#honest-status).
+*live* means seen working on a running cluster, with dated evidence; *tested* means covered
+by tests but not yet seen on a cluster — the same scale as in [What works today](#status).
 
-## Honest status
+## What works today {#status}
 
-ICE has its own rule for honesty: a capability can be marked **live** only with dated
-evidence from a running cluster, and CI fails if the evidence is missing. The day after that
-rule arrived, five rows were downgraded from *live* to *tested* — nobody could produce the
-evidence.
+A capability is marked **live** only with dated evidence from a running cluster; CI fails if
+the evidence is missing. The day after this rule arrived, five capabilities went back from
+*live* to *tested*: nobody could show the evidence.
 
-As of **6 November 2026**:
+As of **13 November 2026**, out of 91 capabilities:
 
 | Status | Capabilities | Meaning |
 | --- | ---: | --- |
-| <span class="dt-s live">live</span> | 13 | observed on a real cluster, with dated evidence |
-| <span class="dt-s tested">tested</span> | 66 | covered by tests against envtest and a real PostgreSQL |
+| <span class="dt-s live">live</span> | 16 | seen working on a real cluster, with dated evidence |
+| <span class="dt-s tested">tested</span> | 71 | covered by tests against envtest and a real PostgreSQL |
 | <span class="dt-s implemented">implemented</span> | 3 | code exists, tests are partial |
 | <span class="dt-s">contract</span> | 1 | the interface is fixed, there is no executor yet |
 
-**Live today:** daily image scans with a delta to baseline and provenance, including images a
-profile declares without cluster access; a findings queue split into vulnerabilities,
-misconfigurations and secrets; the age of each CVE database next to the findings; syscall
-detectors via Falco; console approval that opens a real GitOps pull request; the read-only MCP;
-a daily automated walk-through of the console. What changed lately is in [News](/news/).
+**Live:** daily image scans with a delta to baseline and provenance, including images a
+profile declares without cluster access; a CycloneDX SBOM for every scanned source; a
+findings queue split into vulnerabilities, misconfigurations and secrets; the age of each CVE
+database next to the findings; syscall detectors via Falco; console approval that opens a real
+GitOps pull request; responses limited to the estate ICE protects; the read-only MCP; a daily
+automated walk-through of the console. What changed lately is in [News](/news/).
 
-**Not there yet:** the full case up to *verified* passes in tests but has not been watched
-end-to-end on a live cluster; the second proving-ground cluster is not connected; there are
-no tagged releases; one trust domain per installation, no multi-tenancy.
+**Not there yet:**
+
+- no external team runs ICE yet — the pilot is the first step;
+- the full case up to *verified* passes in tests but has not been watched end-to-end on a
+  live cluster;
+- the second test cluster is not connected;
+- no tagged releases: images are built from every merge to `main`;
+- one trust domain per installation, no multi-tenancy.
 
 ## Questions
 
@@ -165,16 +169,19 @@ no tagged releases; one trust domain per installation, no multi-tenancy.
 <p>No — it consumes what they report and turns it into decisions, pull requests and verified outcomes.</p>
 </details>
 <details class="dt-faq"><summary>Is ICE open source?</summary>
-<p>It will be released under Apache-2.0. Until then it is developed in private, with design partners.</p>
+<p>It will be released under Apache-2.0. Until then the source is private; pilot teams run the published images.</p>
+</details>
+<details class="dt-faq"><summary>What does it cost?</summary>
+<p>The pilot is free. ICE will be released under Apache-2.0, so you keep what you run.</p>
 </details>
 <details class="dt-faq"><summary>Where does it run?</summary>
 <p>On any Kubernetes cluster, with a collector for plain servers. A local trial on <code>kind</code> takes 15–20 minutes.</p>
 </details>
 
-## Pilot it on your cluster
+## Free pilot on your cluster
 
-I'm looking for teams running Kubernetes in production that want the loop on their estate
-before the public release — and will tell me where it hurts.
+Up to five teams, eight weeks, free. You run ICE on your own Kubernetes before the public
+release and tell me where it is noisy, missing or wrong.
 [What a pilot involves →](/ice/design-partners)
 
-<p class="dt-cta"><a class="dt-btn" href="/ice/design-partners#apply">Become a design partner</a></p>
+<p class="dt-cta"><a class="dt-btn" href="/ice/design-partners#apply">Apply for a free pilot</a></p>

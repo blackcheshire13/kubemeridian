@@ -2,7 +2,7 @@
 title: How ICE works — Kubernetes operator, agent and GitOps remediation
 description: "How ICE works: a read-only agent, an operator that writes only through pull requests, a console for approvals, and a re-measurement after every merge."
 seoTitle: "How ICE works: operator, agent, GitOps remediation"
-updated: 2026-11-06
+updated: 2026-11-13
 ---
 
 # How ICE works
@@ -57,7 +57,7 @@ itself never needs pull access to your registry.
 
 ## Packs and detectors
 
-The core ships nine packs with 28 detectors and 20 requirements. Detectors written in
+The core ships nine packs with 28 detectors and 21 requirements. Detectors written in
 PromQL are rendered into `PrometheusRule` objects: your Prometheus evaluates them and your
 Alertmanager delivers the alert to the agent. Syscall events come from Falco or Tetragon.
 
@@ -88,14 +88,16 @@ collector for plain servers.
 The catalogue of renderers is closed — six templates today: default-deny ingress and
 egress, Pod Security privileged level, Istio and Linkerd authorisation by service
 account, and Kyverno in audit mode only. Rendering is deterministic, so the same input
-always gives the same digest, and the digest is what a person approves.
+always gives the same digest, and the digest is what a person approves. Each response type
+names the part of your estate it changes — edge config, telemetry or workloads — and a test
+fails on any other target.
 
 Runtime risk is scored per entity and decays over time. The higher levels need at least
 three different detectors to agree in a window. Traps are the only path that may act
 without a person — and only when a decoy is hit, the profile has explicitly opted in,
 the preconditions are measured as met and the run is not a dry run.
 
-## Who ICE is for, and the two modes
+## Two modes
 
 - **Full** — operator, agent, posture, actions and verified closure.
 - **Scanner-only** — the scan pipeline and findings, for teams that want the signal first
@@ -103,8 +105,9 @@ the preconditions are measured as met and the run is not a dry run.
 
 Both run on a laptop with `kind` in 15–20 minutes, from a synthetic company profile.
 
-## Pilot it
+## Try it on your cluster
 
-Want this loop on your cluster before the public release? [What a pilot involves →](/ice/design-partners)
+Up to five teams run ICE on their own cluster before the public release, for eight weeks,
+free. [What a pilot involves →](/ice/design-partners)
 
-<p class="dt-cta"><a class="dt-btn" href="/ice/design-partners#apply">Become a design partner</a></p>
+<p class="dt-cta"><a class="dt-btn" href="/ice/design-partners#apply">Apply for a free pilot</a></p>
