@@ -4,8 +4,8 @@
     <h1>This page doesn't exist</h1>
     <p class="lede">The link may be old, or the page moved. These are the places most people are looking for:</p>
     <ul>
-      <li><a href="/ice/">ICE</a> — active defence for Kubernetes</li>
-      <li><a href="/deusex/">deusex</a> — the autonomous development loop</li>
+      <li><a href="/ice/">ICE</a> — Kubernetes security fixes as pull requests</li>
+      <li><a href="/deusex/">deusex</a> — the autonomous development loop that builds ICE</li>
       <li><a href="/blog/">Blog</a> — field notes</li>
       <li><a href="/">Home</a></li>
     </ul>

@@ -8,7 +8,7 @@ updated: 2026-11-06
 
 The rule lives in code; judgement lives in the prompt. Every role below is a separate run
 with its own rights, and wherever a right matters it is held by tooling — an allow-list of
-tools, a hook, a function — rather than by asking the model nicely.
+tools, a hook, a function — rather than by an instruction in the prompt.
 
 ## Roles
 

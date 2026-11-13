@@ -1,22 +1,20 @@
 ---
 title: deusex — an autonomous development loop
-description: deusex turns a vision document into working, merged code. Agents plan, build, review and merge on a schedule; a person decides only the concept.
-updated: 2026-11-06
+description: deusex is an autonomous development loop. AI agents plan, write, review and merge code on a schedule; a person decides the concept. It builds ICE.
+updated: 2026-11-13
 ---
 
 # deusex
 
-<p class="dt-lede">Agents can already write code. deusex teaches them to say no. It is an autonomous
-development loop that turns a vision document into working, merged code — and leaves a person only the concept.</p>
+<p class="dt-lede">deusex is an autonomous development loop. AI agents plan, write, review and merge code on
+a schedule; a person writes the vision and decides what the loop is not allowed to decide. It builds ICE, and
+itself.</p>
 
 <p class="dt-status"><span class="dt-dot deusex"></span>Running around the clock on two projects since September 2026 · private</p>
 
 <p class="dt-next"><a href="/deusex/method">The method</a><a href="/ice/">What it builds: ICE</a></p>
 
-The name is the joke in reverse: *deus ex machina* is the plot device that resolves a story
-without earning it. deusex is built so that nothing reaches `main` that has not earned it.
-
-## Code is the easy part
+## Writing code is solved; running a project is not
 
 Generating a pull request is solved. Running a project is three harder problems:
 
@@ -50,7 +48,7 @@ If the list of guarded paths cannot be read, *everything* counts as guarded.
 
 <p class="dt-quote">A machine does not approve changes to the machine that approves changes.</p>
 
-## Honest numbers
+## Numbers for 4–18 October 2026
 
 Counted from the git history and the forge API on **18 October 2026**, over the 14 days
 from 4 to 18 October. "Autonomous" means a pull request from a loop branch; everything
@@ -75,8 +73,8 @@ About half of the loop's merges in the last 30 days came from models other than 
 primary one. The loop's own code is 34 scripts — and more lines of tests than of code,
 1,226 test functions.
 
-The one target that is still missed is the most telling: the loop does not yet find enough
-of its own work. A person still files about half of deusex's backlog.
+One target is still missed: the loop does not find enough of its own work. A person still
+files about half of deusex's backlog.
 
 ## What is not there yet
 
@@ -94,3 +92,6 @@ deusex is private and not a product; what it builds is [ICE](/ice/). If you run 
 write to me:
 
 <PartnerCta topic="deusex" variant="address" />
+
+The name reverses *deus ex machina*, the plot device that resolves a story without earning
+it: in deusex, nothing reaches `main` without passing its gates.

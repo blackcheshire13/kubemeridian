@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Navbar actions at the right end of the bar (and first in the mobile menu): a link to the
-// live demo console and a persistent link to the pilot page.
+// demo console and a persistent link to the pilot page.
 // The demo is a static build of the ICE console on made-up data (acme-corp), so it opens in a
 // new tab and the visitor keeps their place on the site.
 defineProps<{ screen?: boolean }>();
@@ -11,12 +11,12 @@ const DEMO_URL = 'https://demo.devopstech.net/';
 <template>
   <!-- the menu puts the pilot first; the bar reads left to right to the button -->
   <div v-if="screen" class="screen-actions">
-    <a class="nav-cta" href="/ice/design-partners">Become a design partner</a>
-    <a class="nav-demo dt-ext" :href="DEMO_URL" target="_blank" rel="noopener">Live demo</a>
+    <a class="nav-cta" href="/ice/design-partners">Apply for a free pilot</a>
+    <a class="nav-demo dt-ext" :href="DEMO_URL" target="_blank" rel="noopener">Demo console</a>
   </div>
   <div v-else class="bar-actions">
-    <a class="nav-demo dt-ext" :href="DEMO_URL" target="_blank" rel="noopener">Live demo</a>
-    <a class="nav-cta" href="/ice/design-partners">Become a design partner</a>
+    <a class="nav-demo dt-ext" :href="DEMO_URL" target="_blank" rel="noopener">Demo console</a>
+    <a class="nav-cta" href="/ice/design-partners">Apply for a free pilot</a>
   </div>
 </template>
 

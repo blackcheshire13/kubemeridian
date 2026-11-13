@@ -3,7 +3,7 @@
 // mailto: into /cdn-cgi/l/email-protection#…, and when its decode script is blocked the
 // VitePress router turns a click on that link into the site's 404.
 export const EMAIL = 'hello@devopstech.net';
-export const SUBJECT = { ice: 'ICE design partner', deusex: 'deusex', general: 'Hello from devopstech.net' };
+export const SUBJECT = { ice: 'ICE pilot', deusex: 'deusex', general: 'Hello from devopstech.net' };
 
 /** @param {keyof typeof SUBJECT} topic */
 export function mailto(topic) {

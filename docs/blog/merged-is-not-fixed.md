@@ -76,5 +76,5 @@ true, and the resolved ticket often is not.
 
 ---
 
-*ICE is in development and looking for design partners — see [the overview](/ice/) or
-write to [hello@devopstech.net](mailto:hello@devopstech.net).*
+*ICE is in development and has a free pilot for up to five teams — see
+[what it involves](/ice/design-partners) or write to [hello@devopstech.net](mailto:hello@devopstech.net).*

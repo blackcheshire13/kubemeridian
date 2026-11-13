@@ -5,15 +5,15 @@
     "kicker": "devopstech · ICE",
     "accent": "#2675a9",
     "mark": "ice",
-    "title": "Kubernetes security fixes that prove they worked.",
-    "sub": "ICE · in development, Apache-2.0 at release"
+    "title": "Kubernetes security fixes as pull requests.",
+    "sub": "ICE · for teams without a security engineer"
   },
   "ice": {
     "slug": "ice",
     "kicker": "devopstech · ICE",
     "accent": "#2675a9",
     "title": "ICE",
-    "sub": "Kubernetes active defence with GitOps remediation",
+    "sub": "Kubernetes security fixes as GitOps pull requests",
     "mark": "ice"
   },
   "ice-how-it-works": {
@@ -28,8 +28,8 @@
     "slug": "ice-design-partners",
     "kicker": "devopstech · ICE",
     "accent": "#2675a9",
-    "title": "ICE design partners",
-    "sub": "Run the loop on your cluster early",
+    "title": "ICE pilot",
+    "sub": "Eight weeks on your cluster, free",
     "mark": "ice"
   },
   "deusex": {

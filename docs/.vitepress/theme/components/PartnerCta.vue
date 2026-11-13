@@ -16,7 +16,7 @@ const props = withDefaults(
   { topic: 'ice', variant: 'block' },
 );
 
-const LABEL = { ice: 'Become a design partner', deusex: 'Talk to me about deusex', general: 'Write to me' } as const;
+const LABEL = { ice: 'Write about a pilot', deusex: 'Talk to me about deusex', general: 'Write to me' } as const;
 const mailHref = computed(() => mailto(props.topic));
 const webHref = computed(() => gmail(props.topic));
 // idle → after a button click: 'sent' (address copied) or 'nocopy'; after Copy: 'copied' or 'failed'

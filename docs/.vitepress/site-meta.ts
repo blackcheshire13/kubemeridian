@@ -10,7 +10,7 @@ import { KM_LAST_RELEASE, isKubeMeridianPage } from './kubemeridian.mjs';
 export const SITE = 'https://devopstech.net';
 export const SITE_TITLE = 'devopstech';
 export const SITE_DESCRIPTION =
-  'ICE: Kubernetes security fixes delivered as GitOps pull requests, closed only when a measurement after the merge proves them. Built by deusex, an autonomous development loop.';
+  'ICE turns Kubernetes security findings into GitOps pull requests you approve and closes a case only after the cluster is measured again. Built with deusex, an autonomous development loop.';
 
 const OG_DIR = join(DOCS, 'public', 'og');
 
