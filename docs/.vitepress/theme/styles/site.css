@@ -311,3 +311,229 @@
 /* screenshot lightbox (ShotLightbox.vue): the page behind it does not scroll */
 html.dt-lightbox-open { overflow: hidden; }
 .dt-prose .dt-shot a { cursor: zoom-in; }
+
+/* ---------- /ice/presentation: the ICE deck as a page ---------- */
+/* one card per slide (kicker with the slide number, the headline, the visual), the speaker's
+   note under the card; grids are intrinsic, so a slide reflows to one column on a phone */
+.dt-prose .dt-slide {
+  container-type: inline-size;
+  margin-block: 2.5rem 0;
+  padding: clamp(1.25rem, 0.75rem + 2vw, 2.25rem);
+  background: var(--dt-card);
+  border: 1px solid var(--dt-card-edge);
+  border-radius: var(--dt-radius-card);
+}
+.dt-prose .dt-slide-k {
+  margin-block: 0 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--dt-ice-ink);
+}
+.dt-prose .dt-slide-k span {
+  margin-inline-end: 0.625rem;
+  font-family: var(--dt-font-mono);
+  color: var(--dt-ink-3);
+}
+.dt-prose .dt-slide h2 {
+  margin-block: 0 1.5rem;
+  padding: 0;
+  border: 0;
+  max-inline-size: 40ch;
+}
+.dt-prose .dt-slide-sub {
+  margin-block: 1.25rem 0;
+  font-size: 0.9375rem;
+  color: var(--dt-ink-2);
+}
+.dt-prose .dt-slide-sub + .dt-tiles,
+.dt-prose .dt-slide-sub + .dt-chips { margin-block-start: 0.75rem; }
+.dt-prose .dt-slide-note {
+  margin-block: 0.875rem 0;
+  max-inline-size: 70ch;
+  font-size: 0.9375rem;
+  color: var(--dt-ink-2);
+}
+.dt-prose .dt-slide > :last-child { margin-block-end: 0; }
+.dt-prose .dt-slide .dt-shot { margin-block: 0 1.25rem; }
+.dt-prose .dt-slide .dt-cta { margin-block: 1.5rem 0; }
+
+/* tiles: a fact per tile; .steps numbers them, .flow points from one to the next */
+.dt-prose .dt-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: dt-step;
+}
+.dt-prose .dt-tiles > li {
+  margin: 0;
+  padding: 0.875rem 1rem;
+  background: var(--dt-paper);
+  border: 1px solid var(--dt-rule);
+  border-radius: var(--dt-radius-card);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--dt-ink-2);
+}
+.dt-prose .dt-tiles b {
+  display: block;
+  margin-block-end: 0.25rem;
+  font-size: 1rem;
+  color: var(--dt-ink);
+}
+.dt-prose .dt-tiles i {
+  display: block;
+  margin-block-end: 0.25rem;
+  font-style: normal;
+  font-size: 0.8125rem;
+  color: var(--dt-ink-3);
+}
+.dt-prose .dt-tiles .dt-s {
+  display: block;
+  margin-block-end: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--dt-ink-2);
+}
+.dt-prose .dt-tiles a { display: inline-block; margin-block-start: 0.5rem; }
+.dt-prose .dt-tiles.steps > li { counter-increment: dt-step; }
+.dt-prose .dt-tiles.steps > li::before {
+  content: counter(dt-step, decimal-leading-zero);
+  display: block;
+  margin-block-end: 0.375rem;
+  font-family: var(--dt-font-mono);
+  font-size: 0.8125rem;
+  color: var(--dt-ice-ink);
+}
+.dt-prose .dt-tiles.flow > li { position: relative; }
+@container (inline-size >= 40rem) {
+  .dt-prose .dt-tiles.flow { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .dt-prose .dt-tiles.flow > li + li::before {
+    content: '→';
+    position: absolute;
+    inset-inline-start: -1.25rem;
+    inset-block-start: 50%;
+    translate: 0 -50%;
+    color: var(--dt-ink-3);
+  }
+}
+
+/* chips: tools that plug in */
+.dt-prose .dt-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dt-prose .dt-chips > li {
+  margin: 0;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--dt-border);
+  border-radius: var(--dt-radius-control);
+  font-size: 0.875rem;
+  color: var(--dt-ink-2);
+}
+
+/* big numbers with a line of meaning under each */
+.dt-prose .dt-nums {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: 1.25rem 1.5rem;
+  margin-block: 1.25rem 0;
+}
+.dt-prose .dt-nums dt {
+  font-family: var(--dt-font-display);
+  font-size: clamp(2rem, 1.5rem + 1.6vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--dt-ink);
+}
+.dt-prose .dt-nums dd {
+  margin: 0.375rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--dt-ink-2);
+}
+.dt-prose .dt-slide > pre,
+.dt-prose .dt-slide > div[class*='language-'] { margin-block: 0; }
+
+/* response levels: a dot in the level's own colour next to its name (no coloured surfaces) */
+.dt-lvl { white-space: nowrap; font-weight: 600; }
+.dt-lvl::before {
+  content: '';
+  display: inline-block;
+  inline-size: 0.625rem;
+  block-size: 0.625rem;
+  margin-inline-end: 0.4375rem;
+  border-radius: 50%;
+  vertical-align: 0.0625rem;
+  background: var(--dt-lvl);
+}
+.dt-lvl.green { --dt-lvl: oklch(0.62 0.14 150); }
+.dt-lvl.yellow { --dt-lvl: oklch(0.82 0.15 92); }
+.dt-lvl.orange { --dt-lvl: oklch(0.7 0.16 55); }
+.dt-lvl.red { --dt-lvl: oklch(0.58 0.19 27); }
+.dt-prose .dt-slide .dt-stack { margin-block: 0; }
+
+/* commits per month: bars whose height is the value over the largest month (262) */
+.dt-prose .dt-bars { margin-block: 1.75rem 0; margin-inline: 0; }
+.dt-prose .dt-bars figcaption {
+  margin-block-end: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--dt-ink-2);
+}
+.dt-prose .dt-bars ol {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: end;
+  gap: 0.75rem;
+  block-size: 10rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dt-prose .dt-bars li {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  block-size: 100%;
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--dt-ink-2);
+}
+.dt-prose .dt-bars li b {
+  font-family: var(--dt-font-mono);
+  font-size: 0.8125rem;
+  color: var(--dt-ink);
+}
+.dt-prose .dt-bars li b::after {
+  content: '';
+  display: block;
+  block-size: calc(var(--v) / 262 * 7rem);
+  margin-block-start: 0.25rem;
+  background: var(--dt-ice);
+  border-radius: 0.125rem 0.125rem 0 0;
+}
+.dt-prose .dt-bars li span { margin-block-start: 0.375rem; }
+.dt-prose .dt-bars > p { margin-block: 0.75rem 0; font-size: 0.8125rem; color: var(--dt-ink-3); }
+/* a wide page (frontmatter `wide: true`) keeps the 45rem measure for its running text */
+.dt-prose.wide > :is(h1, p:not(.dt-slide-note)) { max-inline-size: 45rem; }
+/* rows come out even: six tiles in threes, five or ten in fives, where the slide is wide enough */
+@container (inline-size >= 56rem) {
+  .dt-prose .dt-tiles:has(> li:nth-child(6):last-child) { grid-template-columns: repeat(3, 1fr); }
+  .dt-prose .dt-tiles:is(:has(> li:nth-child(5):last-child), :has(> li:nth-child(10):last-child)) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+/* code beside its numbers on a wide slide, under each other on a narrow one */
+.dt-prose .dt-split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: 1.5rem;
+  align-items: start;
+}
+.dt-prose .dt-split > div[class*='language-'] { margin: 0; }
+.dt-prose .dt-split .dt-nums { grid-template-columns: 1fr; margin: 0; }

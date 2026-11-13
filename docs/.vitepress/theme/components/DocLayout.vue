@@ -9,14 +9,17 @@ import SectionNav from './SectionNav.vue';
 
 const { frontmatter } = useData();
 const hasOutline = computed(() => frontmatter.value.aside !== false && frontmatter.value.outline !== false);
+// `wide: true` (the presentation) gives the page the whole container; its running text keeps
+// the 45rem measure through .dt-prose.wide in site.css
+const wide = computed(() => frontmatter.value.wide === true && !hasOutline.value);
 </script>
 
 <template>
   <div class="dt-doc dt-wrap">
-    <div class="grid" :class="{ 'has-outline': hasOutline }">
+    <div class="grid" :class="{ 'has-outline': hasOutline, wide }">
       <div class="column">
         <SectionNav />
-        <Content class="dt-prose" />
+        <Content class="dt-prose" :class="{ wide }" />
       </div>
       <aside v-if="hasOutline" class="aside">
         <DocOutline />
@@ -36,6 +39,9 @@ const hasOutline = computed(() => frontmatter.value.aside !== false && frontmatt
 .grid {
   display: grid;
   grid-template-columns: minmax(0, 45rem);
+}
+.grid.wide {
+  grid-template-columns: minmax(0, 1fr);
 }
 .aside {
   display: none;

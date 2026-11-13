@@ -32,6 +32,14 @@
     "sub": "Eight weeks on your cluster, free",
     "mark": "ice"
   },
+  "ice-presentation": {
+    "slug": "ice-presentation",
+    "kicker": "devopstech · ICE",
+    "accent": "#2675a9",
+    "title": "ICE presentation",
+    "sub": "The product in 14 slides",
+    "mark": "ice"
+  },
   "deusex": {
     "slug": "deusex",
     "kicker": "devopstech · deusex",

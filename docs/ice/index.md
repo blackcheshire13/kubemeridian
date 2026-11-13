@@ -18,7 +18,7 @@ the cluster again.</p>
 
 <p class="dt-strip"><span class="dt-s live"><strong>16</strong>&nbsp;live</span><span class="dt-s tested"><strong>71</strong>&nbsp;tested</span><span class="dt-s implemented"><strong>3</strong>&nbsp;implemented</span><span class="dt-s"><strong>1</strong>&nbsp;contract</span><span>capabilities as of 13 November 2026 · <a href="#status">what that means</a></span></p>
 
-<p class="dt-next"><a href="/ice/how-it-works">How ICE works</a><a href="/ice/design-partners">The free pilot</a></p>
+<p class="dt-next"><a href="/ice/how-it-works">How ICE works</a><a href="/ice/presentation">ICE in 14 slides</a><a href="/ice/design-partners">The free pilot</a></p>
 
 ## Scanners find problems; small teams have no one to fix them
 
