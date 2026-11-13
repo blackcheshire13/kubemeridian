@@ -3,7 +3,7 @@ title: News — what changed in ICE and deusex
 description: Short dated updates on ICE, Kubernetes security fixes as pull requests, and deusex, the loop that builds it. Each says whether it is live, tested or planned.
 outline: false
 aside: false
-updated: 2026-11-06
+updated: 2026-11-13
 ---
 
 # News

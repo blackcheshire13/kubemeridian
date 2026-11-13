@@ -7,6 +7,13 @@
 /** @type {NewsItem[]} */
 export const NEWS = [
   {
+    date: '2026-11-13',
+    product: 'ice',
+    status: 'tested',
+    title: 'The install wizard works in the terminal',
+    body: '<code>ice doctor</code> runs 29 read-only checks: what the cluster already has and what ICE would miss without it. <code>ice install</code> asks, for each piece, whether to use yours, install it or skip it, shows the plan and applies it with Helm; running it again reconciles. It can install PostgreSQL (CloudNativePG), Keycloak, TLS with cert-manager and Let\'s Encrypt, and an Envoy Gateway ingress. Access is added by command — a GitHub App, a deploy key or a GitLab group token — and checked with a live call before it is saved; the operator then opens pull requests as the GitHub App instead of with a personal token. All of this passes tests and has not yet been run on a live cluster. Still planned: the browser version, a GitOps mode that opens a pull request instead of installing, and secrets and a runtime sensor in the baseline.',
+  },
+  {
     date: '2026-11-06',
     product: 'ice',
     status: 'planned',
