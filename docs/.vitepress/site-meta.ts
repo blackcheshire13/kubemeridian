@@ -51,6 +51,7 @@ const PRODUCT: Record<string, Record<string, unknown>> = {
   'ice/how-it-works.md': { '@type': 'Thing', name: 'ICE' },
   'deusex/method.md': { '@type': 'Thing', name: 'deusex' },
   'ice/design-partners.md': { '@type': 'Thing', name: 'ICE' },
+  'ice/presentation.md': { '@type': 'Thing', name: 'ICE' },
 };
 // Other pages' types: an about page about a person, collections of updates and posts.
 const PAGE_TYPE: Record<string, string> = {

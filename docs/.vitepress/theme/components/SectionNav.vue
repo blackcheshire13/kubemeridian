@@ -8,6 +8,7 @@ const SECTIONS: Record<string, { text: string; link: string; file: string }[]> =
   ice: [
     { text: 'Overview', link: '/ice/', file: 'ice/index.md' },
     { text: 'How it works', link: '/ice/how-it-works', file: 'ice/how-it-works.md' },
+    { text: 'Presentation', link: '/ice/presentation', file: 'ice/presentation.md' },
     { text: 'Free pilot', link: '/ice/design-partners', file: 'ice/design-partners.md' },
   ],
   deusex: [
